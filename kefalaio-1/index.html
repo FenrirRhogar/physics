@@ -1,0 +1,1239 @@
+<title>Ηλεκτρική Δύναμη και Φορτίο</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;0,900;1,600&family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --paper:#f3f4f8; --panel:#ffffff; --panel-2:#eceef5;
+  --ink:#1a2138; --ink-soft:#4b5370; --line:rgba(26,33,56,.14);
+  --accent:#c9860a; --accent-ink:#5c3f03; --accent-soft:#fbe8bd;
+  --blue:#2f5fb3; --blue-soft:#dfe7f8;
+  --pos:#b8382a; --neg:#2f5fb3; --good:#2b7a4b;
+  --shadow:0 1px 2px rgba(26,33,56,.07),0 10px 26px -14px rgba(26,33,56,.22);
+  --font-display:'Alegreya',Georgia,'Times New Roman',serif;
+  --font-body:'Noto Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-mono:'IBM Plex Mono','SFMono-Regular',Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#10131f; --panel:#171b2c; --panel-2:#1e2338;
+    --ink:#e9ebf3; --ink-soft:#b7bcd4; --line:rgba(233,235,243,.14);
+    --accent:#ffb703; --accent-ink:#2a1e00; --accent-soft:#3a2c0c;
+    --blue:#8fabe4; --blue-soft:#202a45;
+    --pos:#ef6a5a; --neg:#8fabe4; --good:#6fcf9a;
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 14px 34px -16px rgba(0,0,0,.65);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#10131f; --panel:#171b2c; --panel-2:#1e2338;
+  --ink:#e9ebf3; --ink-soft:#b7bcd4; --line:rgba(233,235,243,.14);
+  --accent:#ffb703; --accent-ink:#2a1e00; --accent-soft:#3a2c0c;
+  --blue:#8fabe4; --blue-soft:#202a45;
+  --pos:#ef6a5a; --neg:#8fabe4; --good:#6fcf9a;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 14px 34px -16px rgba(0,0,0,.65);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--font-body); font-size:17px; line-height:1.7;
+  padding:0 20px 80px;
+}
+@media (min-width:640px){ body{padding:0 32px 96px;} }
+
+h1,h2,h3{font-family:var(--font-display); text-wrap:balance; font-weight:700; margin:0 0 .4em;}
+p{margin:0 0 1em;}
+.wrap{max-width:760px; margin:0 auto;}
+a{color:var(--blue);}
+
+/* ---------- HERO ---------- */
+.hero{
+  background:
+    radial-gradient(ellipse 700px 300px at 85% -10%, rgba(255,183,3,.16), transparent 60%),
+    linear-gradient(160deg,#0c0e1c 0%,#161c3a 55%,#0f1430 100%);
+  color:#f2f1ec;
+  margin:0 -20px 0; padding:52px 20px 34px;
+  position:relative; overflow:hidden;
+}
+@media (min-width:640px){ .hero{margin:0 -32px 0; padding:64px 32px 40px;} }
+.hero .wrap{position:relative; z-index:2;}
+.bolt{position:absolute; right:6%; top:8%; width:150px; opacity:.9; z-index:1;}
+.eyebrow{
+  font-family:var(--font-mono); font-size:12.5px; letter-spacing:.14em; text-transform:uppercase;
+  color:#ffcf5c; font-weight:600; margin-bottom:14px; display:flex; gap:10px; align-items:center;
+}
+.eyebrow::before{content:"⚡"; font-size:14px;}
+.hero h1{font-size:clamp(2rem,5.4vw,3.1rem); color:#fbfaf6; line-height:1.08; margin-bottom:14px;}
+.hero p.lede{color:#cdd3ea; font-size:1.02em; max-width:60ch; margin-bottom:22px;}
+.goals{list-style:none; margin:0; padding:0; display:grid; gap:9px;}
+.goals li{
+  display:flex; gap:10px; align-items:flex-start; color:#e7e9f5; font-size:.96em;
+}
+.goals li::before{
+  content:"✓"; flex:none; width:20px; height:20px; border-radius:50%;
+  background:rgba(255,183,3,.18); color:#ffcf5c; font-size:12px; font-weight:700;
+  display:flex; align-items:center; justify-content:center; margin-top:2px;
+}
+
+/* ---------- NAV ---------- */
+nav.pillnav{
+  position:sticky; top:0; z-index:20; background:var(--paper);
+  border-bottom:1px solid var(--line); margin:0 -20px 40px; padding:12px 20px;
+  overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch;
+}
+@media (min-width:640px){ nav.pillnav{margin:0 -32px 48px; padding:12px 32px;} }
+nav.pillnav::-webkit-scrollbar{display:none;}
+nav.pillnav a{
+  font-family:var(--font-mono); font-size:12.5px; font-weight:600; text-decoration:none;
+  color:var(--ink-soft); background:var(--panel); border:1px solid var(--line);
+  padding:6px 12px; border-radius:999px; margin-right:8px; display:inline-block;
+}
+nav.pillnav a:hover{color:var(--accent-ink); border-color:var(--accent);}
+
+/* ---------- SECTIONS ---------- */
+section.chap{margin-bottom:56px; scroll-margin-top:64px;}
+.num-tag{
+  font-family:var(--font-mono); color:var(--accent-ink); background:var(--accent-soft);
+  display:inline-block; padding:3px 10px; border-radius:6px; font-size:13px; font-weight:600;
+  margin-bottom:10px; letter-spacing:.02em;
+}
+section.chap h2{font-size:clamp(1.4rem,3.4vw,1.85rem); border-left:5px solid var(--accent); padding-left:14px;}
+section.chap h3{font-size:1.18rem; margin-top:1.6em; color:var(--ink);}
+.lead{font-size:1.05em; color:var(--ink-soft);}
+
+/* ---------- CALLOUT BOXES ---------- */
+.box{border-radius:12px; padding:18px 20px; margin:22px 0; box-shadow:var(--shadow);}
+.box .box-label{
+  font-family:var(--font-mono); font-size:11.5px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; display:flex; align-items:center; gap:7px; margin-bottom:9px;
+}
+.box p:last-child{margin-bottom:0;}
+
+.def{background:var(--blue-soft); border-left:4px solid var(--blue);}
+.def .box-label{color:var(--blue);}
+
+.law{background:var(--accent-soft); border-left:4px solid var(--accent);}
+.law .box-label{color:var(--accent-ink);}
+.law strong{color:var(--accent-ink);}
+
+.tip{background:var(--panel-2); border:1px dashed var(--line); box-shadow:none;}
+.tip .box-label{color:var(--good);}
+
+.caution{background:var(--panel-2); border-left:4px solid var(--pos);}
+.caution .box-label{color:var(--pos);}
+
+.history{
+  background:transparent; border:1px solid var(--line); box-shadow:none;
+  font-style:italic; color:var(--ink-soft); font-size:.94em;
+}
+.history .box-label{color:var(--ink-soft); font-style:normal;}
+
+.example{background:var(--panel); border:1px solid var(--line);}
+.example .box-label{color:var(--good);}
+.solv{font-family:var(--font-mono); font-size:.92em; background:var(--panel-2); border-radius:8px; padding:12px 14px; margin:.6em 0; overflow-x:auto;}
+.solv .k{color:var(--accent-ink); font-weight:600;}
+.solv-step{margin:.15em 0;}
+
+.formula{
+  font-family:var(--font-mono); text-align:center; font-size:1.25em; font-weight:600;
+  background:var(--panel-2); border-radius:10px; padding:16px; margin:18px 0;
+  font-variant-numeric:tabular-nums;
+}
+.formula sup{font-size:.7em;}
+
+table.terms{width:100%; border-collapse:collapse; margin:14px 0; font-size:.94em;}
+table.terms th,table.terms td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top;}
+table.terms th{background:var(--panel-2); font-family:var(--font-mono); font-size:12px; letter-spacing:.04em; text-transform:uppercase;}
+
+/* ---------- DIAGRAMS ---------- */
+.diagram{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px; margin:22px 0; box-shadow:var(--shadow);}
+.diagram svg{width:100%; height:auto; display:block;}
+.diagram figcaption{font-size:.86em; color:var(--ink-soft); text-align:center; margin-top:10px;}
+.diagram-row{display:grid; gap:16px; grid-template-columns:1fr 1fr;}
+@media (max-width:560px){.diagram-row{grid-template-columns:1fr;}}
+
+/* ---------- SUMMARY ---------- */
+.summary-box{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:24px 26px; box-shadow:var(--shadow);}
+.summary-box ul{margin:0; padding-left:1.2em;}
+.summary-box li{margin-bottom:.55em;}
+.glossary{display:grid; grid-template-columns:repeat(2,1fr); gap:8px 20px; margin-top:8px; font-size:.95em;}
+@media (max-width:480px){.glossary{grid-template-columns:1fr;}}
+.glossary span{display:block; padding:4px 0; border-bottom:1px dotted var(--line);}
+
+/* ---------- EXERCISES (graph-paper notebook feel) ---------- */
+.exwrap{
+  background:
+    linear-gradient(var(--panel) 0 0),
+    repeating-linear-gradient(0deg, transparent 0 27px, var(--line) 27px 28px),
+    repeating-linear-gradient(90deg, transparent 0 27px, var(--line) 27px 28px);
+  border:1px solid var(--line); border-radius:14px; padding:28px 24px; box-shadow:var(--shadow);
+}
+.exgroup{margin-bottom:34px;}
+.exgroup:last-child{margin-bottom:0;}
+.exgroup h3{
+  font-family:var(--font-display); font-size:1.15rem; margin:0 0 4px;
+  display:flex; align-items:baseline; gap:10px;
+}
+.exgroup .lvl{font-family:var(--font-mono); font-size:11px; color:var(--ink-soft); font-weight:600; letter-spacing:.06em; text-transform:uppercase;}
+.qlist{list-style:none; margin:14px 0 0; padding:0; counter-reset:q;}
+.qlist>li{counter-increment:q; margin-bottom:16px; padding-left:2.1em; position:relative;}
+.qlist>li::before{
+  content:counter(q); position:absolute; left:0; top:.05em; font-family:var(--font-mono); font-weight:700;
+  color:var(--accent-ink); background:var(--accent-soft); width:1.6em; height:1.6em; border-radius:6px;
+  display:flex; align-items:center; justify-content:center; font-size:.82em;
+}
+.opts{list-style:none; margin:.5em 0 0; padding:0; display:grid; gap:5px;}
+.opts li{padding-left:1.6em; position:relative; color:var(--ink-soft); font-size:.96em;}
+.opts li::before{content:attr(data-l); position:absolute; left:0; font-family:var(--font-mono); font-weight:700; color:var(--ink);}
+.blank{border-bottom:2px solid var(--ink-soft); padding:0 6px; font-family:var(--font-mono);}
+.wordbank{
+  font-size:.9em; background:var(--panel-2); border:1px solid var(--line); border-radius:8px;
+  padding:10px 14px; margin:0 0 18px; color:var(--ink-soft);
+}
+.wordbank strong{color:var(--ink); font-weight:600;}
+
+details.ans{margin-top:8px;}
+details.ans summary{
+  cursor:pointer; font-family:var(--font-mono); font-size:.82em; font-weight:600;
+  color:var(--good); list-style:none; display:inline-flex; align-items:center; gap:6px;
+  padding:4px 10px; border:1px solid var(--good); border-radius:999px;
+}
+details.ans summary::-webkit-details-marker{display:none;}
+details.ans summary::before{content:"👁"; font-size:.9em;}
+details.ans[open] summary::before{content:"🙈";}
+details.ans .ans-body{
+  margin-top:10px; padding:12px 14px; background:var(--panel-2); border-left:3px solid var(--good);
+  border-radius:0 8px 8px 0; font-size:.94em;
+}
+details.ans .ans-body .solv{margin-top:8px; margin-bottom:0;}
+
+.section-title-row{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:6px;}
+footer.pagefoot{text-align:center; color:var(--ink-soft); font-size:.85em; margin-top:60px;}
+
+/* ---------- LAB (διαδραστικά εργαλεία) ---------- */
+.lab{background:var(--panel-2); border:1px solid var(--line); border-radius:14px; padding:22px 22px 26px; margin:22px 0; box-shadow:var(--shadow);}
+.lab-tabs{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+.lab-tab-btn{font-family:var(--font-mono); font-size:12.5px; font-weight:600; padding:7px 14px; border-radius:999px; border:1px solid var(--line); background:var(--panel); color:var(--ink-soft); cursor:pointer;}
+.lab-tab-btn.active{background:var(--accent); border-color:var(--accent); color:var(--accent-ink);}
+.lab-panel{display:none;}
+.lab-panel.active{display:block;}
+.calc-grid{display:grid; grid-template-columns:1fr 1fr; gap:26px; align-items:start;}
+@media (max-width:640px){.calc-grid{grid-template-columns:1fr;}}
+.ctrl{margin-bottom:16px;}
+.ctrl label{display:flex; justify-content:space-between; font-size:.85em; color:var(--ink-soft); margin-bottom:5px; font-family:var(--font-mono);}
+.ctrl label .val{color:var(--ink); font-weight:700;}
+.ctrl input[type=range]{width:100%; accent-color:var(--accent); height:6px;}
+.diagram-live{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px;}
+.diagram-live svg{width:100%; height:auto; display:block;}
+.f-readout{text-align:center; margin-top:10px;}
+.f-readout .big{font-family:var(--font-mono); font-size:1.7em; font-weight:700; color:var(--ink);}
+.f-readout .kind{font-size:.85em; color:var(--ink-soft);}
+.meter{height:12px; border-radius:999px; background:var(--panel-2); overflow:hidden; margin-top:10px; border:1px solid var(--line);}
+.meter-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--blue),var(--accent),var(--pos)); transition:width .35s ease;}
+.meter-labels{display:flex; justify-content:space-between; font-size:10.5px; font-family:var(--font-mono); color:var(--ink-soft); margin-top:3px;}
+.baseline-box{margin-top:16px; padding:12px 14px; border-radius:10px; background:var(--panel); border:1px dashed var(--line); font-size:.92em;}
+.baseline-box>div:first-child{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;}
+.baseline-box button{font-family:var(--font-mono); font-size:11.5px; font-weight:600; padding:6px 12px; border-radius:6px; border:1px solid var(--accent); background:var(--accent-soft); color:var(--accent-ink); cursor:pointer; flex:none;}
+.baseline-ratio{font-family:var(--font-mono); font-weight:700; font-size:1.1em;}
+.baseline-breakdown{margin-top:6px; font-size:.85em; color:var(--ink-soft); font-family:var(--font-mono);}
+.quiz-before-after{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0;}
+@media (max-width:560px){.quiz-before-after{grid-template-columns:1fr;}}
+.qa-panel{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px;}
+.qa-panel h4{margin:0 0 8px; font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); font-weight:700;}
+.qa-panel svg{width:100%; height:auto; display:block;}
+.qa-hidden{display:flex; align-items:center; justify-content:center; min-height:110px; color:var(--line); font-size:2.4em; font-family:var(--font-mono);}
+.qa-values{font-family:var(--font-mono); font-size:.78em; color:var(--ink-soft); margin-top:6px; text-align:center; min-height:1.2em;}
+.quiz-question{font-size:1.03em; margin:14px 0; padding:14px 16px; background:var(--accent-soft); border-radius:10px; color:var(--accent-ink); font-weight:600;}
+.quiz-options{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;}
+@media (max-width:480px){.quiz-options{grid-template-columns:1fr;}}
+.quiz-opt{font-family:var(--font-mono); font-size:1.05em; font-weight:700; padding:12px; border-radius:10px; border:2px solid var(--line); background:var(--panel); cursor:pointer; text-align:center; color:var(--ink);}
+.quiz-opt:hover:not(:disabled){border-color:var(--accent);}
+.quiz-opt.correct{border-color:var(--good); background:rgba(43,122,75,.15); color:var(--good);}
+.quiz-opt.wrong{border-color:var(--pos); background:rgba(184,56,42,.15); color:var(--pos);}
+.quiz-opt:disabled{cursor:default;}
+.quiz-explain{background:var(--panel); border-left:3px solid var(--good); border-radius:0 10px 10px 0; padding:14px 16px; font-size:.92em; margin-bottom:14px; display:none;}
+.quiz-explain.show{display:block;}
+.quiz-explain .line{margin-bottom:4px;}
+.quiz-next{font-family:var(--font-mono); font-weight:600; font-size:12.5px; padding:10px 18px; border-radius:8px; border:1px solid var(--accent); background:var(--accent); color:#3a2900; cursor:pointer;}
+
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
+</style>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Ενότητα 1 · Ηλεκτρισμός — Κεφάλαιο 1</div>
+    <h1>Ηλεκτρική Δύναμη<br>και Φορτίο</h1>
+    <p class="lede">Σημειώσεις με απλά λόγια και ασκήσεις για εξάσκηση, φτιαγμένες πάνω στην ύλη της Φυσικής Γ' Γυμνασίου. Ξεκινάμε από το μηδέν — δεν χρειάζεται να ξέρεις τίποτα από πριν.</p>
+    <ul class="goals">
+      <li>Τι είναι η ηλεκτρική δύναμη και σε τι διαφέρει από τη βαρυτική και τη μαγνητική</li>
+      <li>Τι είναι το ηλεκτρικό φορτίο, τα δύο είδη του, και πώς «κρύβεται» μέσα στο άτομο</li>
+      <li>Οι τρεις τρόποι με τους οποίους φορτίζεται ένα σώμα: τριβή, επαφή, επαγωγή</li>
+      <li>Ο Νόμος του Κουλόμπ — πώς υπολογίζουμε τη δύναμη ανάμεσα σε δύο φορτία</li>
+      <li>Τι είναι το ηλεκτρικό πεδίο και οι δυναμικές του γραμμές</li>
+    </ul>
+  </div>
+  <svg class="bolt" viewBox="0 0 60 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M34 2 L10 52 L26 52 L18 98 L52 40 L34 40 L46 2 Z" fill="#ffb703" opacity="0.85"/>
+  </svg>
+</div>
+
+<nav class="pillnav" aria-label="Πλοήγηση κεφαλαίου">
+  <a href="#s1">1.1 Δύναμη</a>
+  <a href="#s2">1.2 Φορτίο</a>
+  <a href="#s3">1.3 Άτομο</a>
+  <a href="#s4">1.4 Ηλέκτριση</a>
+  <a href="#s5">1.5 Κουλόμπ</a>
+  <a href="#s6">1.6 Πεδίο</a>
+  <a href="#summary">Περίληψη</a>
+  <a href="#exercises">Ασκήσεις</a>
+</nav>
+
+<div class="wrap">
+
+<!-- ============ 1.1 ============ -->
+<section class="chap" id="s1">
+  <div class="num-tag">1.1</div>
+  <h2>Γνωριμία με την ηλεκτρική δύναμη</h2>
+  <p class="lead">Σίγουρα το έχεις ζήσει: χτενίζεσαι με ένα πλαστικό χτένι και οι τρίχες σου «σηκώνονται» και ακολουθούν το χτένι. Ή τρίβεις ένα μπαλόνι στα μαλλιά σου και μετά αυτό κολλάει στον τοίχο σαν μαγικό. Δεν είναι μαγικό — είναι <strong>ηλεκτρισμός</strong>, και σε αυτό το κεφάλαιο θα καταλάβεις ακριβώς γιατί συμβαίνει.</p>
+
+  <p>Αν τρίψεις έναν πλαστικό χάρακα με ένα μάλλινο πουλόβερ και μετά τον πλησιάσεις σε μικρά κομματάκια χαρτί, θα δεις ότι τα έλκει προς το μέρος του — τα «τραβάει» χωρίς καν να τα αγγίξει. Πριν την τριβή, ο χάρακας δεν είχε αυτή την ιδιότητα. Λέμε λοιπόν ότι, μετά την τριβή, ο χάρακας έγινε <strong>ηλεκτρισμένος</strong>.</p>
+
+  <div class="box def">
+    <div class="box-label">Ορισμός</div>
+    <p>Ένα σώμα το οποίο, αφού το τρίψουμε με ένα άλλο, αποκτά την ικανότητα να ασκεί δύναμη σε ελαφρά αντικείμενα, το λέμε <strong>ηλεκτρισμένο</strong>. Η δύναμη που ασκεί ονομάζεται <strong>ηλεκτρική δύναμη</strong>.</p>
+  </div>
+
+  <h3>Πώς ελέγχουμε αν κάτι είναι ηλεκτρισμένο;</h3>
+  <p>Χρησιμοποιούμε ένα απλό όργανο, το <strong>ηλεκτρικό εκκρεμές</strong>: κρεμάμε ένα πολύ ελαφρύ μπαλάκι (π.χ. από φελιζόλ) από μια κλωστή. Αν πλησιάσουμε το σώμα που ελέγχουμε κοντά στο μπαλάκι και αυτό έλκεται προς το μέρος του, τότε το σώμα είναι ηλεκτρισμένο.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg">
+      <line x1="140" y1="14" x2="140" y2="90" stroke="var(--ink-soft)" stroke-width="1.5"/>
+      <line x1="140" y1="14" x2="20" y2="14" stroke="var(--ink-soft)" stroke-width="3"/>
+      <circle cx="140" cy="104" r="14" fill="var(--panel-2)" stroke="var(--ink)" stroke-width="1.5"/>
+      <rect x="330" y="90" width="150" height="16" rx="4" fill="var(--accent)"/>
+      <text x="405" y="102" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--accent-ink)" font-weight="600">ηλεκτρισμένος χάρακας</text>
+      <path d="M195 104 C240 104 280 104 322 100" stroke="var(--pos)" stroke-width="2" fill="none" marker-end="url(#arrow1)"/>
+      <text x="255" y="90" text-anchor="middle" font-family="var(--font-mono)" font-size="12" fill="var(--pos)">F</text>
+      <text x="140" y="150" text-anchor="middle" font-family="var(--font-body)" font-size="12" fill="var(--ink-soft)">ηλεκτρικό εκκρεμές</text>
+      <defs>
+        <marker id="arrow1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--pos)"/></marker>
+      </defs>
+    </svg>
+    <figcaption>Ο ηλεκτρισμένος χάρακας έλκει το μπαλάκι του εκκρεμούς από απόσταση, χωρίς να το αγγίζει.</figcaption>
+  </div>
+
+  <h3>Τρία σημαντικά χαρακτηριστικά της ηλεκτρικής δύναμης</h3>
+  <p><strong>1. Δρα από απόσταση.</strong> Ο χάρακας δεν χρειάζεται να αγγίξει το μπαλάκι για να ασκήσει δύναμη πάνω του — η δύναμη «ταξιδεύει» μέσα από τον αέρα.</p>
+  <p><strong>2. Είναι διαφορετική από τη μαγνητική δύναμη.</strong> Αν πλησιάσεις έναν μαγνήτη στο ηλεκτρικό εκκρεμές, δεν θα συμβεί τίποτα — ο μαγνήτης έλκει μόνο σιδηρομαγνητικά υλικά (σίδηρο, νικέλιο, κοβάλτιο), ενώ ο ηλεκτρισμένος χάρακας έλκει σχεδόν οτιδήποτε ελαφρύ.</p>
+  <p><strong>3. Δεν είναι πάντα ελκτική.</strong> Σε αντίθεση με τη βαρύτητα, που πάντα έλκει, η ηλεκτρική δύναμη μπορεί να είναι είτε ελκτική είτε απωστική — θα το δούμε αναλυτικά στην επόμενη ενότητα.</p>
+
+  <div class="box tip">
+    <div class="box-label">Θυμήσου</div>
+    <p><strong>Ηλεκτρισμένο</strong> ≠ <strong>μαγνητισμένο</strong>. Δύο τελείως διαφορετικά φαινόμενα, που μπερδεύονται εύκολα επειδή και τα δύο «τραβάνε» αντικείμενα από απόσταση.</p>
+  </div>
+
+  <div class="box history">
+    <div class="box-label">Φυσική &amp; Ιστορία</div>
+    <p>Ο <strong>Θαλής ο Μιλήσιος</strong>, τον 6ο αιώνα π.Χ., παρατήρησε ότι το κεχριμπάρι (στα αρχαία ελληνικά <em>ήλεκτρον</em>) αποκτά την ιδιότητα να έλκει ελαφρά αντικείμενα όταν το τρίβουμε με μάλλινο ύφασμα. Από αυτή τη λέξη προέκυψε το όνομα «ηλεκτρισμός» — και αργότερα, η λέξη «ηλεκτρόνιο».</p>
+  </div>
+</section>
+
+<!-- ============ 1.2 ============ -->
+<section class="chap" id="s2">
+  <div class="num-tag">1.2</div>
+  <h2>Το ηλεκτρικό φορτίο</h2>
+  <p class="lead">Είδαμε <em>ότι</em> συμβαίνει η ηλέκτριση. Τώρα ας δούμε <em>γιατί</em> — ποιο φυσικό μέγεθος «κρύβεται» πίσω από την ηλεκτρική δύναμη.</p>
+
+  <p>Οι φυσικοί δέχονται ότι η ύλη έχει μια ιδιότητα υπεύθυνη για τις ηλεκτρικές δυνάμεις: το <strong>ηλεκτρικό φορτίο</strong>. Συμβολίζεται με το γράμμα <em>q</em> ή <em>Q</em>. Όταν δύο σώματα έχουν ηλεκτρικό φορτίο, λέμε ότι είναι <strong>φορτισμένα</strong>, και αλληλεπιδρούν με ηλεκτρικές δυνάμεις.</p>
+
+  <h3>Δύο, και μόνο δύο, είδη φορτίου</h3>
+  <p>Τρίψε μια γυάλινη ράβδο με μεταξωτό ύφασμα και πλησίασέ τη σε ένα ηλεκτρικό εκκρεμές: το εκκρεμές έλκεται. Τρίψε τώρα μια πλαστική ράβδο με μάλλινο ύφασμα και πλησίασέ την στο ίδιο εκκρεμές: πάλι έλκεται. Αλλά αν πλησιάσεις τις δύο ράβδους μεταξύ τους, θα δεις ότι <strong>απωθούνται</strong>! Αυτό σημαίνει ότι κουβαλούν διαφορετικό «είδος» φορτίου.</p>
+
+  <div class="diagram-row">
+    <figure class="diagram" style="margin:0;">
+      <svg viewBox="0 0 260 160" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="80" cy="80" r="26" fill="var(--pos)" opacity=".85"/>
+        <text x="80" y="86" text-anchor="middle" fill="#fff" font-family="var(--font-mono)" font-size="20" font-weight="700">+</text>
+        <circle cx="180" cy="80" r="26" fill="var(--neg)" opacity=".85"/>
+        <text x="180" y="86" text-anchor="middle" fill="#fff" font-family="var(--font-mono)" font-size="20" font-weight="700">−</text>
+        <path d="M112 80 L150 80" stroke="var(--good)" stroke-width="2.5" marker-end="url(#a2)"/>
+        <path d="M148 80 L110 80" stroke="var(--good)" stroke-width="2.5" marker-end="url(#a2)"/>
+        <text x="130" y="60" text-anchor="middle" font-family="var(--font-body)" font-size="12" fill="var(--good)" font-weight="600">έλξη</text>
+        <defs><marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--good)"/></marker></defs>
+      </svg>
+      <figcaption>Διαφορετικά φορτία → <strong>έλκονται</strong></figcaption>
+    </figure>
+    <figure class="diagram" style="margin:0;">
+      <svg viewBox="0 0 260 160" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="80" cy="80" r="26" fill="var(--pos)" opacity=".85"/>
+        <text x="80" y="86" text-anchor="middle" fill="#fff" font-family="var(--font-mono)" font-size="20" font-weight="700">+</text>
+        <circle cx="180" cy="80" r="26" fill="var(--pos)" opacity=".85"/>
+        <text x="180" y="86" text-anchor="middle" fill="#fff" font-family="var(--font-mono)" font-size="20" font-weight="700">+</text>
+        <path d="M96 80 L74 80" stroke="var(--pos)" stroke-width="2.5" marker-end="url(#a3)"/>
+        <path d="M164 80 L186 80" stroke="var(--pos)" stroke-width="2.5" marker-end="url(#a3)"/>
+        <text x="130" y="60" text-anchor="middle" font-family="var(--font-body)" font-size="12" fill="var(--pos)" font-weight="600">απώθηση</text>
+        <defs><marker id="a3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--pos)"/></marker></defs>
+      </svg>
+      <figcaption>Ίδια φορτία → <strong>απωθούνται</strong></figcaption>
+    </figure>
+  </div>
+
+  <div class="box law">
+    <div class="box-label">Βασικός κανόνας</div>
+    <p>Στη φύση υπάρχουν μόνο δύο είδη ηλεκτρικού φορτίου: το <strong>θετικό (+)</strong> και το <strong>αρνητικό (−)</strong> — ονόματα που πρότεινε ο Αμερικανός φυσικός Βενιαμίν Φραγκλίνος. Δύο σώματα με <strong>ίδιο είδος</strong> φορτίου <strong>απωθούνται</strong>. Δύο σώματα με <strong>διαφορετικό είδος</strong> φορτίου <strong>έλκονται</strong>.</p>
+  </div>
+
+  <h3>Πόσο φορτίο; Η μονάδα Κουλόμπ</h3>
+  <p>Αν τρίψεις τον χάρακα πιο δυνατά ή για περισσότερη ώρα, η ηλεκτρική δύναμη που ασκεί γίνεται μεγαλύτερη. Λέμε ότι ο χάρακας απέκτησε <strong>περισσότερο φορτίο</strong>. Η ποσότητα του ηλεκτρικού φορτίου μετριέται σε μια μονάδα που ονομάζεται <strong>Κουλόμπ (C)</strong>, προς τιμήν του Γάλλου φυσικού Σαρλ Κουλόμπ.</p>
+  <p>Το 1 C είναι στην πραγματικότητα <em>τεράστια</em> ποσότητα φορτίου — πολύ μεγαλύτερη απ' όσο φορτίζεται συνήθως ένα σώμα με τριβή. Γι' αυτό στην καθημερινότητα χρησιμοποιούμε πολύ μικρότερες μονάδες:</p>
+  <div class="formula">1 μC (μικροκουλόμπ) = 10<sup>−6</sup> C &nbsp;&nbsp;·&nbsp;&nbsp; 1 nC (νανοκουλόμπ) = 10<sup>−9</sup> C</div>
+
+  <p>Το <strong>συνολικό φορτίο</strong> πολλών σωμάτων μαζί είναι το <strong>αλγεβρικό άθροισμα</strong> των επιμέρους φορτίων τους (προσέχοντας τα πρόσημα). Για παράδειγμα, αν ένα σώμα έχει q₁ = +5 nC και ένα άλλο q₂ = −3 nC, το συνολικό τους φορτίο είναι q = q₁+q₂ = +2 nC. Όταν το συνολικό φορτίο ενός σώματος είναι μηδέν, το σώμα λέγεται <strong>ηλεκτρικά ουδέτερο</strong>.</p>
+</section>
+
+<!-- ============ 1.3 ============ -->
+<section class="chap" id="s3">
+  <div class="num-tag">1.3</div>
+  <h2>Το ηλεκτρικό φορτίο στο εσωτερικό του ατόμου</h2>
+  <p class="lead">Από πού «βγαίνει» το φορτίο ενός σώματος; Η απάντηση κρύβεται πολύ βαθιά — μέσα στα ίδια τα άτομα από τα οποία αποτελείται η ύλη.</p>
+
+  <p>Κάθε άτομο αποτελείται από έναν κεντρικό <strong>πυρήνα</strong>, γύρω από τον οποίο περιφέρονται τα <strong>ηλεκτρόνια</strong>. Ο πυρήνας με τη σειρά του αποτελείται από δύο είδη σωματιδίων: τα <strong>πρωτόνια</strong> και τα <strong>νετρόνια</strong>.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="250" cy="130" rx="220" ry="95" fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 5"/>
+      <ellipse cx="250" cy="130" rx="220" ry="45" fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 5" transform="rotate(35 250 130)"/>
+      <ellipse cx="250" cy="130" rx="220" ry="45" fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 5" transform="rotate(-35 250 130)"/>
+      <circle cx="222" cy="118" r="10" fill="var(--pos)"/>
+      <circle cx="238" cy="132" r="10" fill="var(--pos)"/>
+      <circle cx="256" cy="112" r="10" fill="var(--ink-soft)"/>
+      <circle cx="268" cy="140" r="10" fill="var(--pos)"/>
+      <circle cx="250" cy="146" r="10" fill="var(--ink-soft)"/>
+      <circle cx="470" cy="130" r="9" fill="var(--neg)"/>
+      <circle cx="250" cy="25" r="9" fill="var(--neg)"/>
+      <circle cx="80" cy="205" r="9" fill="var(--neg)"/>
+      <text x="470" y="112" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--neg)" font-weight="600">e⁻</text>
+      <text x="250" y="44" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--neg)" font-weight="600">e⁻</text>
+      <text x="80" y="224" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--neg)" font-weight="600">e⁻</text>
+      <text x="250" y="190" text-anchor="middle" font-family="var(--font-body)" font-size="12" fill="var(--ink-soft)">πυρήνας (πρωτόνια + νετρόνια)</text>
+    </svg>
+    <figcaption>Το πλανητικό πρότυπο του ατόμου: πρωτόνια (+, κόκκινο) και νετρόνια (χωρίς φορτίο, γκρι) στον πυρήνα· ηλεκτρόνια (−, μπλε) γύρω του.</figcaption>
+  </div>
+
+  <table class="terms">
+    <tr><th>Σωματίδιο</th><th>Θέση</th><th>Φορτίο</th><th>Μάζα</th></tr>
+    <tr><td><strong>Πρωτόνιο</strong></td><td>πυρήνας</td><td>θετικό, +1,6·10⁻¹⁹ C</td><td>μεγάλη</td></tr>
+    <tr><td><strong>Νετρόνιο</strong></td><td>πυρήνας</td><td>ηλεκτρικά ουδέτερο (μηδέν)</td><td>περίπου ίση με του πρωτονίου</td></tr>
+    <tr><td><strong>Ηλεκτρόνιο</strong></td><td>γύρω από τον πυρήνα</td><td>αρνητικό, −1,6·10⁻¹⁹ C</td><td>πολύ μικρή</td></tr>
+  </table>
+
+  <div class="box law">
+    <div class="box-label">Σημαντικό</div>
+    <p>Το πρωτόνιο και το ηλεκτρόνιο έχουν φορτίο <strong>ίδιου μεγέθους αλλά αντίθετου πρόσημου</strong>. Η τιμή αυτή, 1,6·10⁻¹⁹ C, ονομάζεται <strong>στοιχειώδες φορτίο</strong> — είναι το μικρότερο «κομμάτι» φορτίου που υπάρχει ελεύθερο στη φύση.</p>
+  </div>
+
+  <p>Σε ένα άτομο, ο αριθμός των πρωτονίων είναι πάντα ίσος με τον αριθμό των ηλεκτρονίων. Επειδή τα φορτία τους είναι αντίθετα, αλληλοαναιρούνται: <strong>κάθε άτομο, από μόνο του, είναι ηλεκτρικά ουδέτερο</strong>.</p>
+
+  <p>Τι γίνεται όμως αν ένα άτομο χάσει ή κερδίσει ένα ή δύο ηλεκτρόνια; Τότε παύει να είναι ηλεκτρικά ουδέτερο και ονομάζεται <strong>ιόν</strong> — θετικό ιόν αν έχασε ηλεκτρόνια (περισσεύουν πρωτόνια), αρνητικό ιόν αν κέρδισε (περισσεύουν ηλεκτρόνια).</p>
+
+  <h3>Δύο θεμελιώδεις αρχές</h3>
+  <p><strong>Το φορτίο διατηρείται.</strong> Όταν ένα σώμα φορτίζεται, δεν «δημιουργείται» καινούργιο φορτίο από το πουθενά — απλώς ηλεκτρόνια μετακινούνται από το ένα σώμα στο άλλο. Σε κάθε φυσική διαδικασία, <strong>το συνολικό φορτίο διατηρείται σταθερό</strong>. Αυτή είναι η <strong>αρχή διατήρησης του ηλεκτρικού φορτίου</strong>.</p>
+  <p><strong>Το φορτίο είναι «κβαντισμένο».</strong> Το φορτίο οποιουδήποτε σώματος είναι πάντα ακέραιο πολλαπλάσιο του στοιχειώδους φορτίου — ακριβώς όπως δεν μπορείς να έχεις 2,5 νομίσματα του 1 λεπτού, δεν μπορείς να έχεις «μισό ηλεκτρόνιο» φορτίου.</p>
+
+  <div class="box tip">
+    <div class="box-label">Παράδειγμα σκέψης</div>
+    <p>Αν ένα σώμα έχει φορτίο q = −3,2·10⁻¹⁹ C, πόσα «επιπλέον» ηλεκτρόνια έχει; Αφού κάθε ηλεκτρόνιο έχει φορτίο −1,6·10⁻¹⁹ C, διαιρούμε: (−3,2·10⁻¹⁹) ÷ (−1,6·10⁻¹⁹) = 2. Το σώμα έχει 2 επιπλέον ηλεκτρόνια.</p>
+  </div>
+</section>
+
+<!-- ============ 1.4 ============ -->
+<section class="chap" id="s4">
+  <div class="num-tag">1.4</div>
+  <h2>Τρόποι ηλέκτρισης και η μικροσκοπική ερμηνεία</h2>
+  <p class="lead">Τώρα που ξέρουμε ότι η φόρτιση σημαίνει μετακίνηση ηλεκτρονίων, μπορούμε να καταλάβουμε τους τρεις τρόπους με τους οποίους ηλεκτρίζεται ένα σώμα.</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 640 190" xmlns="http://www.w3.org/2000/svg">
+      <g>
+        <rect x="20" y="30" width="150" height="26" rx="5" fill="var(--panel-2)" stroke="var(--line)"/>
+        <text x="95" y="48" text-anchor="middle" font-family="var(--font-mono)" font-size="12" fill="var(--ink)">↔ ↔ ↔</text>
+        <text x="95" y="82" text-anchor="middle" font-family="var(--font-display)" font-size="15" font-weight="700" fill="var(--accent-ink)">Τριβή</text>
+        <text x="95" y="100" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--ink-soft)">τρίβονται δύο σώματα</text>
+      </g>
+      <g>
+        <circle cx="320" cy="43" r="16" fill="var(--pos)" opacity=".85"/>
+        <circle cx="352" cy="43" r="16" fill="var(--panel-2)" stroke="var(--ink-soft)"/>
+        <text x="336" y="82" text-anchor="middle" font-family="var(--font-display)" font-size="15" font-weight="700" fill="var(--accent-ink)">Επαφή</text>
+        <text x="336" y="100" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--ink-soft)">ακουμπούν το ένα το άλλο</text>
+      </g>
+      <g>
+        <circle cx="545" cy="43" r="16" fill="var(--pos)" opacity=".85"/>
+        <rect x="575" y="34" width="45" height="18" rx="3" fill="var(--panel-2)" stroke="var(--ink-soft)"/>
+        <path d="M562 43 L572 43" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="2 3"/>
+        <text x="585" y="82" text-anchor="middle" font-family="var(--font-display)" font-size="15" font-weight="700" fill="var(--accent-ink)">Επαγωγή</text>
+        <text x="585" y="100" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--ink-soft)">πλησιάζουν, χωρίς επαφή</text>
+      </g>
+    </svg>
+    <figcaption>Οι τρεις τρόποι ηλέκτρισης ενός σώματος.</figcaption>
+  </div>
+
+  <h3>Α. Ηλέκτριση με τριβή</h3>
+  <p>Όταν τρίβουμε δύο διαφορετικά υλικά μεταξύ τους (π.χ. γυαλί με μετάξι, ή πλαστικό με μαλλί), εξωτερικά ηλεκτρόνια μετακινούνται από το ένα υλικό στο άλλο. Ποιο υλικό «δίνει» και ποιο «παίρνει» ηλεκτρόνια εξαρτάται από το είδος τους — π.χ. το γυαλί τείνει να χάνει ηλεκτρόνια προς το μετάξι (γίνεται θετικό), ενώ το πλαστικό τείνει να παίρνει ηλεκτρόνια από το μαλλί (γίνεται αρνητικό).</p>
+  <div class="box law">
+    <div class="box-label">Αρχή διατήρησης σε δράση</div>
+    <p>Επειδή το φορτίο διατηρείται, τα δύο σώματα που τρίβονται αποκτούν πάντα <strong>ίσα κατ' απόλυτη τιμή και αντίθετα</strong> φορτία: όσα ηλεκτρόνια «έχασε» το ένα, ακριβώς τόσα «κέρδισε» το άλλο.</p>
+  </div>
+
+  <h3>Β. Ηλέκτριση με επαφή</h3>
+  <p>Αν αγγίξουμε ένα φορτισμένο σώμα με ένα ηλεκτρικά ουδέτερο, το δεύτερο αποκτά φορτίο <strong>ίδιου είδους</strong> με το πρώτο (μέρος των πλεοναζόντων ηλεκτρονίων, ή του ελλείμματος, μοιράζεται ανάμεσα στα δύο σώματα). Και εδώ ισχύει η αρχή διατήρησης: το άθροισμα των τελικών φορτίων ισούται με το αρχικό φορτίο q = q′ + q″.</p>
+
+  <h3>Γ. Ηλέκτριση με επαγωγή</h3>
+  <p>Αν πλησιάσουμε ένα φορτισμένο σώμα σε έναν αγωγό <strong>χωρίς να τον αγγίξουμε</strong>, τα ελεύθερα ηλεκτρόνια του αγωγού μετακινούνται: απομακρύνονται (αν το σώμα είναι αρνητικό) ή πλησιάζουν (αν είναι θετικό) στην περιοχή κοντά στο εξωτερικό σώμα. Έτσι το ένα άκρο του αγωγού αποκτά φορτίο, και το άλλο το αντίθετο.</p>
+
+  <div class="box caution">
+    <div class="box-label">Προσοχή στη διάκριση</div>
+    <p>Στην επαγωγή, ο αγωγός γίνεται <strong>ηλεκτρισμένος</strong> (έχει τοπικά φορτισμένες περιοχές) αλλά το <strong>συνολικό</strong> του φορτίο παραμένει μηδέν — δηλαδή παραμένει <strong>άφορτος</strong>! Αν απομακρύνουμε το εξωτερικό σώμα, ο αγωγός επιστρέφει στην αρχική του, ουδέτερη κατάσταση.</p>
+  </div>
+
+  <h3>Αγωγοί και μονωτές</h3>
+  <p>Γιατί άλλα υλικά ηλεκτρίζονται σε όλη τους την έκταση και άλλα μόνο τοπικά; Η απάντηση είναι πόσο «ελεύθερα» μπορούν να κινηθούν τα ηλεκτρόνιά τους.</p>
+  <table class="terms">
+    <tr><th>Αγωγοί</th><th>Μονωτές</th></tr>
+    <tr><td>Έχουν <strong>ελεύθερα ηλεκτρόνια</strong> που κινούνται σε όλη την έκτασή τους. Το φορτίο διασκορπίζεται σε όλο το σώμα.</td><td>Τα ηλεκτρόνια είναι «δεμένα» στα άτομά τους. Το φορτίο μένει εντοπισμένο εκεί που δημιουργήθηκε.</td></tr>
+    <tr><td>Χαλκός, σίδηρος, αλουμίνιο, όλα τα μέταλλα, υδράργυρος, νερό βρύσης</td><td>Γυαλί, πλαστικό, καουτσούκ, ξύλο, χαρτί, κερί, ξηρός αέρας, καθαρό (απεσταγμένο) νερό</td></tr>
+  </table>
+
+  <h3>Το ηλεκτροσκόπιο</h3>
+  <p>Για να ανιχνεύσουμε και να εκτιμήσουμε πόσο φορτίο έχει ένα σώμα, χρησιμοποιούμε το <strong>ηλεκτροσκόπιο</strong>: έναν μεταλλικό δίσκο συνδεδεμένο μέσω μεταλλικού στελέχους με δύο πολύ ελαφρά μεταλλικά «φύλλα». Όταν αγγίζουμε τον δίσκο με φορτισμένο σώμα, το φορτίο απλώνεται σε όλο το ηλεκτροσκόπιο και τα δύο φύλλα, έχοντας φορτίο ίδιου είδους, απωθούνται και ανοίγουν. <strong>Όσο πιο μεγάλη είναι η γωνία</strong> που σχηματίζουν τα φύλλα, <strong>τόσο περισσότερο φορτίο</strong> έχει μεταφερθεί.</p>
+
+  <h3>Ηλεκτρική θωράκιση</h3>
+  <p>Στο εσωτερικό ενός αγωγού δεν αναπτύσσεται ηλεκτρικό πεδίο — τα ελεύθερα ηλεκτρόνιά του αναδιατάσσονται ώστε να το «ακυρώσουν». Γι' αυτό λέμε ότι οι αγωγοί <strong>θωρακίζουν</strong> τον εσωτερικό τους χώρο. Αυτός είναι ο λόγος που οι επιβάτες ενός αυτοκινήτου είναι ασφαλείς ακόμα κι αν αυτό χτυπηθεί από κεραυνό: το μεταλλικό αμάξωμα θωρακίζει το εσωτερικό.</p>
+</section>
+
+<!-- ============ 1.5 ============ -->
+<section class="chap" id="s5">
+  <div class="num-tag">1.5</div>
+  <h2>Ο Νόμος του Κουλόμπ</h2>
+  <p class="lead">Ξέρουμε ήδη ότι δύο φορτισμένα σώματα αλληλεπιδρούν. Ο Σαρλ Κουλόμπ ρώτησε κάτι πιο ακριβές: <em>από τι εξαρτάται το μέγεθος αυτής της δύναμης, και πόσο;</em></p>
+
+  <h3>Η απόσταση</h3>
+  <p>Ο Κουλόμπ μέτρησε προσεκτικά τη δύναμη ανάμεσα σε δύο μικρές φορτισμένες σφαίρες, κρατώντας το φορτίο τους σταθερό και μεταβάλλοντας μόνο την απόσταση. Διαπίστωσε ότι:</p>
+  <ul>
+    <li>Αν <strong>διπλασιάσουμε</strong> την απόσταση → η δύναμη γίνεται <strong>4 φορές μικρότερη</strong> (÷2²)</li>
+    <li>Αν <strong>τριπλασιάσουμε</strong> την απόσταση → η δύναμη γίνεται <strong>9 φορές μικρότερη</strong> (÷3²)</li>
+  </ul>
+  <p>Δηλαδή η δύναμη είναι <strong>αντιστρόφως ανάλογη με το τετράγωνο της απόστασης</strong>.</p>
+
+  <h3>Το φορτίο</h3>
+  <p>Κρατώντας σταθερή την απόσταση και μεταβάλλοντας το φορτίο μιας σφαίρας, ο Κουλόμπ βρήκε ότι η δύναμη είναι <strong>ανάλογη</strong> του φορτίου κάθε σφαίρας — αν υποδιπλασιάσουμε το φορτίο, υποδιπλασιάζεται και η δύναμη.
+
+  <div class="diagram">
+    <svg viewBox="0 0 560 190" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="90" cy="45" r="15" fill="var(--pos)"/><circle cx="230" cy="45" r="15" fill="var(--pos)"/>
+      <path d="M108 45 L120 45" stroke="var(--pos)" stroke-width="2" marker-end="url(#af)"/>
+      <path d="M212 45 L200 45" stroke="var(--pos)" stroke-width="2" marker-end="url(#af)"/>
+      <text x="160" y="28" text-anchor="middle" font-family="var(--font-mono)" font-size="13" fill="var(--pos)">F</text>
+      <line x1="90" y1="66" x2="230" y2="66" stroke="var(--ink-soft)" stroke-width="1"/>
+      <text x="160" y="80" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--ink-soft)">απόσταση r</text>
+
+      <circle cx="90" cy="128" r="15" fill="var(--pos)"/><circle cx="370" cy="128" r="15" fill="var(--pos)"/>
+      <path d="M108 128 L122 128" stroke="var(--pos)" stroke-width="1.4" marker-end="url(#af)"/>
+      <path d="M352 128 L338 128" stroke="var(--pos)" stroke-width="1.4" marker-end="url(#af)"/>
+      <text x="230" y="112" text-anchor="middle" font-family="var(--font-mono)" font-size="12" fill="var(--pos)">F/4</text>
+      <line x1="90" y1="149" x2="370" y2="149" stroke="var(--ink-soft)" stroke-width="1"/>
+      <text x="230" y="163" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--ink-soft)">απόσταση 2r</text>
+      <defs><marker id="af" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--pos)"/></marker></defs>
+    </svg>
+    <figcaption>Όταν διπλασιάζεται η απόσταση, η δύναμη γίνεται τέσσερις φορές μικρότερη.</figcaption>
+  </div>
+
+  <div class="box law">
+    <div class="box-label">Ο Νόμος του Κουλόμπ</div>
+    <p>Το μέτρο της ηλεκτρικής δύναμης (F) με την οποία αλληλεπιδρούν δύο σημειακά φορτία (q₁, q₂) είναι <strong>ανάλογο του γινομένου των φορτίων</strong> και <strong>αντιστρόφως ανάλογο του τετραγώνου</strong> της μεταξύ τους απόστασης (r):</p>
+  </div>
+
+  <div class="formula">F&nbsp; = &nbsp;K &middot; q<sub>1</sub>&middot;q<sub>2</sub> / r<sup>2</sup></div>
+
+  <table class="terms">
+    <tr><th>Μέγεθος</th><th>Σημασία</th><th>Μονάδα (S.I.)</th></tr>
+    <tr><td>F</td><td>ηλεκτρική δύναμη Κουλόμπ</td><td>N (Newton)</td></tr>
+    <tr><td>q₁, q₂</td><td>τα δύο φορτία</td><td>C (Κουλόμπ)</td></tr>
+    <tr><td>r</td><td>απόσταση μεταξύ των φορτίων</td><td>m (μέτρο)</td></tr>
+    <tr><td>K</td><td>σταθερά αναλογίας (εξαρτάται από το μέσο)</td><td>K = 9·10⁹ N·m²/C² στον αέρα/κενό</td></tr>
+  </table>
+
+  <p>Η δύναμη είναι <strong>διανυσματικό μέγεθος</strong>: η διεύθυνσή της βρίσκεται πάνω στην ευθεία που ενώνει τα δύο φορτία, με φορά προς το άλλο φορτίο αν είναι ελκτική, ή αντίθετα αν είναι απωστική. Σύμφωνα με τον 3ο νόμο του Νεύτωνα, οι δυνάμεις που ασκούν τα δύο φορτία το ένα στο άλλο έχουν πάντα ίσο μέτρο και αντίθετη φορά.</p>
+
+  <div class="box example">
+    <div class="box-label">Λυμένο παράδειγμα</div>
+    <p><strong>Δίνονται:</strong> Δύο σημειακά φορτία q₁ = +2 μC και q₂ = +3 μC βρίσκονται σε απόσταση r = 0,3 m μέσα στον αέρα.<br><strong>Ζητείται:</strong> Το μέτρο της δύναμης Κουλόμπ ανάμεσά τους.</p>
+    <div class="solv">
+      <div class="solv-step"><span class="k">Λύση:</span> Μετατρέπουμε πρώτα τα φορτία σε C:</div>
+      <div class="solv-step">q₁ = 2 μC = 2·10⁻⁶ C&nbsp;&nbsp;&nbsp;q₂ = 3 μC = 3·10⁻⁶ C</div>
+      <div class="solv-step">Εφαρμόζουμε τον νόμο του Κουλόμπ:</div>
+      <div class="solv-step">F = K·q₁·q₂ / r² = 9·10⁹ · (2·10⁻⁶)·(3·10⁻⁶) / (0,3)²</div>
+      <div class="solv-step">F = 9·10⁹ · 6·10⁻¹² / 0,09 = 0,054 / 0,09</div>
+      <div class="solv-step"><span class="k">Απάντηση:</span> F = 0,6 N (απωστική, αφού τα φορτία είναι ομόσημα)</div>
+    </div>
+  </div>
+
+  <div class="box caution">
+    <div class="box-label">Συχνά λάθη</div>
+    <p>1) Ξέχασες να μετατρέψεις μC ή nC σε C πριν αντικαταστήσεις στον τύπο. 2) Ξέχασες να υψώσεις την απόσταση στο τετράγωνο. 3) Έβαλες την απόσταση σε cm αντί για m — πρέπει πάντα να είναι σε S.I. (μέτρα).</p>
+  </div>
+
+  <h3>Εργαστήριο δύναμης Κουλόμπ <span style="font-weight:400;font-size:.65em;color:var(--ink-soft);">(διαδραστικό)</span></h3>
+  <p>Το εργαστήριο αυτό σε βοηθάει να «δεις» τον νόμο του Κουλόμπ σε δράση, και να εξασκηθείς σε ερωτήσεις του τύπου «αν αλλάξω το φορτίο ή την απόσταση, τι θα συμβεί στη δύναμη;» — ακριβώς το είδος ερώτησης που συχνά ζητείται στις ασκήσεις.</p>
+
+  <div class="lab">
+    <div class="lab-tabs">
+      <button class="lab-tab-btn active" data-tab="calc" type="button">🎛️ Ελεύθερη εξερεύνηση</button>
+      <button class="lab-tab-btn" data-tab="quiz" type="button">🎯 Πρόβλεψε τι θα συμβεί</button>
+    </div>
+
+    <div class="lab-panel active" id="tab-calc">
+      <div class="calc-grid">
+        <div>
+          <div class="ctrl">
+            <label>q₁ (φορτίο 1)&nbsp;<span class="val" id="calc-q1-val">+2 μC</span></label>
+            <input type="range" id="calc-q1" min="-20" max="20" step="1" value="2">
+          </div>
+          <div class="ctrl">
+            <label>q₂ (φορτίο 2)&nbsp;<span class="val" id="calc-q2-val">+3 μC</span></label>
+            <input type="range" id="calc-q2" min="-20" max="20" step="1" value="3">
+          </div>
+          <div class="ctrl">
+            <label>r (απόσταση)&nbsp;<span class="val" id="calc-r-val">0,30 m</span></label>
+            <input type="range" id="calc-r" min="5" max="150" step="5" value="30">
+          </div>
+          <div class="baseline-box">
+            <div>
+              <span>Πάγωσε την τρέχουσα κατάσταση ως <strong>αρχική</strong> τιμή, μετά κούνησε τα ρυθμιστικά για να δεις πόσο άλλαξε η δύναμη σε σχέση μ' αυτήν.</span>
+              <button type="button" id="calc-lock">🔒 Πάγωσε ως αρχική</button>
+            </div>
+            <div id="calc-baseline-result" style="margin-top:8px;"></div>
+          </div>
+        </div>
+        <div>
+          <div class="diagram-live">
+            <svg id="calc-svg" viewBox="0 0 460 170" xmlns="http://www.w3.org/2000/svg"></svg>
+          </div>
+          <div class="f-readout">
+            <div class="big" id="calc-f-val">0,6 N</div>
+            <div class="kind" id="calc-f-kind">απωστική δύναμη</div>
+          </div>
+          <div class="meter"><div class="meter-fill" id="calc-meter"></div></div>
+          <div class="meter-labels"><span>ασθενέστερη</span><span>ισχυρότερη</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lab-panel" id="tab-quiz">
+      <div class="quiz-question" id="quiz-question">Φόρτωση ερώτησης…</div>
+      <div class="quiz-before-after">
+        <div class="qa-panel">
+          <h4>Πριν</h4>
+          <svg id="quiz-before-svg" viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg"></svg>
+          <div class="qa-values" id="quiz-before-values"></div>
+        </div>
+        <div class="qa-panel">
+          <h4>Μετά</h4>
+          <div id="quiz-after-hidden" class="qa-hidden">❓</div>
+          <svg id="quiz-after-svg" viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg" style="display:none;"></svg>
+          <div class="qa-values" id="quiz-after-values"></div>
+        </div>
+      </div>
+      <div class="quiz-options" id="quiz-options"></div>
+      <div class="quiz-explain" id="quiz-explain"></div>
+      <button type="button" class="quiz-next" id="quiz-next" style="display:none;">🎲 Νέα ερώτηση</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 1.6 ============ -->
+<section class="chap" id="s6">
+  <div class="num-tag">1.6</div>
+  <h2>Το ηλεκτρικό πεδίο</h2>
+  <p class="lead">Μείναμε σε μια ερώτηση από την αρχή του κεφαλαίου: πώς «ταξιδεύει» η ηλεκτρική δύναμη μέσα από τον κενό χώρο, χωρίς να αγγίζονται τα φορτία;</p>
+
+  <p>Ο Άγγλος φυσικός Μάικλ Φαραντέι έλυσε το πρόβλημα εισάγοντας μια νέα έννοια: γύρω από κάθε φορτισμένο σώμα δημιουργείται μια «αόρατη» περιοχή, μέσα στην οποία κάθε άλλο φορτίο που θα φέρουμε θα δεχτεί δύναμη. Αυτή η περιοχή ονομάζεται <strong>ηλεκτρικό πεδίο</strong>.</p>
+
+  <div class="box def">
+    <div class="box-label">Ορισμός</div>
+    <p>Μια περιοχή του χώρου ονομάζεται <strong>ηλεκτρικό πεδίο</strong>, αν σε κάθε φορτισμένο σώμα που φέρνουμε μέσα σ' αυτήν ασκούνται ηλεκτρικές δυνάμεις. Έτσι, η αλληλεπίδραση δύο φορτίων περιγράφεται σε δύο βήματα: (α) το ένα φορτίο δημιουργεί γύρω του ηλεκτρικό πεδίο, (β) το πεδίο αυτό ασκεί δύναμη στο δεύτερο φορτίο.</p>
+  </div>
+
+  <h3>Δυναμικές γραμμές</h3>
+  <p>Για να «ζωγραφίσουμε» ένα ηλεκτρικό πεδίο, χρησιμοποιούμε τις <strong>δυναμικές γραμμές</strong>: γραμμές που δείχνουν τη διεύθυνση προς την οποία θα κινούνταν ένα μικρό θετικό φορτίο, αν το αφήναμε μέσα στο πεδίο. Όσο πιο <strong>πυκνές</strong> (κοντά η μία στην άλλη) είναι οι γραμμές, τόσο πιο <strong>ισχυρό</strong> είναι το πεδίο εκεί.</p>
+
+  <div class="diagram-row">
+    <figure class="diagram" style="margin:0;">
+      <svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="120" cy="100" r="12" fill="var(--pos)"/>
+        <text x="120" y="105" text-anchor="middle" fill="#fff" font-family="var(--font-mono)" font-size="13" font-weight="700">+</text>
+        <g stroke="var(--blue)" stroke-width="1.4" fill="none">
+          <line x1="120" y1="100" x2="120" y2="20" marker-end="url(#af2)"/>
+          <line x1="120" y1="100" x2="120" y2="180" marker-end="url(#af2)"/>
+          <line x1="120" y1="100" x2="40" y2="100" marker-end="url(#af2)"/>
+          <line x1="120" y1="100" x2="200" y2="100" marker-end="url(#af2)"/>
+          <line x1="120" y1="100" x2="63" y2="43" marker-end="url(#af2)"/>
+          <line x1="120" y1="100" x2="177" y2="43" marker-end="url(#af2)"/>
+          <line x1="120" y1="100" x2="63" y2="157" marker-end="url(#af2)"/>
+          <line x1="120" y1="100" x2="177" y2="157" marker-end="url(#af2)"/>
+        </g>
+        <defs><marker id="af2" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--blue)"/></marker></defs>
+      </svg>
+      <figcaption>Πεδίο γύρω από ένα θετικό σημειακό φορτίο — ακτινικές γραμμές, προς τα έξω.</figcaption>
+    </figure>
+    <figure class="diagram" style="margin:0;">
+      <svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
+        <rect x="30" y="30" width="16" height="140" fill="var(--pos)" opacity=".8"/>
+        <rect x="194" y="30" width="16" height="140" fill="var(--neg)" opacity=".8"/>
+        <g stroke="var(--blue)" stroke-width="1.4">
+          <line x1="46" y1="50" x2="194" y2="50" marker-end="url(#af2)"/>
+          <line x1="46" y1="80" x2="194" y2="80" marker-end="url(#af2)"/>
+          <line x1="46" y1="110" x2="194" y2="110" marker-end="url(#af2)"/>
+          <line x1="46" y1="140" x2="194" y2="140" marker-end="url(#af2)"/>
+          <line x1="46" y1="170" x2="194" y2="170" marker-end="url(#af2)"/>
+        </g>
+        <text x="38" y="20" text-anchor="middle" font-family="var(--font-mono)" font-size="12" fill="var(--pos)">+</text>
+        <text x="202" y="20" text-anchor="middle" font-family="var(--font-mono)" font-size="12" fill="var(--neg)">−</text>
+      </svg>
+      <figcaption>Ομογενές πεδίο ανάμεσα σε δύο αντίθετα φορτισμένες παράλληλες πλάκες (πυκνωτής).</figcaption>
+    </figure>
+  </div>
+
+  <p>Στο δεύτερο σχήμα, οι δυναμικές γραμμές είναι παράλληλες, ευθείες και ισαπέχουσες — αυτό σημαίνει ότι το πεδίο έχει την <strong>ίδια ένταση παντού</strong>. Ένα τέτοιο πεδίο ονομάζεται <strong>ομογενές</strong>.</p>
+
+  <div class="box tip">
+    <div class="box-label">Θυμήσου</div>
+    <p>Στο εσωτερικό ενός αγωγού <strong>δεν</strong> υπάρχει ηλεκτρικό πεδίο — αυτή είναι η βάση της ηλεκτρικής θωράκισης που είδαμε στην §1.4.</p>
+  </div>
+
+  <p>Τέλος, ένα φορτισμένο σωματίδιο που βρίσκεται μέσα σε ηλεκτρικό πεδίο αποκτά <strong>ηλεκτρική δυναμική ενέργεια</strong> — ακριβώς όπως ένα σώμα αποκτά βαρυτική δυναμική ενέργεια όταν το ανεβάζουμε ψηλά μέσα στο πεδίο βαρύτητας της Γης. Θα μελετήσουμε αναλυτικά αυτή την ενέργεια στο Κεφάλαιο 3.</p>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="chap" id="summary">
+  <div class="num-tag">Ανακεφαλαίωση</div>
+  <h2>Περίληψη &amp; βασικοί όροι</h2>
+  <div class="summary-box">
+    <ul>
+      <li>Οι ηλεκτρικές δυνάμεις περιγράφονται με την έννοια του <strong>ηλεκτρικού φορτίου</strong>. Υπάρχουν δύο είδη: θετικό και αρνητικό. Όμοια φορτία απωθούνται, αντίθετα έλκονται.</li>
+      <li>Τα άτομα αποτελούνται από πυρήνα (πρωτόνια +, νετρόνια 0) και ηλεκτρόνια (−). Το ουδέτερο άτομο έχει ίσο αριθμό πρωτονίων και ηλεκτρονίων.</li>
+      <li>Η φόρτιση γίνεται πάντα με <strong>μετακίνηση ηλεκτρονίων</strong>· ισχύει η αρχή διατήρησης του φορτίου.</li>
+      <li>Τρεις τρόποι ηλέκτρισης: <strong>τριβή</strong>, <strong>επαφή</strong>, <strong>επαγωγή</strong>. Στην επαγωγή, το σώμα ηλεκτρίζεται τοπικά αλλά παραμένει άφορτο συνολικά.</li>
+      <li>Στους <strong>αγωγούς</strong> το φορτίο διασκορπίζεται σε όλη την έκταση· στους <strong>μονωτές</strong> μένει εντοπισμένο.</li>
+      <li><strong>Νόμος του Κουλόμπ:</strong> F = K·q₁q₂/r² — η δύναμη είναι ανάλογη του γινομένου των φορτίων, αντιστρόφως ανάλογη του τετραγώνου της απόστασης.</li>
+      <li>Γύρω από κάθε φορτίο υπάρχει <strong>ηλεκτρικό πεδίο</strong>, που περιγράφεται με τις δυναμικές γραμμές. Στο εσωτερικό αγωγών, το πεδίο είναι μηδέν (ηλεκτρική θωράκιση).</li>
+    </ul>
+    <div class="glossary">
+      <span>ηλεκτρική δύναμη</span><span>ηλεκτρικό φορτίο (q)</span>
+      <span>ηλεκτρισμένο σώμα</span><span>φορτισμένο σώμα</span>
+      <span>πρωτόνιο / ηλεκτρόνιο / νετρόνιο</span><span>ιόν</span>
+      <span>στοιχειώδες φορτίο</span><span>αρχή διατήρησης φορτίου</span>
+      <span>ηλέκτριση με τριβή / επαφή / επαγωγή</span><span>αγωγός / μονωτής</span>
+      <span>ηλεκτροσκόπιο</span><span>ηλεκτρική θωράκιση</span>
+      <span>Νόμος του Κουλόμπ</span><span>ηλεκτρικό πεδίο / δυναμικές γραμμές</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXERCISES ============ -->
+<section class="chap" id="exercises">
+  <div class="num-tag">Εξάσκηση</div>
+  <h2>Ασκήσεις</h2>
+  <p class="lead">Δοκίμασε πρώτα μόνος/μόνη σου κάθε ερώτηση, και μετά πάτησε στο 👁 για να δεις την απάντηση.</p>
+
+  <div class="exwrap">
+
+    <div class="exgroup">
+      <div class="section-title-row"><h3>Α. Πολλαπλής επιλογής</h3><span class="lvl">Επίπεδο 1 · Βασικές έννοιες</span></div>
+      <ol class="qlist">
+        <li>Πότε λέμε ότι ένα σώμα είναι «ηλεκτρισμένο»;
+          <ul class="opts">
+            <li data-l="α)">Όταν έχει μεγάλη μάζα</li>
+            <li data-l="β)">Όταν ασκεί βαρυτική δύναμη</li>
+            <li data-l="γ)">Όταν, μετά από τριβή, αποκτά την ικανότητα να ασκεί δύναμη σε ελαφρά αντικείμενα</li>
+            <li data-l="δ)">Όταν είναι μεταλλικό</li>
+          </ul>
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>γ.</strong> Αυτός είναι ο ορισμός του ηλεκτρισμένου σώματος (§1.1).</div></details>
+        </li>
+        <li>Δύο σώματα με το <strong>ίδιο</strong> είδος φορτίου:
+          <ul class="opts"><li data-l="α)">έλκονται</li><li data-l="β)">απωθούνται</li><li data-l="γ)">δεν αλληλεπιδρούν</li><li data-l="δ)">εξουδετερώνονται</li></ul>
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>β.</strong> Όμοια φορτία πάντα απωθούνται.</div></details>
+        </li>
+        <li>Το ηλεκτρόνιο, σε σχέση με το πρωτόνιο, έχει φορτίο:
+          <ul class="opts"><li data-l="α)">ίδιου μεγέθους, ίδιου πρόσημου</li><li data-l="β)">ίδιου μεγέθους, αντίθετου πρόσημου</li><li data-l="γ)">μεγαλύτερου μεγέθους</li><li data-l="δ)">μηδενικό</li></ul>
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>β.</strong> |q_e| = |q_p| = 1,6·10⁻¹⁹ C, με αντίθετο πρόσημο.</div></details>
+        </li>
+        <li>Ένα ηλεκτρικά ουδέτερο σώμα φορτίζεται αρνητικά όταν:
+          <ul class="opts"><li data-l="α)">χάνει πρωτόνια</li><li data-l="β)">κερδίζει πρωτόνια</li><li data-l="γ)">χάνει ηλεκτρόνια</li><li data-l="δ)">κερδίζει ηλεκτρόνια</li></ul>
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>δ.</strong> Περίσσεια ηλεκτρονίων → αρνητικό φορτίο.</div></details>
+        </li>
+        <li>Ποιο από τα παρακάτω υλικά είναι <strong>αγωγός</strong>;
+          <ul class="opts"><li data-l="α)">γυαλί</li><li data-l="β)">πλαστικό</li><li data-l="γ)">χαλκός</li><li data-l="δ)">ξηρός αέρας</li></ul>
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>γ.</strong> Ο χαλκός, όπως όλα τα μέταλλα, έχει ελεύθερα ηλεκτρόνια.</div></details>
+        </li>
+        <li>Κατά την ηλέκτριση με <strong>επαφή</strong>, τα δύο σώματα τελικά:
+          <ul class="opts"><li data-l="α)">αποκτούν πάντα ίσο φορτίο μεταξύ τους</li><li data-l="β)">αποκτούν φορτίο ίδιου είδους</li><li data-l="γ)">αποκτούν αντίθετο φορτίο</li><li data-l="δ)">παραμένουν ουδέτερα</li></ul>
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>β.</strong> Το ουδέτερο σώμα αποκτά φορτίο ίδιου είδους με το φορτισμένο (όχι απαραίτητα ίσο).</div></details>
+        </li>
+        <li>Αν διπλασιάσουμε την απόσταση ανάμεσα σε δύο σημειακά φορτία, η δύναμη Κουλόμπ:
+          <ul class="opts"><li data-l="α)">διπλασιάζεται</li><li data-l="β)">υποδιπλασιάζεται</li><li data-l="γ)">υποτετραπλασιάζεται</li><li data-l="δ)">παραμένει ίδια</li></ul>
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>γ.</strong> F ∝ 1/r² ⟹ διπλάσια απόσταση ⟹ F/4.</div></details>
+        </li>
+        <li>Οι δυναμικές γραμμές ενός <strong>ομογενούς</strong> ηλεκτρικού πεδίου είναι:
+          <ul class="opts"><li data-l="α)">ακτινικές</li><li data-l="β)">παράλληλες και ισαπέχουσες</li><li data-l="γ)">κυκλικές</li><li data-l="δ)">τυχαίες</li></ul>
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>β.</strong> Ομοιόμορφη πυκνότητα και κατεύθυνση παντού = ομογενές πεδίο.</div></details>
+        </li>
+      </ol>
+    </div>
+
+    <div class="exgroup">
+      <div class="section-title-row"><h3>Β. Σωστό ή Λάθος</h3><span class="lvl">Επίπεδο 1 · Αιτιολόγησε την απάντησή σου</span></div>
+      <ol class="qlist">
+        <li>Δύο ηλεκτρισμένα σώματα ασκούν πάντα ελκτική δύναμη μεταξύ τους.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>Λάθος.</strong> Μπορεί να είναι είτε ελκτική (αντίθετα φορτία) είτε απωστική (όμοια φορτία).</div></details>
+        </li>
+        <li>Ένα ηλεκτρικά ουδέτερο άτομο δεν έχει καθόλου πρωτόνια και ηλεκτρόνια.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>Λάθος.</strong> Έχει ίσο αριθμό πρωτονίων και ηλεκτρονίων, όχι μηδέν — τα φορτία τους απλώς αλληλοαναιρούνται.</div></details>
+        </li>
+        <li>Κατά την ηλέκτριση με τριβή, τα δύο σώματα αποκτούν πάντα ίσα και αντίθετα φορτία.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>Σωστό.</strong> Απόρροια της αρχής διατήρησης του φορτίου.</div></details>
+        </li>
+        <li>Ένα σώμα «ηλεκτρισμένο με επαγωγή» έχει πάντα μη μηδενικό συνολικό φορτίο.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>Λάθος.</strong> Παραμένει συνολικά άφορτο (ηλεκτρικά ουδέτερο) — απλώς τα φορτία του αναδιατάσσονται τοπικά.</div></details>
+        </li>
+        <li>Όσο μεγαλύτερη είναι η απόσταση μεταξύ δύο φορτίων, τόσο μεγαλύτερη είναι η δύναμη Κουλόμπ.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>Λάθος.</strong> Η δύναμη είναι αντιστρόφως ανάλογη του τετραγώνου της απόστασης — μεγαλύτερη απόσταση σημαίνει μικρότερη δύναμη.</div></details>
+        </li>
+        <li>Στο εσωτερικό ενός φορτισμένου αγωγού δεν υπάρχει ηλεκτρικό πεδίο.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>Σωστό.</strong> Αυτή είναι η αρχή της ηλεκτρικής θωράκισης.</div></details>
+        </li>
+      </ol>
+    </div>
+
+    <div class="exgroup">
+      <div class="section-title-row"><h3>Γ. Συμπλήρωσε τα κενά</h3><span class="lvl">Επίπεδο 1</span></div>
+      <div class="wordbank"><strong>Τράπεζα λέξεων:</strong> ηλεκτρικό φορτίο · πρωτόνιο · ηλεκτρόνιο · αγωγός · μονωτής · επαγωγή · Κουλόμπ</div>
+      <ol class="qlist">
+        <li>Η δύναμη που ασκεί ένα ηλεκτρισμένο σώμα σε ένα άλλο οφείλεται στο <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> που φέρει.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">ηλεκτρικό φορτίο</div></details>
+        </li>
+        <li>Το θετικά φορτισμένο σωματίδιο του πυρήνα ονομάζεται <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>, ενώ το αρνητικά φορτισμένο σωματίδιο γύρω από τον πυρήνα ονομάζεται <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">πρωτόνιο · ηλεκτρόνιο</div></details>
+        </li>
+        <li>Ένα σώμα στο οποίο το φορτίο διαχέεται σε όλη του την έκταση ονομάζεται <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>, ενώ ένα σώμα στο οποίο το φορτίο μένει εντοπισμένο ονομάζεται <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">αγωγός · μονωτής</div></details>
+        </li>
+        <li>Όταν πλησιάζουμε ένα φορτισμένο σώμα σε έναν αγωγό χωρίς να τον αγγίξουμε, τον φορτίζουμε με <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">επαγωγή</div></details>
+        </li>
+        <li>Η μονάδα μέτρησης του ηλεκτρικού φορτίου στο Διεθνές Σύστημα ονομάζεται <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">Κουλόμπ (C)</div></details>
+        </li>
+      </ol>
+    </div>
+
+    <div class="exgroup">
+      <div class="section-title-row"><h3>Δ. Ερωτήσεις κατανόησης</h3><span class="lvl">Επίπεδο 2 · Σύντομη απάντηση</span></div>
+      <ol class="qlist">
+        <li>Εξήγησε γιατί ένα ηλεκτρικά ουδέτερο άτομο δεν είναι απαραίτητα «άφορτο για πάντα» — τι πρέπει να συμβεί για να γίνει ιόν;
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">Αν το άτομο χάσει ή κερδίσει ένα ή περισσότερα ηλεκτρόνια, ο αριθμός πρωτονίων και ηλεκτρονίων δεν είναι πια ίσος και το άτομο αποκτά μη μηδενικό συνολικό φορτίο — γίνεται ιόν (θετικό αν έχασε, αρνητικό αν κέρδισε ηλεκτρόνια).</div></details>
+        </li>
+        <li>Περίγραψε με δικά σου λόγια τι σημαίνει «η ηλεκτρική δύναμη δρα από απόσταση».
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">Σημαίνει ότι δύο φορτισμένα σώματα ασκούν δύναμη το ένα στο άλλο χωρίς να χρειάζεται να έρθουν σε επαφή — η δύναμη «περνάει» μέσα από τον χώρο ανάμεσά τους, μέσω του ηλεκτρικού πεδίου.</div></details>
+        </li>
+        <li>Γιατί, όταν τρίβουμε δύο διαφορετικά υλικά μεταξύ τους, αποκτούν πάντα ίσα κατ' απόλυτη τιμή αλλά αντίθετα φορτία;
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">Επειδή η φόρτιση γίνεται με μετακίνηση ηλεκτρονίων από το ένα σώμα στο άλλο, και το ολικό φορτίο διατηρείται (αρχή διατήρησης του φορτίου): όσα ηλεκτρόνια χάνει το ένα σώμα, ακριβώς τόσα κερδίζει το άλλο.</div></details>
+        </li>
+        <li>Εξήγησε τη διαφορά ανάμεσα σε ένα σώμα που είναι «ηλεκτρισμένο» και σε ένα που είναι «φορτισμένο» (σκέψου την ηλέκτριση με επαγωγή).
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">«Ηλεκτρισμένο» σημαίνει ότι σε τμήματά του υπάρχει τοπικά φορτίο (π.χ. στα δύο άκρα ενός αγωγού κατά την επαγωγή), ενώ «φορτισμένο» σημαίνει ότι το συνολικό (ολικό) φορτίο του σώματος είναι διάφορο του μηδενός. Ένα σώμα ηλεκτρισμένο με επαγωγή είναι ηλεκτρισμένο αλλά όχι φορτισμένο, αφού το ολικό του φορτίο παραμένει μηδέν.</div></details>
+        </li>
+        <li>Γιατί δεν κινδυνεύουν οι επιβάτες ενός αυτοκινήτου όταν αυτό χτυπηθεί από κεραυνό;
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">Το μεταλλικό αμάξωμα είναι αγωγός και θωρακίζει το εσωτερικό του: στο εσωτερικό ενός αγωγού δεν αναπτύσσεται ηλεκτρικό πεδίο, οπότε το ισχυρό πεδίο του κεραυνού «μένει έξω».</div></details>
+        </li>
+        <li>Τι θα συνέβαινε στη δύναμη Κουλόμπ ανάμεσα σε δύο φορτία, αν τα τοποθετούσαμε μέσα στο νερό αντί στον αέρα;
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">Η δύναμη θα άλλαζε, γιατί η σταθερά K στον νόμο του Κουλόμπ εξαρτάται από το υλικό μέσο ανάμεσα στα φορτία — διαφορετικό μέσο σημαίνει διαφορετικό K, άρα και διαφορετική δύναμη για τα ίδια φορτία και την ίδια απόσταση.</div></details>
+        </li>
+      </ol>
+    </div>
+
+    <div class="exgroup">
+      <div class="section-title-row"><h3>Ε. Ασκήσεις υπολογισμών — Νόμος Κουλόμπ</h3><span class="lvl">Επίπεδο 2–3 · K = 9·10⁹ N·m²/C²</span></div>
+      <ol class="qlist">
+        <li>Δύο σημειακά φορτία q₁ = +2 μC και q₂ = +3 μC απέχουν r = 0,3 m. Υπολόγισε τη δύναμη Κουλόμπ ανάμεσά τους.
+          <details class="ans"><summary>Λύση</summary><div class="ans-body">
+            <div class="solv">
+              <div class="solv-step">F = K·q₁q₂/r² = 9·10⁹ · (2·10⁻⁶)(3·10⁻⁶) / (0,3)²</div>
+              <div class="solv-step">F = 9·10⁹ · 6·10⁻¹² / 0,09 = 0,6 N</div>
+            </div>
+            <strong>Απάντηση:</strong> F = 0,6 N, απωστική (ομόσημα φορτία).
+          </div></details>
+        </li>
+        <li>Δύο φορτία q₁ = −4 μC και q₂ = +5 μC απέχουν r = 0,2 m. Υπολόγισε τη δύναμη Κουλόμπ.
+          <details class="ans"><summary>Λύση</summary><div class="ans-body">
+            <div class="solv">
+              <div class="solv-step">F = K·|q₁q₂|/r² = 9·10⁹ · (4·10⁻⁶)(5·10⁻⁶) / (0,2)²</div>
+              <div class="solv-step">F = 9·10⁹ · 2·10⁻¹¹ / 0,04 = 4,5 N</div>
+            </div>
+            <strong>Απάντηση:</strong> F = 4,5 N, ελκτική (ετερόσημα φορτία).
+          </div></details>
+        </li>
+        <li>Δύο φορτία απέχουν απόσταση r και ασκούν δύναμη 1,8 N. Πόση θα γίνει η δύναμη αν η απόσταση γίνει 3r, χωρίς να αλλάξουν τα φορτία;
+          <details class="ans"><summary>Λύση</summary><div class="ans-body">
+            Αν η απόσταση τριπλασιαστεί, η δύναμη γίνεται 9 φορές μικρότερη (F ∝ 1/r²).
+            <div class="solv"><div class="solv-step">F′ = F/9 = 1,8/9 = 0,2 N</div></div>
+            <strong>Απάντηση:</strong> F′ = 0,2 N.
+          </div></details>
+        </li>
+        <li>Δύο ίσα φορτία q₁ = q₂ = +2 μC ασκούν μεταξύ τους δύναμη F = 0,9 N. Βρες την απόστασή τους.
+          <details class="ans"><summary>Λύση</summary><div class="ans-body">
+            <div class="solv">
+              <div class="solv-step">F = K·q₁q₂/r² ⟹ r² = K·q₁q₂/F</div>
+              <div class="solv-step">r² = 9·10⁹ · (2·10⁻⁶)² / 0,9 = 9·10⁹ · 4·10⁻¹² / 0,9 = 0,036/0,9 = 0,04</div>
+              <div class="solv-step">r = √0,04 = 0,2 m</div>
+            </div>
+            <strong>Απάντηση:</strong> r = 0,2 m.
+          </div></details>
+        </li>
+        <li>Μια μεταλλική σφαίρα Α έχει φορτίο +6 μC και μια πανομοιότυπη σφαίρα Β είναι ουδέτερη. Τις φέρνουμε σε επαφή και μετά τις απομακρύνουμε σε απόσταση 0,3 m. Υπολόγισε τη δύναμη Κουλόμπ ανάμεσά τους μετά την επαφή.
+          <details class="ans"><summary>Λύση</summary><div class="ans-body">
+            Επειδή οι σφαίρες είναι πανομοιότυπες, το συνολικό φορτίο 6 μC μοιράζεται εξίσου: q₁ = q₂ = 3 μC.
+            <div class="solv">
+              <div class="solv-step">F = K·q₁q₂/r² = 9·10⁹ · (3·10⁻⁶)² / (0,3)² = 9·10⁹ · 9·10⁻¹² / 0,09</div>
+              <div class="solv-step">F = 0,081 / 0,09 = 0,9 N</div>
+            </div>
+            <strong>Απάντηση:</strong> F = 0,9 N, απωστική.
+          </div></details>
+        </li>
+        <li>Μια πλαστική ράβδος αποκτά, μετά από τριβή, φορτίο −8 nC. Πόσα ηλεκτρόνια μεταφέρθηκαν σ' αυτήν; (στοιχειώδες φορτίο e = 1,6·10⁻¹⁹ C)
+          <details class="ans"><summary>Λύση</summary><div class="ans-body">
+            <div class="solv">
+              <div class="solv-step">n = |q| / e = 8·10⁻⁹ / 1,6·10⁻¹⁹ = 5·10¹⁰</div>
+            </div>
+            <strong>Απάντηση:</strong> Μεταφέρθηκαν 5·10¹⁰ ηλεκτρόνια (50 δισεκατομμύρια!) στη ράβδο.
+          </div></details>
+        </li>
+      </ol>
+    </div>
+
+    <div class="exgroup">
+      <div class="section-title-row"><h3>ΣΤ. Πρόβλημα σύνθεσης</h3><span class="lvl">Επίπεδο 3 · Συνδυάζει επαφή + Νόμο Κουλόμπ</span></div>
+      <ol class="qlist">
+        <li>Δύο πανομοιότυπες μεταλλικές σφαίρες Α και Β έχουν φορτία q<sub>Α</sub> = +9 μC και q<sub>Β</sub> = −3 μC αντίστοιχα. Τις φέρνουμε σε επαφή και στη συνέχεια τις απομακρύνουμε ώστε να απέχουν 0,6 m. <br>α) Βρες το φορτίο κάθε σφαίρας μετά την επαφή. <br>β) Υπολόγισε τη δύναμη Κουλόμπ ανάμεσά τους στη νέα απόσταση, και πες αν είναι ελκτική ή απωστική.
+          <details class="ans"><summary>Λύση</summary><div class="ans-body">
+            <strong>α)</strong> Ολικό φορτίο πριν την επαφή: q = q<sub>Α</sub> + q<sub>Β</sub> = +9 + (−3) = +6 μC. Επειδή οι σφαίρες είναι πανομοιότυπες, το φορτίο μοιράζεται εξίσου: q<sub>Α</sub>′ = q<sub>Β</sub>′ = +3 μC.
+            <div class="solv">
+              <div class="solv-step"><strong>β)</strong> F = K·q<sub>Α</sub>′q<sub>Β</sub>′/r² = 9·10⁹ · (3·10⁻⁶)² / (0,6)²</div>
+              <div class="solv-step">F = 9·10⁹ · 9·10⁻¹² / 0,36 = 0,081/0,36 = 0,225 N</div>
+            </div>
+            <strong>Απάντηση:</strong> F = 0,225 N. Επειδή τα δύο τελικά φορτία είναι ομόσημα (και τα δύο θετικά), η δύναμη είναι <strong>απωστική</strong>.
+          </div></details>
+        </li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+
+</div>
+
+<footer class="pagefoot">Σημειώσεις &amp; ασκήσεις βασισμένες στην ύλη του σχολικού βιβλίου Φυσικής Γ' Γυμνασίου, Κεφάλαιο 1 · Ενότητα 1 «Ηλεκτρισμός»</footer>
+
+<script>
+(function(){
+  "use strict";
+  var K = 9e9;
+
+  function calcF(q1uC,q2uC,rm){
+    if(!rm) return 0;
+    var q1=q1uC*1e-6, q2=q2uC*1e-6;
+    return K*Math.abs(q1*q2)/(rm*rm);
+  }
+  function sig(v,dec){ return v.toFixed(dec).replace('.',','); }
+  function fmtNum(v,dec){ return sig(v,dec); }
+  function fmtQ(q){ if(q===0) return '0 μC'; return (q>0?'+':'')+q+' μC'; }
+  function fmtF(F){
+    if(!F||F<=0) return '0 N';
+    if(F>=100) return sig(F,0)+' N';
+    if(F>=1) return sig(F,2)+' N';
+    if(F>=0.001) return sig(F*1000,2)+' mN';
+    return sig(F*1e6,2)+' μN';
+  }
+  function forceMeterPct(F){
+    if(!F||F<=0) return 0;
+    var FMIN=1e-3, FMAX=2000;
+    var v=Math.log10(Math.max(F,FMIN));
+    var lo=Math.log10(FMIN), hi=Math.log10(FMAX);
+    var pct=(v-lo)/(hi-lo)*100;
+    return Math.min(100,Math.max(2,pct));
+  }
+  function fmtRatioFloat(x){
+    if(!isFinite(x)) return '∞';
+    if(Math.abs(x-Math.round(x))<0.015) return String(Math.round(x));
+    return sig(x,2);
+  }
+
+  function drawDiagram(svg,q1,q2,r,w,h){
+    var id=svg.id;
+    var margin=w*0.16;
+    var x0=margin, x1=w-margin;
+    var rMin=0.05, rMax=1.5;
+    var rc=Math.min(Math.max(r,rMin),rMax);
+    var x2=x0+(rc-rMin)/(rMax-rMin)*(x1-x0);
+    var cy=h*0.40;
+    function radOf(q){ return Math.min(28, Math.max(9, 7+Math.sqrt(Math.abs(q))*3.6)); }
+    var rad1=radOf(q1), rad2=radOf(q2);
+    function colOf(q){ return q>0?'var(--pos)':(q<0?'var(--neg)':'var(--ink-soft)'); }
+    function signOf(q){ return q>0?'+':(q<0?'−':''); }
+    var trackY=cy+Math.max(rad1,rad2)+14;
+    var arrows='';
+    if(q1!==0 && q2!==0){
+      var attractive=(q1>0)!==(q2>0);
+      var markerId= attractive? (id+'-ag') : (id+'-ap');
+      var col= attractive? 'var(--good)':'var(--pos)';
+      var gap=8, len=16;
+      if(attractive){
+        arrows='<line x1="'+(x0+rad1+gap+len)+'" y1="'+cy+'" x2="'+(x0+rad1+gap)+'" y2="'+cy+'" stroke="'+col+'" stroke-width="2.4" marker-end="url(#'+markerId+')"/>'+
+                '<line x1="'+(x2-rad2-gap-len)+'" y1="'+cy+'" x2="'+(x2-rad2-gap)+'" y2="'+cy+'" stroke="'+col+'" stroke-width="2.4" marker-end="url(#'+markerId+')"/>';
+      } else {
+        arrows='<line x1="'+(x0+rad1+gap)+'" y1="'+cy+'" x2="'+(x0+rad1+gap+len)+'" y2="'+cy+'" stroke="'+col+'" stroke-width="2.4" marker-end="url(#'+markerId+')"/>'+
+                '<line x1="'+(x2-rad2-gap)+'" y1="'+cy+'" x2="'+(x2-rad2-gap-len)+'" y2="'+cy+'" stroke="'+col+'" stroke-width="2.4" marker-end="url(#'+markerId+')"/>';
+      }
+    }
+    svg.innerHTML =
+      '<defs>'+
+      '<marker id="'+id+'-ag" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--good)"/></marker>'+
+      '<marker id="'+id+'-ap" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--pos)"/></marker>'+
+      '</defs>'+
+      '<line x1="'+x0+'" y1="'+trackY+'" x2="'+x1+'" y2="'+trackY+'" stroke="var(--line)" stroke-width="1"/>'+
+      arrows+
+      '<circle cx="'+x0+'" cy="'+cy+'" r="'+rad1+'" fill="'+colOf(q1)+'" opacity="0.88"/>'+
+      '<text x="'+x0+'" y="'+(cy+4.5)+'" text-anchor="middle" fill="#fff" font-family="var(--font-mono)" font-size="12" font-weight="700">'+signOf(q1)+'</text>'+
+      '<text x="'+x0+'" y="'+(cy-rad1-8)+'" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" fill="var(--ink)">'+fmtQ(q1)+'</text>'+
+      '<circle cx="'+x2+'" cy="'+cy+'" r="'+rad2+'" fill="'+colOf(q2)+'" opacity="0.88"/>'+
+      '<text x="'+x2+'" y="'+(cy+4.5)+'" text-anchor="middle" fill="#fff" font-family="var(--font-mono)" font-size="12" font-weight="700">'+signOf(q2)+'</text>'+
+      '<text x="'+x2+'" y="'+(cy-rad2-8)+'" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" fill="var(--ink)">'+fmtQ(q2)+'</text>'+
+      '<text x="'+((x0+x2)/2)+'" y="'+(trackY+16)+'" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" fill="var(--ink-soft)">r = '+fmtNum(rc,2)+' m</text>';
+  }
+
+  /* ---------- TAB 1: υπολογιστής ---------- */
+  var baseline=null;
+  function updateCalc(){
+    var q1=+document.getElementById('calc-q1').value;
+    var q2=+document.getElementById('calc-q2').value;
+    var r=(+document.getElementById('calc-r').value)/100;
+    document.getElementById('calc-q1-val').textContent=fmtQ(q1);
+    document.getElementById('calc-q2-val').textContent=fmtQ(q2);
+    document.getElementById('calc-r-val').textContent=fmtNum(r,2)+' m';
+    drawDiagram(document.getElementById('calc-svg'),q1,q2,r,460,170);
+    var F=calcF(q1,q2,r);
+    document.getElementById('calc-f-val').textContent=fmtF(F);
+    var kindEl=document.getElementById('calc-f-kind');
+    if(q1===0||q2===0) kindEl.textContent='δεν υπάρχει δύναμη (μηδενικό φορτίο)';
+    else kindEl.textContent=((q1>0)!==(q2>0))?'ελκτική δύναμη':'απωστική δύναμη';
+    document.getElementById('calc-meter').style.width=forceMeterPct(F)+'%';
+    updateBaselineDisplay(F,q1,q2,r);
+  }
+  function updateBaselineDisplay(F,q1,q2,r){
+    var el=document.getElementById('calc-baseline-result');
+    if(!baseline){ el.innerHTML='<span style="color:var(--ink-soft);font-size:.85em;">Δεν έχει παγώσει ακόμα αρχική τιμή.</span>'; return; }
+    if(baseline.F<=0){ el.innerHTML='<span style="color:var(--ink-soft);font-size:.85em;">Η αρχική δύναμη ήταν 0 — δεν μπορεί να υπολογιστεί λόγος.</span>'; return; }
+    var ratio=F/baseline.F;
+    var parts=[];
+    if(q1!==baseline.q1 && baseline.q1!==0) parts.push('q₁: ×'+fmtRatioFloat(q1/baseline.q1));
+    if(q2!==baseline.q2 && baseline.q2!==0) parts.push('q₂: ×'+fmtRatioFloat(q2/baseline.q2));
+    if(r!==baseline.r) parts.push('r: ×'+fmtRatioFloat(Math.pow(baseline.r/r,2))+' (λόγω 1/r²)');
+    var color= ratio>1.001?'var(--pos)':(ratio<0.999?'var(--blue)':'var(--ink-soft)');
+    el.innerHTML='<div class="baseline-ratio" style="color:'+color+'">F = ×'+fmtRatioFloat(ratio)+' της αρχικής</div>'+
+      '<div style="font-size:.85em;color:var(--ink-soft);">('+fmtF(baseline.F)+' → '+fmtF(F)+')</div>'+
+      (parts.length? '<div class="baseline-breakdown">'+parts.join(' &nbsp;·&nbsp; ')+'</div>' : '');
+  }
+
+  ['calc-q1','calc-q2','calc-r'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',updateCalc);
+  });
+  document.getElementById('calc-lock').addEventListener('click',function(){
+    var q1=+document.getElementById('calc-q1').value;
+    var q2=+document.getElementById('calc-q2').value;
+    var r=(+document.getElementById('calc-r').value)/100;
+    baseline={q1:q1,q2:q2,r:r,F:calcF(q1,q2,r)};
+    updateCalc();
+  });
+
+  /* ---------- TAB 2: πρόβλεψε τι θα συμβεί ---------- */
+  function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ var t=b; b=a%b; a=t; } return a||1; }
+  function reduceRat(n,d){ var g=gcd(n,d); return {n:n/g,d:d/g}; }
+  function mulRat(a,b){ return reduceRat(a.n*b.n,a.d*b.d); }
+  function fmtRat(r){ if(r.n===r.d) return '×1'; if(r.d===1) return '×'+r.n; if(r.n===1) return '×1/'+r.d; return '×'+r.n+'/'+r.d; }
+  function ratKey(r){ return r.n+'/'+r.d; }
+
+  function effectOnF(target,factor,direction){
+    if(target==='r') return direction==='mul' ? {n:1,d:factor*factor} : {n:factor*factor,d:1};
+    return direction==='mul' ? {n:factor,d:1} : {n:1,d:factor};
+  }
+  function applyValue(v,factor,direction){ return direction==='mul' ? v*factor : v/factor; }
+
+  var VERB={2:{mul:'διπλασιάσουμε',div:'υποδιπλασιάσουμε'},3:{mul:'τριπλασιάσουμε',div:'υποτριπλασιάσουμε'},4:{mul:'τετραπλασιάσουμε',div:'υποτετραπλασιάσουμε'}};
+  var ACTION={2:{mul:'Διπλασιασμός',div:'Υποδιπλασιασμός'},3:{mul:'Τριπλασιασμός',div:'Υποτριπλασιασμός'},4:{mul:'Τετραπλασιασμός',div:'Υποτετραπλασιασμός'}};
+  var LABEL={q1:'το φορτίο q₁',q2:'το φορτίο q₂',r:'την απόσταση'};
+  var SUBJ={q1:'του φορτίου q₁',q2:'του φορτίου q₂',r:'της απόστασης'};
+
+  function fragment(t){ return VERB[t.factor][t.direction]+' '+LABEL[t.target]; }
+  function explainLine(t,eff){
+    var formula;
+    if(t.target==='r') formula = t.direction==='mul' ? ('F ∝ 1/r² ⇒ ×1/'+t.factor+'²') : ('F ∝ 1/r² ⇒ ×'+t.factor+'²');
+    else formula = t.direction==='mul' ? ('F ∝ q ⇒ ×'+t.factor) : ('F ∝ q ⇒ ×1/'+t.factor);
+    return ACTION[t.factor][t.direction]+' '+SUBJ[t.target]+': '+formula+' = '+fmtRat(eff);
+  }
+
+  function shuffleArray(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var tmp=a[i]; a[i]=a[j]; a[j]=tmp; } return a; }
+  function weightedPick(values,weights){ var r=Math.random(),acc=0; for(var i=0;i<values.length;i++){ acc+=weights[i]; if(r<=acc) return values[i]; } return values[values.length-1]; }
+  function dedupe(arr){ var seen={}, out=[]; arr.forEach(function(r){ var k=ratKey(r); if(!seen[k]){ seen[k]=true; out.push(r); } }); return out; }
+  var FILLER=[{n:2,d:1},{n:1,d:2},{n:3,d:1},{n:1,d:3},{n:4,d:1},{n:1,d:4},{n:8,d:1},{n:1,d:8},{n:9,d:1},{n:1,d:9},{n:16,d:1},{n:1,d:16},{n:6,d:1},{n:1,d:6}];
+  function randomFillerRat(existing){
+    var keys={}; existing.forEach(function(r){ keys[ratKey(r)]=true; });
+    var pool=shuffleArray(FILLER.slice());
+    for(var i=0;i<pool.length;i++){ if(!keys[ratKey(pool[i])]) return pool[i]; }
+    return {n:Math.floor(2+Math.random()*18),d:1};
+  }
+
+  function buildDistractors(transforms,correct){
+    var list=[];
+    var rIdx=-1;
+    transforms.forEach(function(t,i){ if(t.target==='r') rIdx=i; });
+    if(rIdx>=0){
+      var total={n:1,d:1};
+      transforms.forEach(function(t,i){
+        if(i===rIdx){ var lin = t.direction==='mul' ? {n:1,d:t.factor} : {n:t.factor,d:1}; total=mulRat(total,lin); }
+        else total=mulRat(total, effectOnF(t.target,t.factor,t.direction));
+      });
+      list.push(total);
+    } else {
+      var flip=Math.floor(Math.random()*transforms.length);
+      var total2={n:1,d:1};
+      transforms.forEach(function(t,j){
+        var dir=(j===flip) ? (t.direction==='mul'?'div':'mul') : t.direction;
+        total2=mulRat(total2, effectOnF(t.target,t.factor,dir));
+      });
+      list.push(total2);
+    }
+    if(transforms.length>1) list.push(effectOnF(transforms[0].target,transforms[0].factor,transforms[0].direction));
+    else list.push({n:correct.d,d:correct.n});
+    if(rIdx>=0){
+      var total3={n:1,d:1};
+      transforms.forEach(function(t,i){
+        if(i===rIdx){ var flipped=t.direction==='mul'?'div':'mul'; total3=mulRat(total3, effectOnF('r',t.factor,flipped)); }
+        else total3=mulRat(total3, effectOnF(t.target,t.factor,t.direction));
+      });
+      list.push(total3);
+    } else {
+      list.push(mulRat(correct,{n:2,d:1}));
+    }
+    return list;
+  }
+
+  var quiz={};
+  function newQuestion(){
+    var qPool=[1,2,3,4,5,6,8,10];
+    var rPool=[0.1,0.2,0.3,0.4,0.5];
+    function randSign(){ return Math.random()<0.5?-1:1; }
+    var q1=randSign()*qPool[Math.floor(Math.random()*qPool.length)];
+    var q2=randSign()*qPool[Math.floor(Math.random()*qPool.length)];
+    var r=rPool[Math.floor(Math.random()*rPool.length)];
+
+    var targets=shuffleArray(['q1','q2','r']);
+    var num=weightedPick([1,2,3],[0.30,0.55,0.15]);
+    var chosen=targets.slice(0,num);
+    var factorsPool=[2,3,4], dirsPool=['mul','div'];
+    var transforms=chosen.map(function(t){
+      return { target:t, factor:factorsPool[Math.floor(Math.random()*factorsPool.length)], direction:dirsPool[Math.floor(Math.random()*dirsPool.length)] };
+    });
+
+    var newQ1=q1,newQ2=q2,newR=r;
+    var correct={n:1,d:1};
+    var lines=[];
+    transforms.forEach(function(t){
+      var eff=effectOnF(t.target,t.factor,t.direction);
+      correct=mulRat(correct,eff);
+      if(t.target==='q1') newQ1=applyValue(q1,t.factor,t.direction);
+      if(t.target==='q2') newQ2=applyValue(q2,t.factor,t.direction);
+      if(t.target==='r') newR=applyValue(r,t.factor,t.direction);
+      lines.push(explainLine(t,eff));
+    });
+
+    var sentence='Αν '+transforms.map(fragment).join(' και ')+', πώς θα επηρεαστεί η δύναμη Κουλόμπ;';
+
+    var distractors=buildDistractors(transforms,correct);
+    var options=dedupe([correct].concat(distractors).map(function(r){ return reduceRat(r.n,r.d); }));
+    while(options.length<4){ options=dedupe(options.concat([randomFillerRat(options)])); }
+    options=shuffleArray(options.slice(0,4));
+
+    quiz={q1:q1,q2:q2,r:r,newQ1:newQ1,newQ2:newQ2,newR:newR,transforms:transforms,correct:correct,sentence:sentence,lines:lines,options:options,answered:false};
+    renderQuiz();
+  }
+
+  function renderQuiz(){
+    document.getElementById('quiz-question').textContent=quiz.sentence;
+    drawDiagram(document.getElementById('quiz-before-svg'),quiz.q1,quiz.q2,quiz.r,220,150);
+    document.getElementById('quiz-before-values').textContent='q₁='+fmtQ(quiz.q1)+', q₂='+fmtQ(quiz.q2)+', r='+fmtNum(quiz.r,2)+' m';
+    document.getElementById('quiz-after-hidden').style.display='flex';
+    document.getElementById('quiz-after-svg').style.display='none';
+    document.getElementById('quiz-after-values').textContent='';
+    var opWrap=document.getElementById('quiz-options');
+    opWrap.innerHTML='';
+    quiz.options.forEach(function(opt,i){
+      var btn=document.createElement('button');
+      btn.type='button'; btn.className='quiz-opt'; btn.textContent=fmtRat(opt);
+      btn.addEventListener('click',function(){ selectAnswer(i); });
+      opWrap.appendChild(btn);
+    });
+    var ex=document.getElementById('quiz-explain');
+    ex.classList.remove('show'); ex.innerHTML='';
+    document.getElementById('quiz-next').style.display='none';
+    quiz.answered=false;
+  }
+
+  function selectAnswer(i){
+    if(quiz.answered) return;
+    quiz.answered=true;
+    var correctKey=ratKey(quiz.correct);
+    var buttons=document.querySelectorAll('#quiz-options .quiz-opt');
+    buttons.forEach(function(btn,j){
+      btn.disabled=true;
+      var key=ratKey(quiz.options[j]);
+      if(key===correctKey) btn.classList.add('correct');
+      else if(j===i) btn.classList.add('wrong');
+    });
+    document.getElementById('quiz-after-hidden').style.display='none';
+    var afterSvg=document.getElementById('quiz-after-svg');
+    afterSvg.style.display='block';
+    drawDiagram(afterSvg,quiz.newQ1,quiz.newQ2,quiz.newR,220,150);
+    document.getElementById('quiz-after-values').textContent='q₁='+fmtQ(quiz.newQ1)+', q₂='+fmtQ(quiz.newQ2)+', r='+fmtNum(quiz.newR,2)+' m';
+    var F0=calcF(quiz.q1,quiz.q2,quiz.r), F1=calcF(quiz.newQ1,quiz.newQ2,quiz.newR);
+    var html=quiz.lines.map(function(l){ return '<div class="line">• '+l+'</div>'; }).join('');
+    html+='<div class="line" style="margin-top:8px;"><strong>Συνολική μεταβολή: '+fmtRat(quiz.correct)+'</strong></div>';
+    html+='<div class="line">Αριθμητικά: F<sub>πριν</sub> = '+fmtF(F0)+' → F<sub>μετά</sub> = '+fmtF(F1)+'</div>';
+    var ex=document.getElementById('quiz-explain');
+    ex.innerHTML=html; ex.classList.add('show');
+    document.getElementById('quiz-next').style.display='inline-block';
+  }
+
+  document.getElementById('quiz-next').addEventListener('click',newQuestion);
+
+  document.querySelectorAll('.lab-tab-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('.lab-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.lab-panel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  updateCalc();
+  newQuestion();
+})();
+</script>
