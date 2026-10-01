@@ -1,0 +1,1317 @@
+<title>Έργο, Ενέργεια και Ισχύς</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;0,900;1,600&family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --paper:#f3f4f8; --panel:#ffffff; --panel-2:#eceef5;
+  --ink:#1a2138; --ink-soft:#4b5370; --line:rgba(26,33,56,.14);
+  --accent:#c9860a; --accent-ink:#5c3f03; --accent-soft:#fbe8bd;
+  --blue:#2f5fb3; --blue-soft:#dfe7f8;
+  --pos:#b8382a; --neg:#2f5fb3; --good:#2b7a4b;
+  --shadow:0 1px 2px rgba(26,33,56,.07),0 10px 26px -14px rgba(26,33,56,.22);
+  --font-display:'Alegreya',Georgia,'Times New Roman',serif;
+  --font-body:'Noto Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-mono:'IBM Plex Mono','SFMono-Regular',Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#10131f; --panel:#171b2c; --panel-2:#1e2338;
+    --ink:#e9ebf3; --ink-soft:#b7bcd4; --line:rgba(233,235,243,.14);
+    --accent:#ffb703; --accent-ink:#2a1e00; --accent-soft:#3a2c0c;
+    --blue:#8fabe4; --blue-soft:#202a45;
+    --pos:#ef6a5a; --neg:#8fabe4; --good:#6fcf9a;
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 14px 34px -16px rgba(0,0,0,.65);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#10131f; --panel:#171b2c; --panel-2:#1e2338;
+  --ink:#e9ebf3; --ink-soft:#b7bcd4; --line:rgba(233,235,243,.14);
+  --accent:#ffb703; --accent-ink:#2a1e00; --accent-soft:#3a2c0c;
+  --blue:#8fabe4; --blue-soft:#202a45;
+  --pos:#ef6a5a; --neg:#8fabe4; --good:#6fcf9a;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 14px 34px -16px rgba(0,0,0,.65);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--font-body); font-size:17px; line-height:1.7;
+  padding:0 20px 80px;
+}
+@media (min-width:640px){ body{padding:0 32px 96px;} }
+
+h1,h2,h3{font-family:var(--font-display); text-wrap:balance; font-weight:700; margin:0 0 .4em;}
+p{margin:0 0 1em;}
+.wrap{max-width:760px; margin:0 auto;}
+a{color:var(--blue);}
+
+/* ---------- HERO ---------- */
+.hero{
+  background:
+    radial-gradient(ellipse 700px 300px at 85% -10%, rgba(255,183,3,.16), transparent 60%),
+    linear-gradient(160deg,#0c0e1c 0%,#161c3a 55%,#0f1430 100%);
+  color:#f2f1ec;
+  margin:0 -20px 0; padding:52px 20px 34px;
+  position:relative; overflow:hidden;
+}
+@media (min-width:640px){ .hero{margin:0 -32px 0; padding:64px 32px 40px;} }
+.hero .wrap{position:relative; z-index:2;}
+.bolt{position:absolute; right:6%; top:8%; width:130px; opacity:.9; z-index:1;}
+.eyebrow{
+  font-family:var(--font-mono); font-size:12.5px; letter-spacing:.14em; text-transform:uppercase;
+  color:#ffcf5c; font-weight:600; margin-bottom:14px; display:flex; gap:10px; align-items:center;
+}
+.eyebrow::before{content:"⚙"; font-size:14px;}
+.hero h1{font-size:clamp(2rem,5.4vw,3.1rem); color:#fbfaf6; line-height:1.08; margin-bottom:14px;}
+.hero p.lede{color:#cdd3ea; font-size:1.02em; max-width:60ch; margin-bottom:22px;}
+.goals{list-style:none; margin:0; padding:0; display:grid; gap:9px;}
+.goals li{
+  display:flex; gap:10px; align-items:flex-start; color:#e7e9f5; font-size:.96em;
+}
+.goals li::before{
+  content:"✓"; flex:none; width:20px; height:20px; border-radius:50%;
+  background:rgba(255,183,3,.18); color:#ffcf5c; font-size:12px; font-weight:700;
+  display:flex; align-items:center; justify-content:center; margin-top:2px;
+}
+
+/* ---------- NAV ---------- */
+nav.pillnav{
+  position:sticky; top:0; z-index:20; background:var(--paper);
+  border-bottom:1px solid var(--line); margin:0 -20px 40px; padding:12px 20px;
+  overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch;
+}
+@media (min-width:640px){ nav.pillnav{margin:0 -32px 48px; padding:12px 32px;} }
+nav.pillnav::-webkit-scrollbar{display:none;}
+nav.pillnav a{
+  font-family:var(--font-mono); font-size:12.5px; font-weight:600; text-decoration:none;
+  color:var(--ink-soft); background:var(--panel); border:1px solid var(--line);
+  padding:6px 12px; border-radius:999px; margin-right:8px; display:inline-block;
+}
+nav.pillnav a:hover{color:var(--accent-ink); border-color:var(--accent);}
+
+/* ---------- SECTIONS ---------- */
+section.chap{margin-bottom:56px; scroll-margin-top:64px;}
+.num-tag{
+  font-family:var(--font-mono); color:var(--accent-ink); background:var(--accent-soft);
+  display:inline-block; padding:3px 10px; border-radius:6px; font-size:13px; font-weight:600;
+  margin-bottom:10px; letter-spacing:.02em;
+}
+section.chap h2{font-size:clamp(1.4rem,3.4vw,1.85rem); border-left:5px solid var(--accent); padding-left:14px;}
+section.chap h3{font-size:1.18rem; margin-top:1.6em; color:var(--ink);}
+.lead{font-size:1.05em; color:var(--ink-soft);}
+
+/* ---------- CALLOUT BOXES ---------- */
+.box{border-radius:12px; padding:18px 20px; margin:22px 0; box-shadow:var(--shadow);}
+.box .box-label{
+  font-family:var(--font-mono); font-size:11.5px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; display:flex; align-items:center; gap:7px; margin-bottom:9px;
+}
+.box p:last-child{margin-bottom:0;}
+
+.def{background:var(--blue-soft); border-left:4px solid var(--blue);}
+.def .box-label{color:var(--blue);}
+
+.law{background:var(--accent-soft); border-left:4px solid var(--accent);}
+.law .box-label{color:var(--accent-ink);}
+.law strong{color:var(--accent-ink);}
+
+.tip{background:var(--panel-2); border:1px dashed var(--line); box-shadow:none;}
+.tip .box-label{color:var(--good);}
+
+.caution{background:var(--panel-2); border-left:4px solid var(--pos);}
+.caution .box-label{color:var(--pos);}
+
+.history{
+  background:transparent; border:1px solid var(--line); box-shadow:none;
+  font-style:italic; color:var(--ink-soft); font-size:.94em;
+}
+.history .box-label{color:var(--ink-soft); font-style:normal;}
+
+.example{background:var(--panel); border:1px solid var(--line);}
+.example .box-label{color:var(--good);}
+.solv{font-family:var(--font-mono); font-size:.92em; background:var(--panel-2); border-radius:8px; padding:12px 14px; margin:.6em 0; overflow-x:auto;}
+.solv .k{color:var(--accent-ink); font-weight:600;}
+.solv-step{margin:.15em 0;}
+
+.formula{
+  font-family:var(--font-mono); text-align:center; font-size:1.25em; font-weight:600;
+  background:var(--panel-2); border-radius:10px; padding:16px; margin:18px 0;
+  font-variant-numeric:tabular-nums;
+}
+.formula sup{font-size:.7em;}
+
+table.terms{width:100%; border-collapse:collapse; margin:14px 0; font-size:.94em;}
+table.terms th,table.terms td{border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top;}
+table.terms th{background:var(--panel-2); font-family:var(--font-mono); font-size:12px; letter-spacing:.04em; text-transform:uppercase;}
+
+/* ---------- DIAGRAMS ---------- */
+.diagram{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px; margin:22px 0; box-shadow:var(--shadow);}
+.diagram svg{width:100%; height:auto; display:block;}
+.diagram figcaption{font-size:.86em; color:var(--ink-soft); text-align:center; margin-top:10px;}
+.diagram-row{display:grid; gap:16px; grid-template-columns:1fr 1fr;}
+@media (max-width:560px){.diagram-row{grid-template-columns:1fr;}}
+
+/* ---------- SUMMARY ---------- */
+.summary-box{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:24px 26px; box-shadow:var(--shadow);}
+.summary-box ul{margin:0; padding-left:1.2em;}
+.summary-box li{margin-bottom:.55em;}
+.glossary{display:grid; grid-template-columns:repeat(2,1fr); gap:8px 20px; margin-top:8px; font-size:.95em;}
+@media (max-width:480px){.glossary{grid-template-columns:1fr;}}
+.glossary span{display:block; padding:4px 0; border-bottom:1px dotted var(--line);}
+
+/* ---------- EXERCISES (graph-paper notebook feel) ---------- */
+.exwrap{
+  background:
+    linear-gradient(var(--panel) 0 0),
+    repeating-linear-gradient(0deg, transparent 0 27px, var(--line) 27px 28px),
+    repeating-linear-gradient(90deg, transparent 0 27px, var(--line) 27px 28px);
+  border:1px solid var(--line); border-radius:14px; padding:28px 24px; box-shadow:var(--shadow);
+}
+.exgroup{margin-bottom:34px;}
+.exgroup:last-child{margin-bottom:0;}
+.exgroup h3{
+  font-family:var(--font-display); font-size:1.15rem; margin:0 0 4px;
+  display:flex; align-items:baseline; gap:10px;
+}
+.exgroup .lvl{font-family:var(--font-mono); font-size:11px; color:var(--ink-soft); font-weight:600; letter-spacing:.06em; text-transform:uppercase;}
+.qlist{list-style:none; margin:14px 0 0; padding:0; counter-reset:q;}
+.qlist>li{counter-increment:q; margin-bottom:16px; padding-left:2.1em; position:relative;}
+.qlist>li::before{
+  content:counter(q); position:absolute; left:0; top:.05em; font-family:var(--font-mono); font-weight:700;
+  color:var(--accent-ink); background:var(--accent-soft); width:1.6em; height:1.6em; border-radius:6px;
+  display:flex; align-items:center; justify-content:center; font-size:.82em;
+}
+.opts{list-style:none; margin:.5em 0 0; padding:0; display:grid; gap:5px;}
+.opts li{padding-left:1.6em; position:relative; color:var(--ink-soft); font-size:.96em;}
+.opts li::before{content:attr(data-l); position:absolute; left:0; font-family:var(--font-mono); font-weight:700; color:var(--ink);}
+.blank{border-bottom:2px solid var(--ink-soft); padding:0 6px; font-family:var(--font-mono);}
+.wordbank{
+  font-size:.9em; background:var(--panel-2); border:1px solid var(--line); border-radius:8px;
+  padding:10px 14px; margin:0 0 18px; color:var(--ink-soft);
+}
+.wordbank strong{color:var(--ink); font-weight:600;}
+
+details.ans{margin-top:8px;}
+details.ans summary{
+  cursor:pointer; font-family:var(--font-mono); font-size:.82em; font-weight:600;
+  color:var(--good); list-style:none; display:inline-flex; align-items:center; gap:6px;
+  padding:4px 10px; border:1px solid var(--good); border-radius:999px;
+}
+details.ans summary::-webkit-details-marker{display:none;}
+details.ans summary::before{content:"👁"; font-size:.9em;}
+details.ans[open] summary::before{content:"🙈";}
+details.ans .ans-body{
+  margin-top:10px; padding:12px 14px; background:var(--panel-2); border-left:3px solid var(--good);
+  border-radius:0 8px 8px 0; font-size:.94em;
+}
+details.ans .ans-body .solv{margin-top:8px; margin-bottom:0;}
+
+.section-title-row{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:6px;}
+footer.pagefoot{text-align:center; color:var(--ink-soft); font-size:.85em; margin-top:60px;}
+
+/* ---------- LAB (διαδραστικά εργαλεία) ---------- */
+.lab{background:var(--panel-2); border:1px solid var(--line); border-radius:14px; padding:22px 22px 26px; margin:22px 0; box-shadow:var(--shadow);}
+.lab-tabs{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+.lab-tab-btn{font-family:var(--font-mono); font-size:12.5px; font-weight:600; padding:7px 14px; border-radius:999px; border:1px solid var(--line); background:var(--panel); color:var(--ink-soft); cursor:pointer;}
+.lab-tab-btn.active{background:var(--accent); border-color:var(--accent); color:var(--accent-ink);}
+.lab-panel{display:none;}
+.lab-panel.active{display:block;}
+.calc-grid{display:grid; grid-template-columns:1fr 1fr; gap:26px; align-items:start;}
+@media (max-width:640px){.calc-grid{grid-template-columns:1fr;}}
+.ctrl{margin-bottom:16px;}
+.ctrl label{display:flex; justify-content:space-between; font-size:.85em; color:var(--ink-soft); margin-bottom:5px; font-family:var(--font-mono);}
+.ctrl label .val{color:var(--ink); font-weight:700;}
+.ctrl input[type=range]{width:100%; accent-color:var(--accent); height:6px;}
+.diagram-live{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px;}
+.diagram-live svg{width:100%; height:auto; display:block;}
+.diagram-live + .diagram-live{margin-top:16px;}
+.f-readout{text-align:center; margin-top:10px;}
+.f-readout .big{font-family:var(--font-mono); font-size:1.7em; font-weight:700; color:var(--ink);}
+.f-readout .kind{font-size:.85em; color:var(--ink-soft);}
+.meter{height:12px; border-radius:999px; background:var(--panel-2); overflow:hidden; margin-top:10px; border:1px solid var(--line);}
+.meter-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--blue),var(--accent),var(--pos)); transition:width .35s ease;}
+.meter-fill.ke{background:linear-gradient(90deg,var(--accent-soft),var(--accent));}
+.meter-fill.pe{background:linear-gradient(90deg,var(--blue-soft),var(--blue));}
+.meter-labels{display:flex; justify-content:space-between; font-size:10.5px; font-family:var(--font-mono); color:var(--ink-soft); margin-top:3px;}
+.meter-signed{height:14px; border-radius:999px; background:var(--panel-2); overflow:hidden; margin-top:10px; border:1px solid var(--line); position:relative;}
+.meter-signed::after{content:""; position:absolute; left:50%; top:-1px; bottom:-1px; width:2px; background:var(--ink-soft); opacity:.5;}
+.meter-signed-fill{position:absolute; top:0; bottom:0; width:0%; transition:width .3s ease;}
+.meter-signed-fill.pos{left:50%; background:var(--good);}
+.meter-signed-fill.neg{right:50%; background:var(--pos);}
+.baseline-box{margin-top:16px; padding:12px 14px; border-radius:10px; background:var(--panel); border:1px dashed var(--line); font-size:.92em;}
+.baseline-box>div:first-child{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;}
+.baseline-box button{font-family:var(--font-mono); font-size:11.5px; font-weight:600; padding:6px 12px; border-radius:6px; border:1px solid var(--accent); background:var(--accent-soft); color:var(--accent-ink); cursor:pointer; flex:none;}
+.baseline-ratio{font-family:var(--font-mono); font-weight:700; font-size:1.1em;}
+.baseline-breakdown{margin-top:6px; font-size:.85em; color:var(--ink-soft); font-family:var(--font-mono);}
+.quiz-before-after{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0;}
+@media (max-width:560px){.quiz-before-after{grid-template-columns:1fr;}}
+.qa-panel{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px;}
+.qa-panel h4{margin:0 0 8px; font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); font-weight:700;}
+.qa-panel svg{width:100%; height:auto; display:block;}
+.qa-hidden{display:flex; align-items:center; justify-content:center; min-height:110px; color:var(--line); font-size:2.4em; font-family:var(--font-mono);}
+.qa-values{font-family:var(--font-mono); font-size:.78em; color:var(--ink-soft); margin-top:6px; text-align:center; min-height:1.2em;}
+.quiz-question{font-size:1.03em; margin:14px 0; padding:14px 16px; background:var(--accent-soft); border-radius:10px; color:var(--accent-ink); font-weight:600;}
+.quiz-options{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;}
+@media (max-width:480px){.quiz-options{grid-template-columns:1fr;}}
+.quiz-opt{font-family:var(--font-mono); font-size:1.02em; font-weight:700; padding:12px; border-radius:10px; border:2px solid var(--line); background:var(--panel); cursor:pointer; text-align:center; color:var(--ink);}
+.quiz-opt:hover:not(:disabled){border-color:var(--accent);}
+.quiz-opt.correct{border-color:var(--good); background:rgba(43,122,75,.15); color:var(--good);}
+.quiz-opt.wrong{border-color:var(--pos); background:rgba(184,56,42,.15); color:var(--pos);}
+.quiz-opt:disabled{cursor:default;}
+.quiz-explain{background:var(--panel); border-left:3px solid var(--good); border-radius:0 10px 10px 0; padding:14px 16px; font-size:.92em; margin-bottom:14px; display:none;}
+.quiz-explain.show{display:block;}
+.quiz-explain .line{margin-bottom:4px;}
+.quiz-next{font-family:var(--font-mono); font-weight:600; font-size:12.5px; padding:10px 18px; border-radius:8px; border:1px solid var(--accent); background:var(--accent); color:#3a2900; cursor:pointer;}
+
+.play-row{display:flex; gap:8px; margin-top:14px; flex-wrap:wrap;}
+.play-btn{font-family:var(--font-mono); font-size:12px; font-weight:600; padding:8px 14px; border-radius:8px; border:1px solid var(--accent); background:var(--accent-soft); color:var(--accent-ink); cursor:pointer;}
+.play-btn.secondary{border-color:var(--line); background:var(--panel); color:var(--ink-soft);}
+.play-btn:disabled{opacity:.55; cursor:default;}
+.energy-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px 10px; margin-top:14px; font-family:var(--font-mono); font-size:.85em;}
+.energy-grid div{background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:7px 10px;}
+.energy-grid .lbl{display:block; color:var(--ink-soft); font-size:.76em; margin-bottom:2px; font-weight:600; letter-spacing:.02em;}
+.energy-grid .v{font-weight:700; color:var(--ink); font-size:1.05em;}
+.ramp-caption{font-size:.8em; color:var(--ink-soft); text-align:center; margin-top:8px; font-style:italic;}
+
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
+</style>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Κεφάλαιο 0 · Προαπαιτούμενο (από τη Β' Γυμνασίου)</div>
+    <h1>Έργο, Ενέργεια<br>και Ισχύς</h1>
+    <p class="lede">Πριν ξεκινήσουμε την ύλη της Γ' Γυμνασίου, χρειαζόμαστε μερικές βασικές έννοιες που δεν προλάβαμε πέρσι: το έργο μιας δύναμης, τις δύο βασικές μορφές μηχανικής ενέργειας και την ισχύ. Είναι έννοιες που θα συναντήσεις ξανά και ξανά σε όλη τη Φυσική — αξίζει να τις χτίσουμε σωστά από το μηδέν.</p>
+    <ul class="goals">
+      <li>Τι είναι το έργο μιας δύναμης, και πότε είναι θετικό, αρνητικό ή μηδενικό</li>
+      <li>Τι είναι η κινητική ενέργεια και από τι εξαρτάται</li>
+      <li>Τι είναι η (βαρυτική) δυναμική ενέργεια και από τι εξαρτάται</li>
+      <li>Η αρχή διατήρησης της μηχανικής ενέργειας — πώς η μία μορφή «μετατρέπεται» στην άλλη</li>
+      <li>Τι είναι η ισχύς και πώς συνδέεται με το έργο και τον χρόνο</li>
+    </ul>
+  </div>
+  <svg class="bolt" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M60 14 C90 14 106 40 106 60 C106 80 90 106 60 106" stroke="#ffb703" stroke-width="5" stroke-linecap="round" opacity="0.85"/>
+    <path d="M60 106 L48 96 M60 106 L50 116" stroke="#ffb703" stroke-width="5" stroke-linecap="round" opacity="0.85"/>
+    <circle cx="60" cy="14" r="9" fill="#ffb703" opacity="0.9"/>
+    <circle cx="60" cy="106" r="9" fill="#ffb703" opacity="0.55"/>
+  </svg>
+</div>
+
+<nav class="pillnav" aria-label="Πλοήγηση κεφαλαίου">
+  <a href="#s1">0.1 Ενέργεια</a>
+  <a href="#s2">0.2 Έργο</a>
+  <a href="#s3">0.3 Κινητική</a>
+  <a href="#s4">0.4 Δυναμική</a>
+  <a href="#s5">0.5 Διατήρηση</a>
+  <a href="#s6">0.6 Ισχύς</a>
+  <a href="#summary">Περίληψη</a>
+  <a href="#exercises">Ασκήσεις</a>
+</nav>
+
+<div class="wrap">
+
+<!-- ============ 0.1 ============ -->
+<section class="chap" id="s1">
+  <div class="num-tag">0.1</div>
+  <h2>Τι είναι η ενέργεια</h2>
+  <p class="lead">«Αυτό το παιδί έχει πολλή ενέργεια!» Το λέμε συνέχεια στην καθημερινή ζωή. Στη φυσική, η λέξη έχει πιο αυστηρό νόημα — αλλά η διαισθητική ιδέα δεν είναι μακριά: η ενέργεια είναι αυτό που κάνει δυνατή την αλλαγή.</p>
+
+  <p>Ένας δρομέας που τρέχει, ένας αθλητής που πηδά, μια γλάστρα που πέφτει από ένα μπαλκόνι — όλα αυτά τα σώματα <strong>έχουν ενέργεια</strong>. Το ξέρουμε επειδή μπορούν να προκαλέσουν μεταβολές: η γλάστρα μπορεί να σπάσει κάτι, ο δρομέας μπορεί να σταματήσει απότομα κάποιον που βρεθεί στον δρόμο του. Δεν «βλέπουμε» ποτέ την ενέργεια απευθείας· παρατηρούμε μόνο τα <em>αποτελέσματά</em> της, όταν μεταφέρεται από ένα σώμα σε άλλο ή μετατρέπεται από μια μορφή σε άλλη.</p>
+
+  <div class="box def">
+    <div class="box-label">Βασική ιδέα</div>
+    <p>Ένα σώμα έχει <strong>ενέργεια</strong> όταν μπορεί να προκαλέσει μεταβολές — σε άλλα σώματα ή στον εαυτό του. Η ενέργεια εμφανίζεται με πολλές μορφές (κινητική, δυναμική, θερμική, χημική, ηλεκτρική, πυρηνική...) και μπορεί να μετατρέπεται από τη μία μορφή στην άλλη.</p>
+  </div>
+
+  <h3>Ο πιο σημαντικός κανόνας όλης της Φυσικής</h3>
+  <p>Σε κάθε μετατροπή ή μεταφορά ενέργειας, η <strong>συνολική</strong> ποσότητα ενέργειας <strong>δεν αλλάζει</strong> — απλώς αλλάζει μορφή ή αλλάζει «ιδιοκτήτη». Αυτή είναι η <strong>αρχή διατήρησης της ενέργειας</strong>, ένας από τους πιο θεμελιώδεις νόμους που γνωρίζουμε στη φύση. Σε αυτό το κεφάλαιο θα τη δούμε σε δράση στην πιο απλή της μορφή: ανάμεσα σε δύο «μηχανικές» μορφές ενέργειας, την κινητική και τη δυναμική.</p>
+
+  <div class="box tip">
+    <div class="box-label">Θυμήσου</div>
+    <p>Σε αυτό το κεφάλαιο θα χρησιμοποιούμε πάντα <strong>g = 10 m/s²</strong> για την επιτάχυνση της βαρύτητας, εκτός αν ορίζεται διαφορετικά σε μια άσκηση.</p>
+  </div>
+
+  <div class="box history">
+    <div class="box-label">Φυσική &amp; Ιστορία</div>
+    <p>Η λέξη «ενέργεια» προέρχεται από τα αρχαία ελληνικά: <em>εν</em> (μέσα) + <em>έργον</em> — δηλαδή «η εσωτερική ικανότητα κάποιου να παράγει έργο». Τη χρησιμοποίησε πρώτος ο Γαλιλαίος, χωρίς αυστηρό ορισμό. Μόλις πριν από περίπου 200 χρόνια η έννοια απέκτησε το επιστημονικό της περιεχόμενο, όταν οι φυσικοί συνειδητοποίησαν ότι μπορούσε να περιγράψει με ενιαίο τρόπο κινητικά, θερμικά, ηλεκτρικά, φωτεινά και χημικά φαινόμενα που μέχρι τότε θεωρούνταν εντελώς ανεξάρτητα μεταξύ τους.</p>
+  </div>
+</section>
+
+<!-- ============ 0.2 ============ -->
+<section class="chap" id="s2">
+  <div class="num-tag">0.2</div>
+  <h2>Έργο δύναμης</h2>
+  <p class="lead">Η ενέργεια μεταφέρεται από το ένα σώμα στο άλλο «μέσω» μιας δύναμης. Το φυσικό μέγεθος που μετράει πόση ενέργεια μεταφέρθηκε έτσι, το λέμε <strong>έργο</strong>.</p>
+
+  <p>Όταν ανεβάζεις βιβλία από το κάτω ράφι μιας βιβλιοθήκης στο πάνω ράφι, κουράζεσαι. Η δύναμη που ασκείς στα βιβλία τους μεταφέρει ενέργεια από τον οργανισμό σου — γι' αυτό μετά θα χρειαστεί να φας για να την αναπληρώσεις. Λέμε ότι η δύναμή σου <strong>παράγει έργο</strong> πάνω στα βιβλία.</p>
+
+  <div class="box def">
+    <div class="box-label">Ορισμός</div>
+    <p>Όταν μια σταθερή δύναμη <strong>F</strong> ασκείται σε ένα σώμα που μετατοπίζεται κατά <strong>Δx</strong> στη διεύθυνση της δύναμης, το <strong>έργο</strong> της δύναμης είναι:</p>
+  </div>
+
+  <div class="formula">W&nbsp; = &nbsp;F &middot; Δx</div>
+
+  <table class="terms">
+    <tr><th>Μέγεθος</th><th>Σημασία</th><th>Μονάδα (S.I.)</th></tr>
+    <tr><td>W</td><td>έργο δύναμης</td><td>J (Joule)</td></tr>
+    <tr><td>F</td><td>μέτρο της δύναμης</td><td>N (Newton)</td></tr>
+    <tr><td>Δx</td><td>μετατόπιση του σώματος</td><td>m (μέτρο)</td></tr>
+  </table>
+
+  <p>Η μονάδα μέτρησης του έργου στο Διεθνές Σύστημα είναι το <strong>Joule (Τζάουλ, J)</strong>, προς τιμή του Άγγλου φυσικού Τζέιμς Πρέσκοτ Τζάουλ: 1 J = 1 N·m. Δηλαδή, 1 Joule είναι το έργο που παράγει μια δύναμη 1 N όταν το σώμα στο οποίο ασκείται μετατοπίζεται κατά 1 m, προς την κατεύθυνση της δύναμης.</p>
+
+  <h3>Πρόσημο του έργου: θετικό, αρνητικό ή μηδέν</h3>
+  <p>Το έργο δεν είναι πάντα «καλό» — εξαρτάται κρίσιμα από το αν η δύναμη έχει την <strong>ίδια</strong> ή <strong>αντίθετη</strong> φορά με τη μετατόπιση:</p>
+
+  <div class="diagram-row">
+    <figure class="diagram" style="margin:0;">
+      <svg viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg">
+        <rect x="80" y="86" width="50" height="34" rx="5" fill="var(--panel-2)" stroke="var(--ink)" stroke-width="1.5"/>
+        <path d="M30 103 L72 103" stroke="var(--good)" stroke-width="2.5" marker-end="url(#we1)"/>
+        <text x="50" y="92" text-anchor="middle" font-family="var(--font-mono)" font-size="13" fill="var(--good)" font-weight="700">F</text>
+        <path d="M140 140 L230 140" stroke="var(--ink-soft)" stroke-width="2" marker-end="url(#we1b)"/>
+        <text x="185" y="132" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--ink-soft)">μετατόπιση</text>
+        <defs>
+          <marker id="we1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--good)"/></marker>
+          <marker id="we1b" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--ink-soft)"/></marker>
+        </defs>
+      </svg>
+      <figcaption><strong style="color:var(--good);">Ίδια φορά</strong> → έργο <strong>θετικό</strong> (π.χ. το άλογο που τραβάει το κάρο)</figcaption>
+    </figure>
+    <figure class="diagram" style="margin:0;">
+      <svg viewBox="0 0 260 150" xmlns="http://www.w3.org/2000/svg">
+        <rect x="80" y="86" width="50" height="34" rx="5" fill="var(--panel-2)" stroke="var(--ink)" stroke-width="1.5"/>
+        <path d="M180 103 L138 103" stroke="var(--pos)" stroke-width="2.5" marker-end="url(#we2)"/>
+        <text x="160" y="92" text-anchor="middle" font-family="var(--font-mono)" font-size="13" fill="var(--pos)" font-weight="700">F</text>
+        <path d="M30 140 L120 140" stroke="var(--ink-soft)" stroke-width="2" marker-end="url(#we2b)"/>
+        <text x="75" y="132" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--ink-soft)">μετατόπιση</text>
+        <defs>
+          <marker id="we2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--pos)"/></marker>
+          <marker id="we2b" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--ink-soft)"/></marker>
+        </defs>
+      </svg>
+      <figcaption><strong style="color:var(--pos);">Αντίθετη φορά</strong> → έργο <strong>αρνητικό</strong> (π.χ. η τριβή που επιβραδύνει)</figcaption>
+    </figure>
+  </div>
+
+  <div class="box law">
+    <div class="box-label">Οι τρεις περιπτώσεις</div>
+    <p><strong>Θετικό έργο:</strong> όταν η δύναμη έχει την ίδια φορά με τη μετατόπιση (η δύναμη «βοηθάει» την κίνηση).<br>
+    <strong>Αρνητικό έργο:</strong> όταν η δύναμη έχει αντίθετη φορά από τη μετατόπιση (η δύναμη αντιστέκεται στην κίνηση).<br>
+    <strong>Μηδενικό έργο:</strong> όταν η δύναμη είναι κάθετη στη μετατόπιση — δεν «συνεισφέρει» καθόλου σε αυτήν.</p>
+  </div>
+
+  <p>Όταν η δύναμη είναι <strong>πλάγια</strong> ως προς τη μετατόπιση (ούτε παράλληλη, ούτε κάθετη), την αναλύουμε σε δύο συνιστώσες: μία <strong>παράλληλη</strong> στη μετατόπιση (F∥) και μία <strong>κάθετη</strong> (F⊥). Μόνο η παράλληλη συνιστώσα παράγει έργο — η κάθετη δεν συνεισφέρει καθόλου, αφού δεν έχει καμία συνιστώσα προς την κατεύθυνση της κίνησης:</p>
+
+  <div class="formula">W&nbsp; = &nbsp;F<sub>∥</sub> &middot; Δx</div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 400 190" xmlns="http://www.w3.org/2000/svg">
+      <line x1="40" y1="150" x2="360" y2="150" stroke="var(--line)" stroke-width="1.5"/>
+      <rect x="130" y="118" width="46" height="32" rx="5" fill="var(--panel-2)" stroke="var(--ink)" stroke-width="1.5"/>
+      <path d="M153 134 L153 70" stroke="var(--ink-soft)" stroke-width="1.6" marker-end="url(#wf1)"/>
+      <text x="162" y="68" font-family="var(--font-mono)" font-size="13" fill="var(--ink-soft)" font-weight="700">F</text>
+      <path d="M153 134 L240 100" stroke="var(--blue)" stroke-width="1.4" stroke-dasharray="4 3"/>
+      <text x="245" y="98" font-family="var(--font-mono)" font-size="11" fill="var(--blue)">F∥ (παράγει έργο)</text>
+      <path d="M153 134 L153 100" stroke="var(--ink-soft)" stroke-width="1.4" stroke-dasharray="4 3"/>
+      <text x="90" y="98" font-family="var(--font-mono)" font-size="11" fill="var(--ink-soft)">F⊥ (όχι έργο)</text>
+      <path d="M200 160 L330 160" stroke="var(--good)" stroke-width="2" marker-end="url(#wf2)"/>
+      <text x="260" y="178" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--ink-soft)">μετατόπιση Δx</text>
+      <defs>
+        <marker id="wf1" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--ink-soft)"/></marker>
+        <marker id="wf2" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="var(--good)"/></marker>
+      </defs>
+    </svg>
+    <figcaption>Μια πλάγια δύναμια F αναλύεται σε F∥ (παράλληλη στη μετατόπιση — παράγει έργο) και F⊥ (κάθετη — δεν παράγει έργο). Αυτή η λογική χρησιμοποιείται και για το έργο του βάρους σε ένα κεκλιμένο επίπεδο.</figcaption>
+  </div>
+
+  <div class="box example">
+    <div class="box-label">Λυμένο παράδειγμα</div>
+    <p><strong>Δίνονται:</strong> Ένας εργάτης σέρνει ένα κιβώτιο ασκώντας οριζόντια δύναμη F = 40 N, παράλληλη στο έδαφος. Το κιβώτιο μετατοπίζεται κατά Δx = 6 m.<br><strong>Ζητείται:</strong> Το έργο της δύναμης F.</p>
+    <div class="solv">
+      <div class="solv-step"><span class="k">Λύση:</span> Η δύναμη έχει την ίδια φορά με τη μετατόπιση, άρα το έργο είναι θετικό.</div>
+      <div class="solv-step">W = F · Δx = 40 N · 6 m</div>
+      <div class="solv-step"><span class="k">Απάντηση:</span> W = 240 J</div>
+    </div>
+  </div>
+
+  <div class="box caution">
+    <div class="box-label">Συχνά λάθη</div>
+    <p>1) Νομίζουμε ότι το έργο είναι πάντα θετικό — δεν είναι, εξαρτάται από τη σχετική φορά δύναμης και μετατόπισης. 2) Υπολογίζουμε το έργο μιας δύναμης που είναι κάθετη στην κίνηση (π.χ. του βάρους σε οριζόντια κίνηση) και ξεχνάμε ότι είναι μηδέν. 3) Σε πλάγια δύναμη, χρησιμοποιούμε ολόκληρο το F αντί για τη συνιστώσα F∥.</p>
+  </div>
+
+  <h3>Εργαστήριο προσήμου έργου <span style="font-weight:400;font-size:.65em;color:var(--ink-soft);">(διαδραστικό)</span></h3>
+  <p>Σε αυτό το εργαστήριο μπορείς να αλλάξεις τη <strong>γωνία</strong> ανάμεσα στη δύναμη και στη μετατόπιση, και να δεις ζωντανά πώς η δύναμη αναλύεται σε F∥ και F⊥, και πώς αλλάζει το πρόσημο του έργου.</p>
+
+  <div class="lab">
+    <div class="lab-tabs">
+      <button class="lab-tab-btn active" data-tab="wcalc" type="button">🎛️ Ελεύθερη εξερεύνηση</button>
+      <button class="lab-tab-btn" data-tab="wquiz" type="button">🎯 Μάντεψε το πρόσημο</button>
+    </div>
+
+    <div class="lab-panel active" id="tab-wcalc">
+      <div class="calc-grid">
+        <div>
+          <div class="ctrl">
+            <label>F (μέτρο δύναμης)&nbsp;<span class="val" id="w-F-val">20 N</span></label>
+            <input type="range" id="w-F" min="5" max="50" step="5" value="20">
+          </div>
+          <div class="ctrl">
+            <label>Δx (μετατόπιση)&nbsp;<span class="val" id="w-dx-val">5 m</span></label>
+            <input type="range" id="w-dx" min="1" max="10" step="1" value="5">
+          </div>
+          <div class="ctrl">
+            <label>θ (γωνία δύναμης — μετατόπισης)&nbsp;<span class="val" id="w-theta-val">60°</span></label>
+            <input type="range" id="w-theta" min="0" max="180" step="15" value="60">
+          </div>
+          <div class="box tip" style="margin:14px 0 0;">
+            <div class="box-label">Για προχωρημένους</div>
+            <p style="margin:0;">Αν ξέρεις τριγωνομετρία: F∥ = F·συνθ, οπότε W = F·Δx·συνθ. Γι' αυτό το εργαστήριο δουλεύει για <em>οποιαδήποτε</em> γωνία, όχι μόνο για 0°, 90° και 180°.</p>
+          </div>
+        </div>
+        <div>
+          <div class="diagram-live">
+            <svg id="w-svg" viewBox="0 0 400 190" xmlns="http://www.w3.org/2000/svg"></svg>
+          </div>
+          <div class="f-readout">
+            <div class="big" id="w-W-val">+100 J</div>
+            <div class="kind" id="w-W-kind">θετικό έργο (οξεία γωνία)</div>
+          </div>
+          <div class="meter-signed"><div class="meter-signed-fill" id="w-meter"></div></div>
+          <div class="meter-labels"><span>αρνητικό</span><span>0</span><span>θετικό</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lab-panel" id="tab-wquiz">
+      <div class="quiz-question" id="wq-question">Φόρτωση ερώτησης…</div>
+      <div class="diagram-live" style="max-width:420px;margin:0 auto 14px;">
+        <svg id="wq-svg" viewBox="0 0 400 190" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="quiz-options" id="wq-options">
+        <button type="button" class="quiz-opt" data-ans="pos">Θετικό</button>
+        <button type="button" class="quiz-opt" data-ans="neg">Αρνητικό</button>
+        <button type="button" class="quiz-opt" data-ans="zero">Μηδενικό</button>
+      </div>
+      <div class="quiz-explain" id="wq-explain"></div>
+      <button type="button" class="quiz-next" id="wq-next" style="display:none;">🎲 Νέα ερώτηση</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 0.3 ============ -->
+<section class="chap" id="s3">
+  <div class="num-tag">0.3</div>
+  <h2>Κινητική ενέργεια</h2>
+  <p class="lead">Κάθε σώμα που κινείται έχει ενέργεια λόγω της κίνησής του. Αυτή τη μορφή ενέργειας τη λέμε <strong>κινητική ενέργεια</strong>.</p>
+
+  <p>Σε έναν αγώνα σφαιροβολίας, το χέρι του αθλητή ασκεί δύναμη στη σφαίρα όσο αυτή επιταχύνεται· η δύναμη αυτή παράγει έργο πάνω στη σφαίρα. Όταν η σφαίρα φύγει από το χέρι του αθλητή με κάποια ταχύτητα, προσγειώνεται και παραμορφώνει το έδαφος — αποδεικνύει δηλαδή ότι είχε αποκτήσει ενέργεια. Αυτό συμβαίνει με κάθε κινούμενο σώμα.</p>
+
+  <h3>Από τι εξαρτάται η κινητική ενέργεια;</h3>
+  <p>Φαντάσου ένα σφυρί που χτυπά ένα καρφί. Το πόσο βαθιά θα μπει το καρφί στο ξύλο εξαρτάται από δύο πράγματα:</p>
+  <ul>
+    <li><strong>Τη μάζα του σφυριού</strong> — ένα βαρύτερο σφυρί, με την ίδια ταχύτητα, προκαλεί μεγαλύτερη διείσδυση.</li>
+    <li><strong>Την ταχύτητα του σφυριού</strong> — ένα γρηγορότερο χτύπημα προκαλεί μεγαλύτερη διείσδυση, και μάλιστα πολύ πιο έντονα από ό,τι θα περίμενε κανείς.</li>
+  </ul>
+
+  <div class="box law">
+    <div class="box-label">Τύπος κινητικής ενέργειας</div>
+    <p>Η κινητική ενέργεια ενός σώματος μάζας <strong>m</strong> που κινείται με ταχύτητα <strong>υ</strong> δίνεται από τη σχέση:</p>
+  </div>
+
+  <div class="formula">E<sub>Κ</sub>&nbsp; = &nbsp;½ &middot; m &middot; υ<sup>2</sup></div>
+
+  <table class="terms">
+    <tr><th>Μέγεθος</th><th>Σημασία</th><th>Μονάδα (S.I.)</th></tr>
+    <tr><td>E<sub>Κ</sub></td><td>κινητική ενέργεια</td><td>J (Joule)</td></tr>
+    <tr><td>m</td><td>μάζα του σώματος</td><td>kg</td></tr>
+    <tr><td>υ</td><td>ταχύτητα του σώματος</td><td>m/s</td></tr>
+  </table>
+
+  <p>Παρατήρησε τα δύο σημαντικά χαρακτηριστικά του τύπου: η κινητική ενέργεια είναι <strong>ανάλογη της μάζας</strong> — διπλάσια μάζα σημαίνει διπλάσια E<sub>Κ</sub>, με την ίδια ταχύτητα. Είναι όμως <strong>ανάλογη του τετραγώνου</strong> της ταχύτητας — αν διπλασιάσουμε την ταχύτητα, η κινητική ενέργεια γίνεται <strong>τετραπλάσια</strong>, όχι απλώς διπλάσια!</p>
+
+  <div class="box tip">
+    <div class="box-label">Γιατί έχει σημασία στην πράξη</div>
+    <p>Ένα αυτοκίνητο που κινείται με 100 km/h έχει <strong>τετραπλάσια</strong> κινητική ενέργεια από ό,τι όταν κινείται με 50 km/h. Γι' αυτό και η απόσταση που χρειάζεται για να σταματήσει (με τα φρένα) είναι περίπου τετραπλάσια — όχι διπλάσια! Αυτός είναι ένας από τους λόγους που η ταχύτητα είναι τόσο καθοριστική για την οδική ασφάλεια.</p>
+  </div>
+
+  <div class="box example">
+    <div class="box-label">Λυμένο παράδειγμα</div>
+    <p><strong>Δίνονται:</strong> Ένας δρομέας μάζας m = 60 kg τρέχει με ταχύτητα υ = 8 m/s.<br><strong>Ζητείται:</strong> Η κινητική του ενέργεια.</p>
+    <div class="solv">
+      <div class="solv-step"><span class="k">Λύση:</span> E<sub>Κ</sub> = ½ · m · υ² = ½ · 60 · 8²</div>
+      <div class="solv-step">E<sub>Κ</sub> = ½ · 60 · 64 = 1.920 J</div>
+      <div class="solv-step"><span class="k">Απάντηση:</span> E<sub>Κ</sub> = 1.920 J ≈ 1,92 kJ</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 0.4 ============ -->
+<section class="chap" id="s4">
+  <div class="num-tag">0.4</div>
+  <h2>Δυναμική ενέργεια</h2>
+  <p class="lead">Υπάρχει και μια δεύτερη βασική μορφή μηχανικής ενέργειας, που δεν έχει να κάνει με την κίνηση αλλά με τη <em>θέση</em> ενός σώματος.</p>
+
+  <p>Ανύψωσε αργά-αργά ένα βαρίδι πάνω από ένα ελατήριο. Όσο ψηλότερα το ανεβάζεις, τόσο περισσότερο θα συσπειρωθεί το ελατήριο όταν το αφήσεις να πέσει πάνω του. Αυτό σημαίνει ότι το βαρίδι, απλώς επειδή βρίσκεται ψηλά, έχει αποκτήσει ενέργεια — ικανότητα να προκαλέσει μεταβολή (να παραμορφώσει το ελατήριο) — χωρίς καν να κινείται τη στιγμή που το κρατάμε ακίνητο στο ύψος του.</p>
+
+  <div class="box def">
+    <div class="box-label">Ορισμός</div>
+    <p>Η ενέργεια που έχει ένα σώμα <strong>λόγω της θέσης του</strong> μέσα σε ένα πεδίο δύναμης (π.χ. λόγω του ύψους του μέσα στο βαρυτικό πεδίο της Γης) ονομάζεται <strong>(βαρυτική) δυναμική ενέργεια</strong>.</p>
+  </div>
+
+  <p>Η δυναμική ενέργεια ενός σώματος σε ύψος h ισούται με το έργο που χρειάστηκε η δύναμη που το ανύψωσε (ίση με το βάρος του) για να το φέρει εκεί:</p>
+
+  <div class="formula">U&nbsp; = &nbsp;w &middot; h &nbsp;=&nbsp; m &middot; g &middot; h</div>
+
+  <table class="terms">
+    <tr><th>Μέγεθος</th><th>Σημασία</th><th>Μονάδα (S.I.)</th></tr>
+    <tr><td>U</td><td>βαρυτική δυναμική ενέργεια</td><td>J (Joule)</td></tr>
+    <tr><td>m</td><td>μάζα του σώματος</td><td>kg</td></tr>
+    <tr><td>g</td><td>επιτάχυνση της βαρύτητας</td><td>m/s² (εδώ: 10 m/s²)</td></tr>
+    <tr><td>h</td><td>ύψος από ένα επίπεδο αναφοράς</td><td>m (μέτρο)</td></tr>
+  </table>
+
+  <h3>Από ποιο σημείο μετράμε το ύψος h;</h3>
+  <p>Εμείς επιλέγουμε ελεύθερα ένα <strong>επίπεδο αναφοράς</strong> (π.χ. το έδαφος, το δάπεδο ενός δωματίου, την επιφάνεια της θάλασσας) στο οποίο θεωρούμε ότι η δυναμική ενέργεια είναι μηδέν. Η <em>τιμή</em> της δυναμικής ενέργειας αλλάζει αν αλλάξουμε επίπεδο αναφοράς — αλλά η <strong>μεταβολή</strong> της δυναμικής ενέργειας ανάμεσα σε δύο θέσεις είναι πάντα η ίδια, όποιο επίπεδο αναφοράς κι αν διαλέξουμε. Επίσης, η δυναμική ενέργεια ενός σώματος σε κάποιο ύψος δεν εξαρτάται καθόλου από τον δρόμο που ακολούθησε για να φτάσει εκεί — μόνο από το τελικό του ύψος.</p>
+
+  <div class="box example">
+    <div class="box-label">Λυμένο παράδειγμα</div>
+    <p><strong>Δίνονται:</strong> Ένα βιβλίο μάζας m = 1,5 kg βρίσκεται σε ράφι ύψους h = 2 m από το δάπεδο.<br><strong>Ζητείται:</strong> Η δυναμική ενέργεια του βιβλίου ως προς το δάπεδο (g = 10 m/s²).</p>
+    <div class="solv">
+      <div class="solv-step"><span class="k">Λύση:</span> U = m · g · h = 1,5 · 10 · 2</div>
+      <div class="solv-step"><span class="k">Απάντηση:</span> U = 30 J</div>
+    </div>
+  </div>
+
+  <div class="box tip">
+    <div class="box-label">Όχι μόνο βαρυτική</div>
+    <p>Υπάρχουν κι άλλα είδη δυναμικής ενέργειας: ένα τεντωμένο λάστιχο ή ένα συμπιεσμένο ελατήριο έχουν <strong>ελαστική δυναμική ενέργεια</strong>, ένα ηλεκτρόνιο κοντά σε έναν πυρήνα έχει <strong>ηλεκτρική δυναμική ενέργεια</strong>. Σε αυτό το κεφάλαιο θα επικεντρωθούμε στη βαρυτική, που είναι η πιο οικεία.</p>
+  </div>
+</section>
+
+<!-- ============ 0.5 ============ -->
+<section class="chap" id="s5">
+  <div class="num-tag">0.5</div>
+  <h2>Η μηχανική ενέργεια και η διατήρησή της</h2>
+  <p class="lead">Εδώ συναντιούνται οι δύο μορφές ενέργειας που μόλις είδαμε, σε μία από τις πιο όμορφες ιδέες της Φυσικής.</p>
+
+  <p>Πέταξε μια μπάλα κατακόρυφα προς τα πάνω. Τη στιγμή που φεύγει από το χέρι σου έχει μεγάλη ταχύτητα, άρα μεγάλη κινητική ενέργεια, αλλά μικρό ύψος, άρα μικρή δυναμική ενέργεια. Καθώς ανεβαίνει, επιβραδύνεται — η κινητική της ενέργεια μειώνεται — αλλά ταυτόχρονα ανεβαίνει όλο και πιο ψηλά — η δυναμική της ενέργεια αυξάνεται. Στο ανώτερο σημείο της τροχιάς, η ταχύτητα μηδενίζεται στιγμιαία (E<sub>Κ</sub> = 0), ενώ η δυναμική ενέργεια γίνεται μέγιστη. Στη συνέχεια, όσο η μπάλα πέφτει, συμβαίνει το αντίστροφο: η δυναμική μετατρέπεται ξανά σε κινητική.</p>
+
+  <div class="box def">
+    <div class="box-label">Ορισμός</div>
+    <p>Το άθροισμα της κινητικής (E<sub>Κ</sub>) και της δυναμικής (U) ενέργειας ενός σώματος, σε μια δεδομένη χρονική στιγμή, ονομάζεται <strong>μηχανική ενέργεια</strong> (E<sub>μηχ</sub>):</p>
+  </div>
+
+  <div class="formula">E<sub>μηχ</sub>&nbsp; = &nbsp;E<sub>Κ</sub> &nbsp;+&nbsp; U</div>
+
+  <div class="box law">
+    <div class="box-label">Αρχή διατήρησης της μηχανικής ενέργειας</div>
+    <p>Όταν σε ένα σώμα (ή σύστημα σωμάτων) ασκούνται <strong>μόνο βαρυτικές, ηλεκτρικές ή ελαστικές δυνάμεις</strong> — δηλαδή, αν <strong>δεν υπάρχει τριβή</strong> ή αντίσταση αέρα — η μηχανική του ενέργεια <strong>παραμένει σταθερή</strong>. Όση κινητική ενέργεια χάνεται, κερδίζεται ακριβώς η ίδια ποσότητα δυναμικής ενέργειας — και αντίστροφα.</p>
+  </div>
+
+  <p>Αυτό σημαίνει πως, για να βρούμε την ταχύτητα ενός σώματος σε οποιοδήποτε σημείο της κίνησής του, αρκεί να γνωρίζουμε τη μηχανική ενέργειά του σε <em>ένα</em> σημείο — δεν χρειάζεται να ξέρουμε τίποτα για τον δρόμο που ακολούθησε ανάμεσα στα δύο σημεία!</p>
+
+  <div class="diagram">
+    <svg viewBox="0 0 560 210" xmlns="http://www.w3.org/2000/svg">
+      <path d="M60 180 Q 300 10 520 180" fill="none" stroke="var(--line)" stroke-width="2" stroke-dasharray="3 5"/>
+      <circle cx="60" cy="180" r="12" fill="var(--blue)"/>
+      <circle cx="290" cy="22" r="12" fill="var(--accent)"/>
+      <circle cx="520" cy="180" r="12" fill="var(--blue)"/>
+      <text x="60" y="206" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--ink-soft)">E<tspan baseline-shift="sub" font-size="8">Κ</tspan> μέγιστη, U = 0</text>
+      <text x="290" y="48" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--ink-soft)">E<tspan baseline-shift="sub" font-size="8">Κ</tspan> = 0, U μέγιστη</text>
+      <text x="520" y="206" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--ink-soft)">E<tspan baseline-shift="sub" font-size="8">Κ</tspan> μέγιστη, U = 0</text>
+      <text x="290" y="110" text-anchor="middle" font-family="var(--font-mono)" font-size="12.5" fill="var(--good)" font-weight="700">E_μηχ = E_Κ + U = σταθερή παντού</text>
+    </svg>
+    <figcaption>Σε μια εκτόξευση προς τα πάνω (ή σε ένα εκκρεμές, ή σε μια μπάλα που κυλά σε κεκλιμένο επίπεδο χωρίς τριβές), η μηχανική ενέργεια διατηρείται σταθερή σε κάθε σημείο της τροχιάς — μόνο ο «καταμερισμός» ανάμεσα σε κινητική και δυναμική αλλάζει.</figcaption>
+  </div>
+
+  <div class="box example">
+    <div class="box-label">Λυμένο παράδειγμα</div>
+    <p><strong>Δίνονται:</strong> Μια μπάλα μάζας m = 0,5 kg αφήνεται να πέσει (από την ηρεμία, χωρίς τριβές) από ύψος h = 5 m.<br><strong>Ζητείται:</strong> Η ταχύτητά της τη στιγμή που φτάνει στο έδαφος. (g = 10 m/s²)</p>
+    <div class="solv">
+      <div class="solv-step"><span class="k">Λύση:</span> Στο σημείο εκκίνησης: E<sub>Κ,αρχ</sub> = 0 (ξεκινά ακίνητη), U<sub>αρχ</sub> = m·g·h = 0,5·10·5 = 25 J</div>
+      <div class="solv-step">Στο έδαφος: U<sub>τελ</sub> = 0 (h = 0), άρα όλη η ενέργεια είναι κινητική: E<sub>Κ,τελ</sub> = ½·m·υ²</div>
+      <div class="solv-step">Διατήρηση μηχανικής ενέργειας: E<sub>Κ,αρχ</sub> + U<sub>αρχ</sub> = E<sub>Κ,τελ</sub> + U<sub>τελ</sub> ⟹ 25 = ½·0,5·υ²</div>
+      <div class="solv-step">υ² = 25 / 0,25 = 100 ⟹ υ = 10 m/s</div>
+      <div class="solv-step"><span class="k">Απάντηση:</span> υ = 10 m/s</div>
+    </div>
+  </div>
+
+  <h3>Εργαστήριο διατήρησης μηχανικής ενέργειας <span style="font-weight:400;font-size:.65em;color:var(--ink-soft);">(διαδραστικό)</span></h3>
+  <p>Μια μπάλα κυλά χωρίς τριβές πάνω σε μια κεκλιμένη ράγα. Σύρε το ρυθμιστικό ύψους (ή πάτησε «άσ' την να κυλήσει») και παρακολούθησε πώς η κινητική και η δυναμική ενέργεια «ανταλλάσσονται», ενώ το άθροισμά τους μένει σταθερό.</p>
+
+  <div class="lab">
+    <div class="lab-tabs">
+      <button class="lab-tab-btn active" data-tab="ecalc" type="button">🎛️ Ελεύθερη εξερεύνηση</button>
+      <button class="lab-tab-btn" data-tab="equiz" type="button">🎯 Πρόβλεψε τι θα συμβεί</button>
+    </div>
+
+    <div class="lab-panel active" id="tab-ecalc">
+      <div class="calc-grid">
+        <div>
+          <div class="ctrl">
+            <label>m (μάζα μπάλας)&nbsp;<span class="val" id="e-m-val">2 kg</span></label>
+            <input type="range" id="e-m" min="0.5" max="10" step="0.5" value="2">
+          </div>
+          <div class="ctrl">
+            <label>H (ύψος εκκίνησης)&nbsp;<span class="val" id="e-H-val">10 m</span></label>
+            <input type="range" id="e-H" min="1" max="20" step="1" value="10">
+          </div>
+          <div class="ctrl">
+            <label>Τρέχον ύψος (% του H)&nbsp;<span class="val" id="e-f-val">70%</span></label>
+            <input type="range" id="e-f" min="0" max="100" step="1" value="70">
+          </div>
+          <div class="play-row">
+            <button type="button" class="play-btn" id="e-play">▶ Άσ' την να κυλήσει</button>
+            <button type="button" class="play-btn secondary" id="e-reset">⏮ Επαναφορά στην κορυφή</button>
+          </div>
+          <div class="energy-grid">
+            <div><span class="lbl">ύψος h</span><span class="v" id="e-h-out">7,0 m</span></div>
+            <div><span class="lbl">ταχύτητα υ</span><span class="v" id="e-v-out">7,75 m/s</span></div>
+            <div><span class="lbl">κινητική E<sub>Κ</sub></span><span class="v" id="e-EK-out">60 J</span></div>
+            <div><span class="lbl">δυναμική U</span><span class="v" id="e-U-out">140 J</span></div>
+          </div>
+          <div class="baseline-box" style="margin-top:12px;">
+            <div><span>Μηχανική ενέργεια (σταθερή σε όλη τη διαδρομή):</span></div>
+            <div class="baseline-ratio" id="e-Etot-out" style="margin-top:4px;">E_μηχ = 200 J</div>
+          </div>
+        </div>
+        <div>
+          <div class="diagram-live">
+            <svg id="e-ramp-svg" viewBox="0 0 400 190" xmlns="http://www.w3.org/2000/svg"></svg>
+          </div>
+          <div class="ramp-caption">Η κίνηση δείχνεται με σταθερό ρυθμό, ώστε να φαίνεται καθαρά η μετατροπή της ενέργειας.</div>
+          <div class="diagram-live" style="margin-top:14px;">
+            <svg id="e-graph-svg" viewBox="0 0 400 190" xmlns="http://www.w3.org/2000/svg"></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lab-panel" id="tab-equiz">
+      <div class="quiz-question" id="eq-question">Φόρτωση ερώτησης…</div>
+      <div class="quiz-before-after">
+        <div class="qa-panel">
+          <h4>Πριν</h4>
+          <svg id="eq-before-svg" viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg"></svg>
+          <div class="qa-values" id="eq-before-values"></div>
+        </div>
+        <div class="qa-panel">
+          <h4>Μετά</h4>
+          <div id="eq-after-hidden" class="qa-hidden">❓</div>
+          <svg id="eq-after-svg" viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg" style="display:none;"></svg>
+          <div class="qa-values" id="eq-after-values"></div>
+        </div>
+      </div>
+      <div class="quiz-options" id="eq-options"></div>
+      <div class="quiz-explain" id="eq-explain"></div>
+      <button type="button" class="quiz-next" id="eq-next" style="display:none;">🎲 Νέα ερώτηση</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 0.6 ============ -->
+<section class="chap" id="s6">
+  <div class="num-tag">0.6</div>
+  <h2>Ισχύς</h2>
+  <p class="lead">Δύο εργάτες ανεβάζουν το ίδιο κιβώτιο στο ίδιο ύψος — άρα παράγουν το ίδιο έργο. Ο ένας όμως το κάνει σε 5 δευτερόλεπτα, τρέχοντας, κι ο άλλος σε 30 δευτερόλεπτα, περπατώντας. Γιατί ο πρώτος κουράζεται πολύ περισσότερο;</p>
+
+  <p>Η απάντηση είναι ότι το ίδιο έργο, όταν παράγεται σε <strong>λιγότερο χρόνο</strong>, απαιτεί να «δουλέψουμε» πιο έντονα. Το μέγεθος που συνδέει το έργο (ή, γενικότερα, την ενέργεια που μετασχηματίζεται) με τον χρόνο που χρειάστηκε, ονομάζεται <strong>ισχύς</strong>.</p>
+
+  <div class="box def">
+    <div class="box-label">Ορισμός</div>
+    <p>Η <strong>ισχύς</strong> δείχνει πόσο γρήγορα παράγεται έργο ή μετασχηματίζεται ενέργεια. Ορίζεται ως το πηλίκο του έργου (ή της ενέργειας) προς τον αντίστοιχο χρόνο:</p>
+  </div>
+
+  <div class="formula">P&nbsp; = &nbsp;W / t</div>
+
+  <table class="terms">
+    <tr><th>Μέγεθος</th><th>Σημασία</th><th>Μονάδα (S.I.)</th></tr>
+    <tr><td>P</td><td>ισχύς</td><td>W (Watt)</td></tr>
+    <tr><td>W</td><td>έργο ή ενέργεια που μετασχηματίζεται</td><td>J (Joule)</td></tr>
+    <tr><td>t</td><td>χρονικό διάστημα</td><td>s (δευτερόλεπτο)</td></tr>
+  </table>
+
+  <p>Η μονάδα ισχύος στο Διεθνές Σύστημα είναι το <strong>Watt (Βατ, W)</strong>, προς τιμή του Σκοτσέζου μηχανικού Τζέιμς Βατ: 1 W = 1 J/s. Μια μηχανή έχει ισχύ 1 Watt όταν παράγει έργο 1 Joule σε κάθε δευτερόλεπτο. Το Watt είναι σχετικά μικρή μονάδα, γι' αυτό συχνά χρησιμοποιούμε τα πολλαπλάσιά του:</p>
+
+  <div class="formula">1 kW (κιλοβάτ) = 1.000 W &nbsp;&nbsp;·&nbsp;&nbsp; 1 MW (μεγαβάτ) = 1.000.000 W</div>
+
+  <p>Ειδικά για κινητήρες αυτοκινήτων χρησιμοποιείται συχνά και η παραδοσιακή μονάδα <strong>ίππος (HP, Horse Power)</strong>, που ισούται περίπου με ¾ kW (δηλαδή 1 HP ≈ 750 W).</p>
+
+  <table class="terms">
+    <tr><th>Παράδειγμα</th><th>Τυπική ισχύς</th></tr>
+    <tr><td>Άνθρωπος σε ηρεμία</td><td>≈ 17 W</td></tr>
+    <tr><td>Άνθρωπος που περπατάει</td><td>≈ 750 W</td></tr>
+    <tr><td>Κινητήρας αυτοκινήτου</td><td>10–200 kW</td></tr>
+    <tr><td>Σταθμός ηλεκτρικής ενέργειας</td><td>εκατοντάδες MW</td></tr>
+  </table>
+
+  <div class="box example">
+    <div class="box-label">Λυμένο παράδειγμα</div>
+    <p><strong>Δίνονται:</strong> Ένας ηλεκτρικός κινητήρας ανυψώνει με σταθερή ταχύτητα ένα κιβώτιο βάρους w = 500 N σε ύψος h = 4 m, σε χρόνο t = 5 s.<br><strong>Ζητείται:</strong> Η ισχύς του κινητήρα.</p>
+    <div class="solv">
+      <div class="solv-step"><span class="k">Λύση:</span> Πρώτα βρίσκουμε το έργο: W = F · Δx = w · h = 500 · 4 = 2.000 J</div>
+      <div class="solv-step">Μετά την ισχύ: P = W / t = 2.000 / 5</div>
+      <div class="solv-step"><span class="k">Απάντηση:</span> P = 400 W</div>
+    </div>
+  </div>
+
+  <div class="box tip">
+    <div class="box-label">Θυμήσου τη διαφορά</div>
+    <p><strong>Έργο/ενέργεια</strong> = «πόσο» μεταφέρθηκε συνολικά. <strong>Ισχύς</strong> = «πόσο γρήγορα» μεταφέρθηκε. Δύο μηχανές μπορούν να παράγουν το ίδιο έργο, αλλά να έχουν τελείως διαφορετική ισχύ αν το κάνουν σε διαφορετικό χρόνο.</p>
+  </div>
+</section>
+
+<!-- ============ SUMMARY ============ -->
+<section class="chap" id="summary">
+  <div class="num-tag">Ανακεφαλαίωση</div>
+  <h2>Περίληψη &amp; βασικοί όροι</h2>
+  <div class="summary-box">
+    <ul>
+      <li>Η <strong>ενέργεια</strong> είναι η ικανότητα ενός σώματος να προκαλεί μεταβολές. Εμφανίζεται με πολλές μορφές και η συνολική της ποσότητα <strong>διατηρείται</strong> σε κάθε μετατροπή.</li>
+      <li>Το <strong>έργο</strong> μιας δύναμης είναι W = F·Δx. Είναι <strong>θετικό</strong> όταν η δύναμη έχει την ίδια φορά με τη μετατόπιση, <strong>αρνητικό</strong> όταν έχει αντίθετη φορά, και <strong>μηδενικό</strong> όταν είναι κάθετη σε αυτήν.</li>
+      <li>Η <strong>κινητική ενέργεια</strong> ενός κινούμενου σώματος είναι E<sub>Κ</sub> = ½mυ² — ανάλογη της μάζας, ανάλογη του <strong>τετραγώνου</strong> της ταχύτητας.</li>
+      <li>Η <strong>(βαρυτική) δυναμική ενέργεια</strong> ενός σώματος σε ύψος h είναι U = mgh — εξαρτάται από το ύψος, όχι από τον δρόμο που ακολουθήθηκε.</li>
+      <li>Η <strong>μηχανική ενέργεια</strong> είναι το άθροισμα E<sub>μηχ</sub> = E<sub>Κ</sub> + U. Όταν δρουν μόνο βαρυτικές, ηλεκτρικές ή ελαστικές δυνάμεις (χωρίς τριβές), η μηχανική ενέργεια <strong>διατηρείται σταθερή</strong> — η μία μορφή μετατρέπεται στην άλλη.</li>
+      <li>Η <strong>ισχύς</strong> P = W/t δείχνει πόσο γρήγορα παράγεται έργο ή μετασχηματίζεται ενέργεια. Μονάδα: το Watt (W); 1 kW = 1.000 W, 1 HP ≈ 750 W.</li>
+    </ul>
+    <div class="glossary">
+      <span>ενέργεια</span><span>αρχή διατήρησης της ενέργειας</span>
+      <span>έργο δύναμης (W)</span><span>Joule (J)</span>
+      <span>θετικό / αρνητικό / μηδενικό έργο</span><span>παράλληλη / κάθετη συνιστώσα</span>
+      <span>κινητική ενέργεια (E<sub>Κ</sub>)</span><span>δυναμική ενέργεια (U)</span>
+      <span>μηχανική ενέργεια (E<sub>μηχ</sub>)</span><span>διατήρηση μηχανικής ενέργειας</span>
+      <span>ισχύς (P)</span><span>Watt (W) / ίππος (HP)</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXERCISES ============ -->
+<section class="chap" id="exercises">
+  <div class="num-tag">Εξάσκηση</div>
+  <h2>Ασκήσεις</h2>
+  <p class="lead">Δοκίμασε πρώτα μόνος/μόνη σου κάθε ερώτηση, και μετά πάτησε στο 👁 για να δεις την απάντηση. (Χρησιμοποίησε g = 10 m/s² όπου χρειάζεται.)</p>
+
+  <div class="exwrap">
+
+    <div class="exgroup">
+      <div class="section-title-row"><h3>Α. Πολλαπλής επιλογής</h3><span class="lvl">Επίπεδο 1 · Βασικές έννοιες</span></div>
+      <ol class="qlist">
+        <li>Η μονάδα μέτρησης του έργου στο Διεθνές Σύστημα είναι:
+          <ul class="opts"><li data-l="α)">το Newton</li><li data-l="β)">το Watt</li><li data-l="γ)">το Joule</li><li data-l="δ)">το kg</li></ul>
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>γ.</strong> 1 J = 1 N·m (§0.2).</div></details>
+        </li>
+        <li>Το έργο μιας δύναμης είναι <strong>αρνητικό</strong> όταν:
+          <ul class="opts"><li data-l="α)">η δύναμη έχει την ίδια φορά με τη μετατόπιση</li><li data-l="β)">η δύναμη έχει αντίθετη φορά από τη μετατόπιση</li><li data-l="γ)">η δύναμη είναι κάθετη στη μετατόπιση</li><li data-l="δ)">το σώμα είναι ακίνητο</li></ul>
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>β.</strong> Όταν η δύναμη αντιστέκεται στην κίνηση, παράγει αρνητικό έργο.</div></details>
+        </li>
+        <li>Αν διπλασιάσουμε την ταχύτητα ενός σώματος (κρατώντας τη μάζα σταθερή), η κινητική του ενέργεια γίνεται:
+          <ul class="opts"><li data-l="α)">διπλάσια</li><li data-l="β)">τετραπλάσια</li><li data-l="γ)">η ίδια</li><li data-l="δ)">υποδιπλάσια</li></ul>
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>β.</strong> E<sub>Κ</sub> ∝ υ² ⟹ διπλάσια ταχύτητα ⟹ τετραπλάσια E<sub>Κ</sub>.</div></details>
+        </li>
+        <li>Η δυναμική ενέργεια ενός σώματος σε ύψος h εξαρτάται από:
+          <ul class="opts"><li data-l="α)">τον δρόμο που ακολούθησε το σώμα</li><li data-l="β)">μόνο το τελικό ύψος h (και τη μάζα)</li><li data-l="γ)">την ταχύτητα του σώματος</li><li data-l="δ)">τον χρόνο που πέρασε</li></ul>
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>β.</strong> U = mgh — εξαρτάται μόνο από τη μάζα και το τελικό ύψος.</div></details>
+        </li>
+        <li>Η μηχανική ενέργεια ενός σώματος διατηρείται σταθερή όταν:
+          <ul class="opts"><li data-l="α)">το σώμα είναι ακίνητο</li><li data-l="β)">υπάρχει τριβή</li><li data-l="γ)">δρουν μόνο βαρυτικές, ηλεκτρικές ή ελαστικές δυνάμεις</li><li data-l="δ)">η ταχύτητα είναι σταθερή</li></ul>
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>γ.</strong> Αυτή είναι η προϋπόθεση της αρχής διατήρησης της μηχανικής ενέργειας (§0.5).</div></details>
+        </li>
+        <li>Η μονάδα μέτρησης της ισχύος στο Διεθνές Σύστημα είναι:
+          <ul class="opts"><li data-l="α)">το Joule</li><li data-l="β)">το Watt</li><li data-l="γ)">το Newton</li><li data-l="δ)">ο ίππος</li></ul>
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>β.</strong> P = W/t, μονάδα το Watt (1 W = 1 J/s).</div></details>
+        </li>
+        <li>Δύο μηχανές παράγουν το ίδιο έργο. Η μηχανή με τη <strong>μεγαλύτερη ισχύ</strong> είναι αυτή που:
+          <ul class="opts"><li data-l="α)">χρειάζεται περισσότερο χρόνο</li><li data-l="β)">χρειάζεται λιγότερο χρόνο</li><li data-l="γ)">έχει μεγαλύτερη μάζα</li><li data-l="δ)">δεν έχει καμία διαφορά</li></ul>
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>β.</strong> P = W/t: ίδιο W, μικρότερο t ⟹ μεγαλύτερο P.</div></details>
+        </li>
+        <li>Μια δύναμη είναι κάθετη στη μετατόπιση ενός σώματος. Το έργο της είναι:
+          <ul class="opts"><li data-l="α)">θετικό</li><li data-l="β)">αρνητικό</li><li data-l="γ)">μηδενικό</li><li data-l="δ)">άπειρο</li></ul>
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>γ.</strong> Μια κάθετη δύναμη δεν έχει καμία συνιστώσα στην κατεύθυνση της κίνησης.</div></details>
+        </li>
+      </ol>
+    </div>
+
+    <div class="exgroup">
+      <div class="section-title-row"><h3>Β. Σωστό ή Λάθος</h3><span class="lvl">Επίπεδο 1 · Αιτιολόγησε την απάντησή σου</span></div>
+      <ol class="qlist">
+        <li>Το έργο μιας δύναμης είναι πάντα θετικό.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>Λάθος.</strong> Μπορεί να είναι θετικό, αρνητικό ή μηδενικό, ανάλογα με τη σχετική φορά δύναμης και μετατόπισης.</div></details>
+        </li>
+        <li>Η κινητική ενέργεια ενός σώματος είναι ανάλογη του τετραγώνου της ταχύτητάς του.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>Σωστό.</strong> E<sub>Κ</sub> = ½mυ².</div></details>
+        </li>
+        <li>Η δυναμική ενέργεια ενός σώματος εξαρτάται από τον δρόμο που ακολούθησε για να φτάσει στο τελικό του ύψος.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>Λάθος.</strong> Εξαρτάται μόνο από το τελικό ύψος (και τη μάζα), όχι από τη διαδρομή.</div></details>
+        </li>
+        <li>Όταν μόνο η βαρύτητα παράγει έργο σε ένα σώμα, η μηχανική του ενέργεια παραμένει σταθερή.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>Σωστό.</strong> Η βαρύτητα είναι μία από τις δυνάμεις για τις οποίες ισχύει η διατήρηση της μηχανικής ενέργειας.</div></details>
+        </li>
+        <li>Η ισχύς μετριέται σε Joule.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>Λάθος.</strong> Το Joule είναι μονάδα έργου/ενέργειας. Η ισχύς μετριέται σε Watt.</div></details>
+        </li>
+        <li>Αν ένα σώμα κινείται με σταθερή ταχύτητα σε κύκλο, η κεντρομόλος δύναμη που δέχεται δεν παράγει καθόλου έργο.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body"><strong>Σωστό.</strong> Η κεντρομόλος δύναμη είναι πάντα κάθετη στην ταχύτητα (άρα και στη στιγμιαία μετατόπιση), οπότε το έργο της είναι μηδέν.</div></details>
+        </li>
+      </ol>
+    </div>
+
+    <div class="exgroup">
+      <div class="section-title-row"><h3>Γ. Συμπλήρωσε τα κενά</h3><span class="lvl">Επίπεδο 1</span></div>
+      <div class="wordbank"><strong>Τράπεζα λέξεων:</strong> έργο · Joule · κινητική ενέργεια · δυναμική ενέργεια · μηχανική ενέργεια · Watt · ίππος</div>
+      <ol class="qlist">
+        <li>Το γινόμενο της δύναμης επί τη μετατόπιση του σώματος στη διεύθυνσή της ονομάζεται <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">έργο</div></details>
+        </li>
+        <li>Η μονάδα μέτρησης του έργου και κάθε μορφής ενέργειας στο Διεθνές Σύστημα ονομάζεται <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">Joule (J)</div></details>
+        </li>
+        <li>Η ενέργεια που έχει ένα σώμα λόγω της κίνησής του ονομάζεται <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>, ενώ η ενέργεια που έχει λόγω της θέσης του ονομάζεται <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">κινητική ενέργεια · δυναμική ενέργεια</div></details>
+        </li>
+        <li>Το άθροισμα κινητικής και δυναμικής ενέργειας ενός σώματος ονομάζεται <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">μηχανική ενέργεια</div></details>
+        </li>
+        <li>Η μονάδα μέτρησης της ισχύος στο Διεθνές Σύστημα ονομάζεται <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>, ενώ μια παλαιότερη μονάδα που χρησιμοποιείται ακόμη για κινητήρες αυτοκινήτων είναι ο <span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">Watt (W) · ίππος (HP)</div></details>
+        </li>
+      </ol>
+    </div>
+
+    <div class="exgroup">
+      <div class="section-title-row"><h3>Δ. Ερωτήσεις κατανόησης</h3><span class="lvl">Επίπεδο 2 · Σύντομη απάντηση</span></div>
+      <ol class="qlist">
+        <li>Εξήγησε γιατί το έργο της κάθετης δύναμης στήριξης (Ν) είναι πάντα μηδέν, όταν ένα σώμα κινείται πάνω σε οριζόντιο δάπεδο.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">Επειδή η δύναμη στήριξης είναι κάθετη στο δάπεδο, άρα και κάθετη στην (οριζόντια) μετατόπιση του σώματος. Μια δύναμη κάθετη στη μετατόπιση δεν έχει καμία συνιστώσα προς την κατεύθυνση της κίνησης, άρα δεν παράγει έργο.</div></details>
+        </li>
+        <li>Δύο άνθρωποι ανεβαίνουν την ίδια σκάλα, στο ίδιο ύψος: ο ένας τρέχοντας, ο άλλος περπατώντας αργά. Παράγουν το ίδιο έργο; Έχουν την ίδια ισχύ; Εξήγησε τη διαφορά.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">Παράγουν το <strong>ίδιο έργο</strong> (ίδιο βάρος, ίδιο ύψος, W = w·h). Δεν έχουν όμως την ίδια ισχύ: αυτός που τρέχει παράγει το έργο σε λιγότερο χρόνο, άρα έχει <strong>μεγαλύτερη ισχύ</strong> (P = W/t) — γι' αυτό κουράζεται περισσότερο σε κάθε στιγμή.</div></details>
+        </li>
+        <li>Ένα εκκρεμές ταλαντώνεται χωρίς τριβές. Περίγραψε πώς μεταβάλλονται η κινητική και η δυναμική του ενέργεια καθώς κινείται από το ένα άκρο της τροχιάς του ως το χαμηλότερο σημείο.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">Στο άκρο της τροχιάς η ταχύτητα είναι μηδέν (E<sub>Κ</sub> = 0) και το ύψος είναι μέγιστο (U μέγιστη). Καθώς κατεβαίνει προς το χαμηλότερο σημείο, το ύψος μειώνεται (η U μειώνεται) ενώ η ταχύτητα αυξάνεται (η E<sub>Κ</sub> αυξάνεται). Στο χαμηλότερο σημείο η ταχύτητα —άρα και η E<sub>Κ</sub>— γίνεται μέγιστη, ενώ U = 0. Σε κάθε στιγμή, E<sub>Κ</sub> + U = σταθερή.</div></details>
+        </li>
+        <li>Γιατί η αρχή διατήρησης της μηχανικής ενέργειας <strong>δεν</strong> ισχύει όταν υπάρχει τριβή;
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">Επειδή η τριβή παράγει αρνητικό έργο πάνω στο σώμα και μετατρέπει μέρος της μηχανικής του ενέργειας σε θερμική ενέργεια (θερμότητα). Η συνολική ενέργεια εξακολουθεί να διατηρείται, αλλά όχι μόνο η <em>μηχανική</em> — ένα μέρος της «διαφεύγει» σε άλλη μορφή.</div></details>
+        </li>
+        <li>Δύο αυτοκίνητα της ίδιας μάζας κινούνται με 50 km/h και 100 km/h αντίστοιχα. Γιατί το δεύτερο χρειάζεται πολύ περισσότερη απόσταση για να σταματήσει, αν και η ταχύτητά του είναι μόνο διπλάσια;
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">Επειδή η κινητική ενέργεια είναι ανάλογη του <strong>τετραγώνου</strong> της ταχύτητας: διπλάσια ταχύτητα σημαίνει <strong>τετραπλάσια</strong> κινητική ενέργεια. Για να σταματήσει το αυτοκίνητο, η τριβή πρέπει να παράγει αρνητικό έργο ίσο σε απόλυτη τιμή με αυτή την κινητική ενέργεια — άρα χρειάζεται περίπου τετραπλάσια απόσταση φρεναρίσματος.</div></details>
+        </li>
+        <li>Εξήγησε τη διαφορά ανάμεσα στο «έργο» και την «ισχύ» με δικά σου λόγια, χρησιμοποιώντας ένα παράδειγμα από την καθημερινότητά σου.
+          <details class="ans"><summary>Απάντηση</summary><div class="ans-body">Το έργο δείχνει «πόση» ενέργεια μεταφέρθηκε συνολικά, ανεξάρτητα από τον χρόνο. Η ισχύς δείχνει «πόσο γρήγορα» μεταφέρθηκε αυτή η ενέργεια. Π.χ. το να γεμίσεις μια πισίνα με έναν κουβά νερό ή με έναν σωλήνα απαιτεί το ίδιο «έργο» (ίδια ποσότητα νερού), αλλά ο σωλήνας έχει πολύ μεγαλύτερη «ισχύ» γιατί το κάνει πολύ πιο γρήγορα.</div></details>
+        </li>
+      </ol>
+    </div>
+
+    <div class="exgroup">
+      <div class="section-title-row"><h3>Ε. Ασκήσεις υπολογισμών</h3><span class="lvl">Επίπεδο 2–3 · g = 10 m/s²</span></div>
+      <ol class="qlist">
+        <li>Μια δύναμη F = 30 N ασκείται σε ένα κιβώτιο στη διεύθυνση της κίνησής του, και το κιβώτιο μετατοπίζεται κατά Δx = 8 m. Υπολόγισε το έργο της δύναμης.
+          <details class="ans"><summary>Λύση</summary><div class="ans-body">
+            <div class="solv"><div class="solv-step">W = F · Δx = 30 · 8 = 240 J</div></div>
+            <strong>Απάντηση:</strong> W = 240 J (θετικό, αφού η δύναμη έχει την ίδια φορά με τη μετατόπιση).
+          </div></details>
+        </li>
+        <li>Μια δύναμη F = 50 N ασκείται πλάγια σε ένα σώμα που μετατοπίζεται κατά Δx = 10 m. Η δύναμη αναλύεται σε συνιστώσες F∥ = 40 N (παράλληλη στη μετατόπιση) και F⊥ = 30 N (κάθετη). Υπολόγισε το έργο της F.
+          <details class="ans"><summary>Λύση</summary><div class="ans-body">
+            Μόνο η παράλληλη συνιστώσα παράγει έργο.
+            <div class="solv"><div class="solv-step">W = F∥ · Δx = 40 · 10 = 400 J</div></div>
+            <strong>Απάντηση:</strong> W = 400 J. (Η F⊥ δεν συνεισφέρει καθόλου.)
+          </div></details>
+        </li>
+        <li>Υπολόγισε την κινητική ενέργεια ενός ποδηλάτη (μαζί με το ποδήλατο) μάζας 80 kg που κινείται με ταχύτητα 6 m/s.
+          <details class="ans"><summary>Λύση</summary><div class="ans-body">
+            <div class="solv">
+              <div class="solv-step">E<sub>Κ</sub> = ½ · m · υ² = ½ · 80 · 6²</div>
+              <div class="solv-step">E<sub>Κ</sub> = ½ · 80 · 36 = 1.440 J</div>
+            </div>
+            <strong>Απάντηση:</strong> E<sub>Κ</sub> = 1.440 J.
+          </div></details>
+        </li>
+        <li>Ένα κουτί μάζας 4 kg βρίσκεται σε ράφι ύψους 1,5 m από το πάτωμα. Υπολόγισε τη δυναμική του ενέργεια ως προς το πάτωμα.
+          <details class="ans"><summary>Λύση</summary><div class="ans-body">
+            <div class="solv"><div class="solv-step">U = m · g · h = 4 · 10 · 1,5 = 60 J</div></div>
+            <strong>Απάντηση:</strong> U = 60 J.
+          </div></details>
+        </li>
+        <li>Μια μπάλα μάζας 0,2 kg αφήνεται να πέσει (χωρίς τριβές, από την ηρεμία) από ύψος 1,25 m. Βρες την ταχύτητά της τη στιγμή που φτάνει στο έδαφος, χρησιμοποιώντας τη διατήρηση της μηχανικής ενέργειας.
+          <details class="ans"><summary>Λύση</summary><div class="ans-body">
+            <div class="solv">
+              <div class="solv-step">U<sub>αρχ</sub> = m·g·h = 0,2·10·1,25 = 2,5 J (E<sub>Κ,αρχ</sub> = 0)</div>
+              <div class="solv-step">Στο έδαφος: όλη η ενέργεια είναι κινητική: ½·m·υ² = 2,5</div>
+              <div class="solv-step">υ² = 2·2,5/0,2 = 25 ⟹ υ = 5 m/s</div>
+            </div>
+            <strong>Απάντηση:</strong> υ = 5 m/s.
+          </div></details>
+        </li>
+        <li>Ένας ανελκυστήρας ανεβάζει φορτίο βάρους 3.000 N σε ύψος 12 m, σε χρόνο 15 s. Υπολόγισε (α) το έργο που παράγεται και (β) την ισχύ του ανελκυστήρα.
+          <details class="ans"><summary>Λύση</summary><div class="ans-body">
+            <div class="solv">
+              <div class="solv-step">(α) W = F · Δx = 3.000 · 12 = 36.000 J</div>
+              <div class="solv-step">(β) P = W / t = 36.000 / 15 = 2.400 W = 2,4 kW</div>
+            </div>
+            <strong>Απάντηση:</strong> W = 36.000 J, P = 2.400 W.
+          </div></details>
+        </li>
+      </ol>
+    </div>
+
+    <div class="exgroup">
+      <div class="section-title-row"><h3>ΣΤ. Πρόβλημα σύνθεσης</h3><span class="lvl">Επίπεδο 3 · Συνδυάζει δυναμική, κινητική ενέργεια και ισχύ</span></div>
+      <ol class="qlist">
+        <li>Ένα παιδί μάζας 30 kg κάθεται στην κορυφή μιας τσουλήθρας ύψους 2 m. Γλιστράει χωρίς τριβές ως τη βάση, όπου χρειάζεται 2 s για να φτάσει. <br>α) Υπολόγισε τη δυναμική ενέργεια του παιδιού στην κορυφή, ως προς τη βάση της τσουλήθρας. <br>β) Χρησιμοποιώντας τη διατήρηση της μηχανικής ενέργειας, βρες την ταχύτητα του παιδιού στη βάση. <br>γ) Υπολόγισε τη μέση ισχύ με την οποία μετατράπηκε η δυναμική ενέργεια σε κινητική.
+          <details class="ans"><summary>Λύση</summary><div class="ans-body">
+            <strong>α)</strong> U<sub>κορυφή</sub> = m·g·h = 30 · 10 · 2 = 600 J.
+            <div class="solv">
+              <div class="solv-step"><strong>β)</strong> Στην κορυφή: E<sub>Κ</sub> = 0, E<sub>μηχ</sub> = 600 J. Στη βάση: U = 0, άρα ½·m·υ² = 600</div>
+              <div class="solv-step">υ² = 2·600/30 = 40 ⟹ υ = √40 ≈ 6,3 m/s</div>
+              <div class="solv-step"><strong>γ)</strong> P = W/t = 600/2 = 300 W</div>
+            </div>
+            <strong>Απάντηση:</strong> U = 600 J, υ ≈ 6,3 m/s, P = 300 W.
+          </div></details>
+        </li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+
+</div>
+
+<footer class="pagefoot">Σημειώσεις &amp; ασκήσεις βασισμένες στην ύλη του σχολικού βιβλίου Φυσικής Β' Γυμνασίου, Κεφάλαιο 5 «Ενέργεια» · Προαπαιτούμενο κεφάλαιο για τη Γ' Γυμνασίου</footer>
+
+<script>
+(function(){
+  "use strict";
+  var g = 10;
+
+  function sig(v,dec){ return v.toFixed(dec).replace('.',','); }
+  function fmtNum(v,dec){ return sig(v,dec); }
+  function fmtJ(v){
+    var a=Math.abs(v);
+    if(a>=1000) return (v<0?'−':'')+sig(a/1000,2)+' kJ';
+    if(a<0.5 && a>0) return (v<0?'−':'')+sig(a,2)+' J';
+    return (v<0?'−':'')+sig(a,0)+' J';
+  }
+  function fmtSignedJ(v){
+    if(Math.abs(v)<0.05) return '0 J';
+    return (v>0?'+':'−')+fmtJ(Math.abs(v));
+  }
+  function fmtV(v){ return sig(v,2)+' m/s'; }
+  function deg2rad(d){ return d*Math.PI/180; }
+
+  /* =========================================================
+     LAB 1 — ΠΡΟΣΗΜΟ ΕΡΓΟΥ
+     ========================================================= */
+  function drawWorkDiagram(svg,F,dx,theta){
+    var id=svg.id;
+    var w=400,h=190;
+    var x0=40, x1=Math.min(w-30, x0+120+(dx/10)*220);
+    var baseline=150;
+    var cx=x0+(x1-x0)*0.32, cy=baseline-18;
+    var L=36+(F/50)*74;
+    var rad=deg2rad(theta);
+    var tipX=cx+L*Math.cos(rad), tipY=cy-L*Math.sin(rad);
+    var compXx=cx+L*Math.cos(rad), compXy=cy;
+    var compYx=cx, compYy=cy-L*Math.sin(rad);
+    var cosT=Math.cos(rad);
+    var parColor = cosT>0.06 ? 'var(--good)' : (cosT<-0.06 ? 'var(--pos)' : 'var(--ink-soft)');
+    var arcPts=[];
+    var N=14;
+    for(var i=0;i<=N;i++){
+      var a=rad*(i/N);
+      arcPts.push((cx+22*Math.cos(a)).toFixed(1)+','+(cy-22*Math.sin(a)).toFixed(1));
+    }
+    var arcPath = arcPts.length>1 ? ('M'+arcPts.join(' L ')) : '';
+
+    svg.innerHTML =
+      '<defs>'+
+        '<marker id="'+id+'-mF" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink)"/></marker>'+
+        '<marker id="'+id+'-mD" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--good)"/></marker>'+
+        '<marker id="'+id+'-mC" markerWidth="7" markerHeight="7" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="'+parColor+'"/></marker>'+
+      '</defs>'+
+      '<line x1="'+x0+'" y1="'+baseline+'" x2="'+(x1+10)+'" y2="'+baseline+'" stroke="var(--line)" stroke-width="1.5"/>'+
+      '<path d="M'+x0+' '+(baseline+18)+' L'+(x1-4)+' '+(baseline+18)+'" stroke="var(--good)" stroke-width="2.2" marker-end="url(#'+id+'-mD)"/>'+
+      '<text x="'+((x0+x1)/2)+'" y="'+(baseline+34)+'" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--good)">μετατόπιση Δx = '+fmtNum(dx,0)+' m</text>'+
+      '<rect x="'+(cx-18)+'" y="'+(cy-14)+'" width="36" height="28" rx="5" fill="var(--panel-2)" stroke="var(--ink)" stroke-width="1.4"/>'+
+      (arcPath? '<path d="'+arcPath+'" fill="none" stroke="var(--ink-soft)" stroke-width="1.2" opacity="0.6"/>':'')+
+      '<text x="'+(cx+30)+'" y="'+(cy-24)+'" font-family="var(--font-mono)" font-size="11" fill="var(--ink-soft)">θ = '+fmtNum(theta,0)+'°</text>'+
+      '<line x1="'+tipX+'" y1="'+tipY+'" x2="'+compXx+'" y2="'+compXy+'" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="3 3"/>'+
+      '<line x1="'+tipX+'" y1="'+tipY+'" x2="'+compYx+'" y2="'+compYy+'" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="3 3"/>'+
+      '<line x1="'+cx+'" y1="'+cy+'" x2="'+compXx+'" y2="'+compXy+'" stroke="'+parColor+'" stroke-width="2.6" marker-end="url(#'+id+'-mC)"/>'+
+      '<line x1="'+cx+'" y1="'+cy+'" x2="'+compYx+'" y2="'+compYy+'" stroke="var(--ink-soft)" stroke-width="2" stroke-dasharray="2 3" marker-end="url(#'+id+'-mC)" opacity="0.7"/>'+
+      '<line x1="'+cx+'" y1="'+cy+'" x2="'+tipX+'" y2="'+tipY+'" stroke="var(--ink)" stroke-width="2.6" marker-end="url(#'+id+'-mF)"/>'+
+      '<text x="'+(tipX+6)+'" y="'+(tipY-4)+'" font-family="var(--font-mono)" font-size="12" font-weight="700" fill="var(--ink)">F</text>'+
+      '<text x="'+((cx+compXx)/2)+'" y="'+(cy+16)+'" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="'+parColor+'">F∥</text>'+
+      (Math.abs(Math.sin(rad))>0.08 ? '<text x="'+(compYx-26)+'" y="'+(compYy+4)+'" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--ink-soft)">F⊥</text>' : '');
+  }
+
+  function updateWorkCalc(){
+    var F=+document.getElementById('w-F').value;
+    var dx=+document.getElementById('w-dx').value;
+    var theta=+document.getElementById('w-theta').value;
+    document.getElementById('w-F-val').textContent=fmtNum(F,0)+' N';
+    document.getElementById('w-dx-val').textContent=fmtNum(dx,0)+' m';
+    document.getElementById('w-theta-val').textContent=fmtNum(theta,0)+'°';
+    drawWorkDiagram(document.getElementById('w-svg'),F,dx,theta);
+    var W=F*dx*Math.cos(deg2rad(theta));
+    document.getElementById('w-W-val').textContent=fmtSignedJ(W);
+    var kindEl=document.getElementById('w-W-kind');
+    var valEl=document.getElementById('w-W-val');
+    if(Math.abs(theta-90)<2){ kindEl.textContent='μηδενικό έργο (ορθή γωνία)'; valEl.style.color='var(--ink-soft)'; }
+    else if(theta<90){ kindEl.textContent='θετικό έργο (οξεία γωνία, θ < 90°)'; valEl.style.color='var(--good)'; }
+    else { kindEl.textContent='αρνητικό έργο (αμβλεία γωνία, θ > 90°)'; valEl.style.color='var(--pos)'; }
+    var maxMag=50*10;
+    var pct=Math.min(100,Math.abs(W)/maxMag*100);
+    var meter=document.getElementById('w-meter');
+    meter.className='meter-signed-fill'+(W>0.3?' pos':(W<-0.3?' neg':''));
+    meter.style.width=(Math.abs(W)<0.3?0:pct)+'%';
+  }
+  ['w-F','w-dx','w-theta'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',updateWorkCalc);
+  });
+
+  var WSCEN=[
+    {text:'Ένα άλογο τραβάει ένα κάρο με σχοινί παράλληλο στο έδαφος, προς την κατεύθυνση της κίνησης.', F:30, dx:6, theta:0},
+    {text:'Ένα αυτοκίνητο φρενάρει: η τριβή των φρένων ασκείται ακριβώς αντίθετα από την κίνησή του.', F:35, dx:6, theta:180},
+    {text:'Ένα κιβώτιο γλιστράει σε οριζόντιο δάπεδο. Εξετάζουμε το έργο της κάθετης δύναμης στήριξης (Ν) που δέχεται από το δάπεδο.', F:25, dx:6, theta:90},
+    {text:'Ένας γερανός ανυψώνει κατακόρυφα ένα φορτίο, ασκώντας δύναμη προς τα πάνω ίση με το βάρος του.', F:40, dx:5, theta:0},
+    {text:'Ένα αλεξίπτωτο ανεβαίνει προς τα πάνω με τον αέρα. Εξετάζουμε το έργο του βάρους του, που φυσικά δείχνει πάντα προς τα κάτω.', F:30, dx:5, theta:180},
+    {text:'Ένα παιδί σέρνει ένα έλκηθρο τραβώντας σχοινί που σχηματίζει γωνία 30° πάνω από το οριζόντιο έδαφος, ενώ το έλκηθρο κινείται οριζόντια.', F:20, dx:7, theta:30},
+    {text:'Ένας δρομέας τρέχει σε κυκλικό στίβο με σταθερή ταχύτητα. Εξετάζουμε το έργο της κεντρομόλου δύναμης, που είναι πάντα κάθετη στην ταχύτητα.', F:20, dx:6, theta:90},
+    {text:'Μια μπάλα πέφτει ελεύθερα προς τα κάτω, υπό την επίδραση του βάρους της.', F:15, dx:4, theta:0},
+    {text:'Ανεβάζεις μια βαλίτσα σε μια σκάλα τραβώντας τη με σχοινί που σχηματίζει γωνία 120° ως προς την οριζόντια κίνησή της (προς τα πίσω-πάνω).', F:25, dx:5, theta:120},
+    {text:'Ένα αεροπλάνο πετά οριζόντια προς τα εμπρός. Εξετάζουμε το έργο της αντίστασης του αέρα (οπισθέλκουσα), που ασκείται πάντα αντίθετα στην κίνηση.', F:40, dx:8, theta:180}
+  ];
+  var wq={};
+  function wqSignOf(theta){
+    if(Math.abs(theta-90)<2) return 'zero';
+    return theta<90 ? 'pos' : 'neg';
+  }
+  function wqExplainAngle(theta){
+    if(Math.abs(theta-90)<2) return 'Η γωνία είναι θ = 90° (ορθή) — δύναμη και μετατόπιση είναι κάθετες, άρα η δύναμη δεν έχει καμία συνιστώσα στην κατεύθυνση κίνησης.';
+    if(Math.abs(theta)<2) return 'Η γωνία είναι θ = 0° — δύναμη και μετατόπιση έχουν ακριβώς την ίδια φορά.';
+    if(Math.abs(theta-180)<2) return 'Η γωνία είναι θ = 180° — δύναμη και μετατόπιση έχουν ακριβώς αντίθετη φορά.';
+    if(theta<90) return 'Η γωνία είναι θ = '+theta+'° (οξεία) — η παράλληλη συνιστώσα της δύναμης έχει την ίδια φορά με τη μετατόπιση.';
+    return 'Η γωνία είναι θ = '+theta+'° (αμβλεία) — η παράλληλη συνιστώσα της δύναμης έχει αντίθετη φορά από τη μετατόπιση.';
+  }
+  function wqNew(){
+    wq=WSCEN[Math.floor(Math.random()*WSCEN.length)];
+    document.getElementById('wq-question').textContent=wq.text+' Ποιο είναι το πρόσημο του έργου της δύναμης;';
+    drawWorkDiagram(document.getElementById('wq-svg'),wq.F,wq.dx,wq.theta);
+    var ex=document.getElementById('wq-explain');
+    ex.classList.remove('show'); ex.innerHTML='';
+    document.getElementById('wq-next').style.display='none';
+    document.querySelectorAll('#wq-options .quiz-opt').forEach(function(btn){
+      btn.disabled=false; btn.classList.remove('correct','wrong');
+    });
+    wq.answered=false;
+  }
+  document.querySelectorAll('#wq-options .quiz-opt').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      if(wq.answered) return;
+      wq.answered=true;
+      var correct=wqSignOf(wq.theta);
+      document.querySelectorAll('#wq-options .quiz-opt').forEach(function(b){
+        b.disabled=true;
+        if(b.dataset.ans===correct) b.classList.add('correct');
+        else if(b===btn) b.classList.add('wrong');
+      });
+      var W=wq.F*wq.dx*Math.cos(deg2rad(wq.theta));
+      var ex=document.getElementById('wq-explain');
+      ex.innerHTML='<div class="line">'+wqExplainAngle(wq.theta)+'</div><div class="line" style="margin-top:6px;"><strong>Αριθμητικά (ενδεικτικά):</strong> W = F·Δx·συνθ = '+fmtSignedJ(W)+'</div>';
+      ex.classList.add('show');
+      document.getElementById('wq-next').style.display='inline-block';
+    });
+  });
+  document.getElementById('wq-next').addEventListener('click',wqNew);
+
+  /* =========================================================
+     LAB 2 — ΔΙΑΤΗΡΗΣΗ ΜΗΧΑΝΙΚΗΣ ΕΝΕΡΓΕΙΑΣ
+     ========================================================= */
+  function drawRamp(svg,f,ghosts){
+    var id=svg.id;
+    var w=400,h=190;
+    var topX=40, topY=24, botX=360, botY=160;
+    var bx=botX+(topX-botX)*f, by=botY+(topY-botY)*f;
+    var dots='';
+    if(ghosts){
+      [0,0.25,0.5,0.75,1].forEach(function(gf){
+        var gx=botX+(topX-botX)*gf, gy=botY+(topY-botY)*gf;
+        dots+='<circle cx="'+gx+'" cy="'+gy+'" r="3" fill="var(--line)"/>';
+      });
+    }
+    svg.innerHTML =
+      '<line x1="20" y1="'+botY+'" x2="380" y2="'+botY+'" stroke="var(--ink-soft)" stroke-width="1.5"/>'+
+      '<text x="20" y="'+(botY+16)+'" font-family="var(--font-mono)" font-size="10" fill="var(--ink-soft)">h = 0</text>'+
+      '<line x1="'+topX+'" y1="'+topY+'" x2="'+botX+'" y2="'+botY+'" stroke="var(--line)" stroke-width="2"/>'+
+      dots+
+      '<line x1="'+topX+'" y1="'+topY+'" x2="'+topX+'" y2="'+botY+'" stroke="var(--line)" stroke-width="1" stroke-dasharray="3 4"/>'+
+      '<text x="'+(topX-6)+'" y="'+(topY-8)+'" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--ink-soft)">H</text>'+
+      '<circle cx="'+bx+'" cy="'+(by-10)+'" r="11" fill="var(--accent)" stroke="var(--accent-ink)" stroke-width="1.2"/>'+
+      '<line x1="'+bx+'" y1="'+(by-10)+'" x2="'+bx+'" y2="'+botY+'" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 3"/>';
+  }
+
+  function drawEnergyGraph(svg,H,f){
+    var id=svg.id;
+    var w=400,h=190;
+    var mX=46, mY=16, plotW=320, plotH=130, baseY=mY+plotH;
+    var hNow=f*H;
+    function X(hVal){ return mX+(hVal/H)*plotW; }
+    function YfracU(hVal){ return mY+plotH*(1-hVal/H); }
+    function YfracK(hVal){ return mY+plotH*(hVal/H); }
+    var uPath='M'+X(0)+' '+YfracU(0)+' L'+X(H)+' '+YfracU(H);
+    var kPath='M'+X(0)+' '+YfracK(0)+' L'+X(H)+' '+YfracK(H);
+    var markerX=X(hNow);
+    var uY=YfracU(hNow), kY=YfracK(hNow);
+    svg.innerHTML =
+      '<line x1="'+mX+'" y1="'+baseY+'" x2="'+(mX+plotW)+'" y2="'+baseY+'" stroke="var(--ink-soft)" stroke-width="1.3"/>'+
+      '<line x1="'+mX+'" y1="'+mY+'" x2="'+mX+'" y2="'+baseY+'" stroke="var(--ink-soft)" stroke-width="1.3"/>'+
+      '<text x="'+(mX+plotW/2)+'" y="'+(baseY+22)+'" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" fill="var(--ink-soft)">ύψος h (0 → H)</text>'+
+      '<text x="12" y="'+(mY+4)+'" font-family="var(--font-mono)" font-size="9.5" fill="var(--ink-soft)">E</text>'+
+      '<path d="'+uPath+'" fill="none" stroke="var(--blue)" stroke-width="2.4"/>'+
+      '<path d="'+kPath+'" fill="none" stroke="var(--accent)" stroke-width="2.4"/>'+
+      '<line x1="'+markerX+'" y1="'+mY+'" x2="'+markerX+'" y2="'+baseY+'" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="3 3"/>'+
+      '<circle cx="'+markerX+'" cy="'+uY+'" r="4.5" fill="var(--blue)"/>'+
+      '<circle cx="'+markerX+'" cy="'+kY+'" r="4.5" fill="var(--accent)"/>'+
+      '<text x="'+(mX+plotW-6)+'" y="'+(mY+14)+'" text-anchor="end" font-family="var(--font-mono)" font-size="10" fill="var(--blue)">U(h)</text>'+
+      '<text x="'+(mX+plotW-6)+'" y="'+(baseY-8)+'" text-anchor="end" font-family="var(--font-mono)" font-size="10" fill="var(--accent)">E_Κ(h)</text>';
+  }
+
+  var playTimer=null;
+  function stopPlay(){
+    if(playTimer){ cancelAnimationFrame(playTimer); playTimer=null; }
+    document.getElementById('e-play').textContent="▶ Άσ' την να κυλήσει";
+  }
+  function updateEnergyCalc(){
+    var m=+document.getElementById('e-m').value;
+    var H=+document.getElementById('e-H').value;
+    var fpct=+document.getElementById('e-f').value;
+    var f=fpct/100;
+    document.getElementById('e-m-val').textContent=fmtNum(m,1)+' kg';
+    document.getElementById('e-H-val').textContent=fmtNum(H,0)+' m';
+    document.getElementById('e-f-val').textContent=fmtNum(fpct,0)+'%';
+    var hNow=f*H;
+    var U=m*g*hNow;
+    var EK=m*g*(H-hNow);
+    var v=Math.sqrt(Math.max(0,2*g*(H-hNow)));
+    var Etot=m*g*H;
+    document.getElementById('e-h-out').textContent=fmtNum(hNow,1)+' m';
+    document.getElementById('e-v-out').textContent=fmtV(v);
+    document.getElementById('e-EK-out').textContent=fmtJ(EK);
+    document.getElementById('e-U-out').textContent=fmtJ(U);
+    document.getElementById('e-Etot-out').textContent='E_μηχ = '+fmtJ(Etot);
+    drawRamp(document.getElementById('e-ramp-svg'),f,true);
+    drawEnergyGraph(document.getElementById('e-graph-svg'),H,f);
+  }
+  ['e-m','e-H','e-f'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',function(){ stopPlay(); updateEnergyCalc(); });
+  });
+  document.getElementById('e-reset').addEventListener('click',function(){
+    stopPlay();
+    document.getElementById('e-f').value=100;
+    updateEnergyCalc();
+  });
+  document.getElementById('e-play').addEventListener('click',function(){
+    if(playTimer){ stopPlay(); return; }
+    var slider=document.getElementById('e-f');
+    var start=+slider.value;
+    if(start<=0){ start=100; slider.value=100; updateEnergyCalc(); }
+    var t0=null, dur=2600;
+    document.getElementById('e-play').textContent='⏸ Παύση';
+    function step(ts){
+      if(t0===null) t0=ts;
+      var elapsed=ts-t0;
+      var frac=Math.min(1, elapsed/dur);
+      var val=start*(1-frac);
+      slider.value=val;
+      updateEnergyCalc();
+      if(frac<1){ playTimer=requestAnimationFrame(step); }
+      else { stopPlay(); }
+    }
+    playTimer=requestAnimationFrame(step);
+  });
+
+  /* ---------- quiz tab: predict KE/PE/Emech/v change ---------- */
+  var eq={};
+  var EQ_QTY=[
+    {key:'EK', label:'κινητική ενέργεια (E<sub>Κ</sub>)'},
+    {key:'U', label:'δυναμική ενέργεια (U)'},
+    {key:'E', label:'μηχανική ενέργεια (το άθροισμα E<sub>Κ</sub> + U)'},
+    {key:'v', label:'ταχύτητα'}
+  ];
+  function eqVals(m,H,f){
+    var hNow=f*H;
+    return { h:hNow, U:m*g*hNow, EK:m*g*(H-hNow), v:Math.sqrt(Math.max(0,2*g*(H-hNow))), E:m*g*H };
+  }
+  function eqNew(){
+    var m=[1,2,3,4,5][Math.floor(Math.random()*5)];
+    var H=[4,6,8,10,12][Math.floor(Math.random()*5)];
+    var fPool=[0,20,40,60,80,100];
+    var f1=fPool[Math.floor(Math.random()*fPool.length)];
+    var f2;
+    do{ f2=fPool[Math.floor(Math.random()*fPool.length)]; } while(f2===f1);
+    var qty=EQ_QTY[Math.floor(Math.random()*EQ_QTY.length)];
+    var v1=eqVals(m,H,f1/100), v2=eqVals(m,H,f2/100);
+    var correct;
+    if(qty.key==='E') correct='same';
+    else correct = v2[qty.key]>v1[qty.key]+0.05 ? 'inc' : (v2[qty.key]<v1[qty.key]-0.05 ? 'dec' : 'same');
+    eq={m:m,H:H,f1:f1,f2:f2,qty:qty,v1:v1,v2:v2,correct:correct,answered:false};
+    document.getElementById('eq-question').innerHTML='Μια μπάλα μάζας '+fmtNum(m,0)+' kg κυλά <strong>χωρίς τριβές</strong> σε κεκλιμένη ράγα ύψους '+fmtNum(H,0)+' m. Ξεκινά σε ύψος '+fmtNum(v1.h,1)+' m ('+f1+'% του H) και κυλά ως το ύψος '+fmtNum(v2.h,1)+' m ('+f2+'% του H). Τι συμβαίνει στην '+qty.label+' της μπάλας;';
+    drawRamp(document.getElementById('eq-before-svg'),f1/100,false);
+    document.getElementById('eq-before-values').textContent='h='+fmtNum(v1.h,1)+' m, υ='+fmtV(v1.v)+', E_Κ='+fmtJ(v1.EK)+', U='+fmtJ(v1.U);
+    document.getElementById('eq-after-hidden').style.display='flex';
+    document.getElementById('eq-after-svg').style.display='none';
+    document.getElementById('eq-after-values').textContent='';
+    var opWrap=document.getElementById('eq-options');
+    opWrap.innerHTML='';
+    [['inc','Αυξάνεται'],['dec','Μειώνεται'],['same','Παραμένει σταθερή']].forEach(function(pair){
+      var btn=document.createElement('button');
+      btn.type='button'; btn.className='quiz-opt'; btn.textContent=pair[1]; btn.dataset.ans=pair[0];
+      btn.addEventListener('click',function(){ eqAnswer(pair[0],btn); });
+      opWrap.appendChild(btn);
+    });
+    var ex=document.getElementById('eq-explain');
+    ex.classList.remove('show'); ex.innerHTML='';
+    document.getElementById('eq-next').style.display='none';
+  }
+  function eqAnswer(choice,btnEl){
+    if(eq.answered) return;
+    eq.answered=true;
+    document.querySelectorAll('#eq-options .quiz-opt').forEach(function(b){
+      b.disabled=true;
+      if(b.dataset.ans===eq.correct) b.classList.add('correct');
+      else if(b===btnEl) b.classList.add('wrong');
+    });
+    document.getElementById('eq-after-hidden').style.display='none';
+    var afterSvg=document.getElementById('eq-after-svg');
+    afterSvg.style.display='block';
+    drawRamp(afterSvg,eq.f2/100,false);
+    document.getElementById('eq-after-values').textContent='h='+fmtNum(eq.v2.h,1)+' m, υ='+fmtV(eq.v2.v)+', E_Κ='+fmtJ(eq.v2.EK)+', U='+fmtJ(eq.v2.U);
+    var html='<div class="line">Πριν: E_Κ='+fmtJ(eq.v1.EK)+', U='+fmtJ(eq.v1.U)+', E_μηχ='+fmtJ(eq.v1.E)+'</div>'+
+             '<div class="line">Μετά: E_Κ='+fmtJ(eq.v2.EK)+', U='+fmtJ(eq.v2.U)+', E_μηχ='+fmtJ(eq.v2.E)+'</div>'+
+             '<div class="line" style="margin-top:6px;"><strong>Παρατήρησε:</strong> όσο αλλάζει το ύψος, η κινητική και η δυναμική ενέργεια αλλάζουν αντίστροφα — αλλά το άθροισμά τους (η μηχανική ενέργεια) μένει πάντα '+fmtJ(eq.v1.E)+'.</strong></div>';
+    var ex=document.getElementById('eq-explain');
+    ex.innerHTML=html; ex.classList.add('show');
+    document.getElementById('eq-next').style.display='inline-block';
+  }
+  document.getElementById('eq-next').addEventListener('click',eqNew);
+
+  /* ---------- tabs ---------- */
+  document.querySelectorAll('.lab-tab-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var lab=btn.closest('.lab');
+      lab.querySelectorAll('.lab-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+      lab.querySelectorAll('.lab-panel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      lab.querySelector('#tab-'+btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  updateWorkCalc();
+  wqNew();
+  updateEnergyCalc();
+  eqNew();
+})();
+</script>
